@@ -21,16 +21,13 @@ public class Usuario extends Auditoria {
     @Column(length = 150, nullable = false)
     private String nome;
 
-    @Column(length = 11, nullable = false, unique = true, updatable = false)
-    private String cpf;
-
     @Column(length = 150, nullable = false, unique = true, updatable = false)
     private String email;
 
     @Column(length = 150, nullable = false)
     private String senha;
 
-    @Column(columnDefinition = "BOOLEAN default 'false")
+    @Column(columnDefinition = "BOOLEAN default 'false'")
     private boolean ativo;
 
     @Enumerated(EnumType.STRING)

@@ -11,7 +11,6 @@ public interface UsuarioMapper {
 
     @Mapping(target = "nome", source = "nome")
     @Mapping(target = "email", source = "email")
-    @Mapping(target = "cpf", source = "cpf")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "senha", ignore = true)
     @Mapping(target = "perfil", constant = "COMUM")
