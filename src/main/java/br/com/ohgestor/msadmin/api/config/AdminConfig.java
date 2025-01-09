@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,7 +16,7 @@ import java.time.Instant;
 
 @Configuration
 @Slf4j
-public class AdminConfig {
+public class AdminConfig implements CommandLineRunner {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -23,22 +24,23 @@ public class AdminConfig {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public void criarUsuarioAdministrativo(){
+    @Override
+    public void run(String... args) throws Exception {
         Usuario usuario = Usuario.builder()
-                .nome("Administrador")
-                .email("admin@ohgestor.com.br")
-                .senha(passwordEncoder.encode("102030"))
-                .ativo(true)
-                .perfil(Perfil.ADMIN)
-                .dataCriadoEm(Instant.now())
-                .build();
+            .nome("Administrador")
+            .email("admin@ohgestor.com.br")
+            .senha(passwordEncoder.encode("102030"))
+            .ativo(true)
+            .perfil(Perfil.ADMIN)
+            .dataCriadoEm(Instant.now())
+            .build();
 
         if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
-            log.warn("Usuário ja cadastrado no banco!");
+            System.out.println("*** *** *** Usuário ja cadastrado no banco!");
         } else {
             usuarioRepository.save(usuario);
+            log.info("***** ******** ******* *******");
             log.info("Usuário cadastrado com sucesso");
         }
     }
-
 }
