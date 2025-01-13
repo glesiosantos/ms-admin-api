@@ -8,6 +8,8 @@ import lombok.Getter;
 public enum Perfil {
 
     ADMIN("Administrador"),
-    COMUM("Comum");
+    COMUM("Comum"),
+    VENDE("Vendedor");
+
     private final String nome;
 }

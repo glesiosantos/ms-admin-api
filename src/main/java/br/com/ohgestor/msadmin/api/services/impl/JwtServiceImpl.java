@@ -33,8 +33,6 @@ public class JwtServiceImpl implements JwtService {
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.joining(" "));
 
-            System.out.println("**** scopes"+ scopes);
-
             return JWT.create()
                     .withIssuer("ms-admin-api")
                     .withExpiresAt(criarDataExpiracao())

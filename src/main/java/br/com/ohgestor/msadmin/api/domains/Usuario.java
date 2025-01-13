@@ -2,6 +2,7 @@ package br.com.ohgestor.msadmin.api.domains;
 
 import br.com.ohgestor.msadmin.api.abstrato.Auditoria;
 import br.com.ohgestor.msadmin.api.enuns.Perfil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +28,7 @@ public class Usuario extends Auditoria {
     @Column(length = 150, nullable = false, unique = true, updatable = false)
     private String email;
 
+    @JsonIgnore
     @Column(length = 150, nullable = false)
     private String senha;
 
