@@ -13,6 +13,16 @@ spring:
     hibernate:
       ddl-auto: create-drop
     defer-datasource-initialization: true
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 2525
+    username: 8d8137f576c7cb
+    password: 4c9795c48db3d6
+    smtp:
+      auth: true
+      starttls:
+        enable: true
 api:
   security:
     secret: ${security.secret}
+
