@@ -13,6 +13,7 @@ public interface UsuarioMapper {
     @Mapping(target = "email", source = "email")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "senha", ignore = true)
-    @Mapping(target = "perfil", constant = "COMUM")
+    @Mapping(target = "perfil", source = "perfil")
+    @Mapping(target = "avatar", constant = "default.png")
     Usuario converterRequestParaModel(UsuarioRequest request);
 }

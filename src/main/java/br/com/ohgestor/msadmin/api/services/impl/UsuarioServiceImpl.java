@@ -7,6 +7,7 @@ import br.com.ohgestor.msadmin.api.web.mappers.UsuarioMapper;
 import br.com.ohgestor.msadmin.api.web.requests.UsuarioRequest;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +31,9 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario cadastraUsuario(UsuarioRequest request) throws Exception {
         Optional<Usuario> optional = usuarioRepository.findByEmail(request.email());
         if(optional.isPresent()) throw new BadRequestException("Usuário ja cadastrado no sistema");
-        return usuarioRepository.save(usuarioMapper.converterRequestParaModel(request));
+        var usuario = usuarioMapper.converterRequestParaModel(request);
+        usuario.setSenha(passwordEncoder.encode("102030"));
+        return usuarioRepository.save(usuario);
     }
 
     @Transactional(readOnly = true)

@@ -22,7 +22,7 @@ public class UsuarioController {
     public ResponseEntity<?> addUsuario(@RequestBody UsuarioRequest request) throws Exception {
         var usuario = usuarioService.cadastraUsuario(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand().toUri();
+                .path("/{id}").buildAndExpand(usuario.getId()).toUri();
         return ResponseEntity.created(location).build();
     }
 
