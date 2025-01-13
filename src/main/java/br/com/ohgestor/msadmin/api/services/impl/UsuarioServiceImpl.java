@@ -2,6 +2,7 @@ package br.com.ohgestor.msadmin.api.services.impl;
 
 import br.com.ohgestor.msadmin.api.domains.Usuario;
 import br.com.ohgestor.msadmin.api.repositories.UsuarioRepository;
+import br.com.ohgestor.msadmin.api.services.EnvioEmailService;
 import br.com.ohgestor.msadmin.api.services.UsuarioService;
 import br.com.ohgestor.msadmin.api.web.mappers.UsuarioMapper;
 import br.com.ohgestor.msadmin.api.web.requests.UsuarioRequest;
@@ -27,12 +28,16 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     private UsuarioMapper usuarioMapper;
 
+    @Autowired
+    private EnvioEmailService envioEmailService;
+
     @Override
     public Usuario cadastraUsuario(UsuarioRequest request) throws Exception {
         Optional<Usuario> optional = usuarioRepository.findByEmail(request.email());
         if(optional.isPresent()) throw new BadRequestException("Usuário ja cadastrado no sistema");
         var usuario = usuarioMapper.converterRequestParaModel(request);
         usuario.setSenha(passwordEncoder.encode("102030"));
+        envioEmailService.enviarEmailSimples(usuario.getEmail(), "Novo usuário OhGestor", "Sua conta foi criada com sucesso!");
         return usuarioRepository.save(usuario);
     }
 
