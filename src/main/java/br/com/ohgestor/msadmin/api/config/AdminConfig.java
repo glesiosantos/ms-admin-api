@@ -26,6 +26,7 @@ public class AdminConfig implements CommandLineRunner {
         Usuario usuario = Usuario.builder()
             .nome("Administrador")
             .email("admin@ohgestor.com.br")
+                .avatar("default.png")
             .senha(passwordEncoder.encode("102030"))
             .ativo(true)
             .perfil(Perfil.ADMIN)

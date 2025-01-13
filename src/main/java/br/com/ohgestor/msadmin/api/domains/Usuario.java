@@ -19,6 +19,9 @@ import lombok.experimental.SuperBuilder;
 public class Usuario extends Auditoria {
 
     @Column(length = 150, nullable = false)
+    private String avatar;
+
+    @Column(length = 150, nullable = false)
     private String nome;
 
     @Column(length = 150, nullable = false, unique = true, updatable = false)

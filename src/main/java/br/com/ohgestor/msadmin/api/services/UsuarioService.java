@@ -4,5 +4,5 @@ import br.com.ohgestor.msadmin.api.domains.Usuario;
 
 public interface UsuarioService {
 
-    Usuario addUsuario();
+    Usuario buscarPeloEmail(String email) throws Exception;
 }
