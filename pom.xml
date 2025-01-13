@@ -33,6 +33,7 @@
 		<lombok.version>1.18.36</lombok.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<mapstruct-binding.version>0.2.0</mapstruct-binding.version>
+		<auth0-jwt.version>4.4.0</auth0-jwt.version>
 	</properties>
 	<dependencies>
 
@@ -49,6 +50,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>${auth0-jwt.version}</version>
 		</dependency>
 
 		<dependency>
