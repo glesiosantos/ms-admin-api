@@ -9,6 +9,7 @@ import br.com.ohgestor.msadmin.api.repositories.UsuarioRepository;
 import br.com.ohgestor.msadmin.api.services.ClienteService;
 import br.com.ohgestor.msadmin.api.web.mappers.ClienteMapper;
 import br.com.ohgestor.msadmin.api.web.requests.ClienteRequest;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -29,12 +30,12 @@ public class ClienteServiceImpl implements ClienteService {
     private ClienteMapper clienteMapper;
 
     @Override
-    public Cliente addCliente(ClienteRequest request) {
+    public Cliente addCliente(ClienteRequest request) throws BadRequestException {
         var usuario = carregarUsuarioAutenticado();
         var cliente = clienteMapper.converterRequestParaModel(request);
         cliente.setAtivo(true);
         cliente.setNumeroDeUsuario(1);
-//        cliente.setModulo(associarModuloAoCliente(request, cliente, usuario));
+        cliente.setModulos(List.of(associarModuloAoCliente(request, cliente, usuario)));
         return clienteRepository.save(cliente);
     }
 
@@ -44,9 +45,9 @@ public class ClienteServiceImpl implements ClienteService {
         return List.of();
     }
 
-    private Usuario carregarUsuarioAutenticado() {
+    private Usuario carregarUsuarioAutenticado() throws BadRequestException {
         return usuarioRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
-                .orElseThrow();
+                .orElseThrow(() -> new BadRequestException("Usuário não encontrado!"));
     }
 
     private static ClienteModulo associarModuloAoCliente(ClienteRequest request, Cliente cliente, Usuario usuario) {

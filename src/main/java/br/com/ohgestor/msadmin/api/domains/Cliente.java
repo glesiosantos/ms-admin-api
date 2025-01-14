@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -42,6 +43,6 @@ public class Cliente extends EntidadeAbstrata {
     @JoinTable(name = "tb_cliente_contatos")
     private Set<String> contatos;
 
-//    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-//    private ClienteModulo modulo;
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    private List<ClienteModulo> modulos;
 }
