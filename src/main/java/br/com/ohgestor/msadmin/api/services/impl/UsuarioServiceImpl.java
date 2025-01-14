@@ -2,15 +2,17 @@ package br.com.ohgestor.msadmin.api.services.impl;
 
 import br.com.ohgestor.msadmin.api.domains.Usuario;
 import br.com.ohgestor.msadmin.api.repositories.UsuarioRepository;
+import br.com.ohgestor.msadmin.api.services.EnvioEmailService;
 import br.com.ohgestor.msadmin.api.services.UsuarioService;
 import br.com.ohgestor.msadmin.api.web.mappers.UsuarioMapper;
+import br.com.ohgestor.msadmin.api.web.requests.EmailRequest;
 import br.com.ohgestor.msadmin.api.web.requests.UsuarioRequest;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.context.Context;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,12 +29,18 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     private UsuarioMapper usuarioMapper;
 
+    @Autowired
+    private EnvioEmailService envioEmailService;
+
     @Override
     public Usuario cadastraUsuario(UsuarioRequest request) throws Exception {
         Optional<Usuario> optional = usuarioRepository.findByEmail(request.email());
         if(optional.isPresent()) throw new BadRequestException("Usuário ja cadastrado no sistema");
         var usuario = usuarioMapper.converterRequestParaModel(request);
         usuario.setSenha(passwordEncoder.encode("102030"));
+
+        envioDeEmail(usuario);
+
         return usuarioRepository.save(usuario);
     }
 
@@ -47,5 +55,14 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario buscarPeloEmail(String email) throws Exception{
         return usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new BadRequestException("Nenhum usuário encontrado"));
+    }
+
+    private void envioDeEmail(Usuario usuario) {
+        Context context = new Context();
+        context.setVariable("nomeUsuario", usuario.getNome());
+        context.setVariable("texto", usuario.getNome());
+        envioEmailService.enviarEmailComTemplate(new EmailRequest(usuario.getEmail(),
+                        "Novo usuário no Oh Gestor", "Obrigado por se registrar no nosso sistema de vendas. Agora você tem acesso a uma plataforma completa para gerenciar suas compras, vendas e muito mais."),
+                "email-template", context);
     }
 }
