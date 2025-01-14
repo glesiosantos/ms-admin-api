@@ -41,4 +41,7 @@ public class Cliente extends EntidadeAbstrata {
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_cliente_contatos")
     private Set<String> contatos;
+
+//    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+//    private ClienteModulo modulo;
 }

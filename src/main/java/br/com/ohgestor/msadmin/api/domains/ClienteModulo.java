@@ -3,6 +3,7 @@ package br.com.ohgestor.msadmin.api.domains;
 import br.com.ohgestor.msadmin.api.abstrato.Auditoria;
 import br.com.ohgestor.msadmin.api.abstrato.EntidadeAbstrata;
 import br.com.ohgestor.msadmin.api.enuns.Modulo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +20,7 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "tb_cliente_modulo")
 public class ClienteModulo extends Auditoria {
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
