@@ -58,11 +58,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     private void envioDeEmail(Usuario usuario) {
+        var emailRequest = new EmailRequest(usuario.getEmail(),
+                "Novo usuário no Oh Gestor", "Obrigado por se registrar no nosso sistema de vendas. Agora você tem acesso a uma plataforma completa para gerenciar suas compras, vendas e muito mais.");
         Context context = new Context();
         context.setVariable("nomeUsuario", usuario.getNome());
-        context.setVariable("texto", usuario.getNome());
-        envioEmailService.enviarEmailComTemplate(new EmailRequest(usuario.getEmail(),
-                        "Novo usuário no Oh Gestor", "Obrigado por se registrar no nosso sistema de vendas. Agora você tem acesso a uma plataforma completa para gerenciar suas compras, vendas e muito mais."),
-                "email-template", context);
+        context.setVariable("texto", emailRequest.texto());
+        envioEmailService.enviarEmailComTemplate(emailRequest,"email-template", context);
     }
 }
