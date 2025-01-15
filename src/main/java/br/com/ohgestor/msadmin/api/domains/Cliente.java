@@ -2,6 +2,7 @@ package br.com.ohgestor.msadmin.api.domains;
 
 import br.com.ohgestor.msadmin.api.abstrato.EntidadeAbstrata;
 import br.com.ohgestor.msadmin.api.enuns.Modulo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +28,9 @@ public class Cliente extends EntidadeAbstrata {
     @Column(name = "nm_fantasia", length = 150, nullable = false)
     private String nomeFantasia;
 
+    @Column(name = "nm_proprietario", length = 150, nullable = false)
+    private String nomeDoProprietario;
+
     @Column(name = "cpf_cnpj", length = 15, nullable = false, unique = true)
     private String cpfCnpj;
 
@@ -43,6 +47,6 @@ public class Cliente extends EntidadeAbstrata {
     @JoinTable(name = "tb_cliente_contatos")
     private Set<String> contatos;
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<ClienteModulo> modulos;
 }
