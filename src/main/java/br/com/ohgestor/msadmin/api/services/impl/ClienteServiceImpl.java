@@ -42,7 +42,7 @@ public class ClienteServiceImpl implements ClienteService {
     @Transactional(readOnly = true)
     @Override
     public List<Cliente> filtrarClientes() {
-        return List.of();
+        return clienteRepository.findAll();
     }
 
     private Usuario carregarUsuarioAutenticado() throws BadRequestException {

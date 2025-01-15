@@ -1,7 +1,6 @@
 package br.com.ohgestor.msadmin.api.domains;
 
 import br.com.ohgestor.msadmin.api.abstrato.Auditoria;
-import br.com.ohgestor.msadmin.api.abstrato.EntidadeAbstrata;
 import br.com.ohgestor.msadmin.api.enuns.Modulo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -32,6 +31,7 @@ public class ClienteModulo extends Auditoria {
     @Column(columnDefinition = "boolean DEFAULT 'true'")
     private boolean ativo;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_vendedor", nullable = false)
     private Usuario responsavelVenda;
