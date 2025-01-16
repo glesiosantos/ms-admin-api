@@ -13,7 +13,6 @@ public interface ClienteMapper {
     @Mapping(target = "razaoSocial", source = "razaoSocial")
     @Mapping(target = "nomeFantasia", source = "nomeFantasia")
     @Mapping(target = "nomeDoProprietario", source = "nomeDoProprietario")
-    @Mapping(target = "numeroDeUsuario", constant = "0")
     @Mapping(target = "dataVencimento", constant = "0")
     @Mapping(target = "contatos", source = "contatos")
     Cliente converterRequestParaModel(ClienteRequest request);

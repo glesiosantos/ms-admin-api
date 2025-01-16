@@ -26,7 +26,7 @@ public class Cliente extends EntidadeAbstrata {
     @Column(name = "nm_fantasia", length = 150, nullable = false)
     private String nomeFantasia;
 
-    @Column(name = "nm_proprietario", length = 150, nullable = false)
+    @Column(name = "proprietario", length = 150, nullable = false)
     private String nomeDoProprietario;
 
     @Column(name = "cpf_cnpj", length = 15, nullable = false, unique = true)
@@ -35,14 +35,12 @@ public class Cliente extends EntidadeAbstrata {
     @Column(name = "dt_vencimento", nullable = false)
     private int dataVencimento;
 
-    @Column(name = "total_usuario", nullable = false)
-    private int numeroDeUsuario;
-
     @Column(name = "ativo", columnDefinition = "boolean DEFAULT 'false'")
     private boolean ativo;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @JoinTable(name = "tb_cliente_contatos")
+    @JoinTable(name = "tb_cliente_contatos",
+            joinColumns = @JoinColumn(name = "cliente_id"))
     private Set<String> contatos;
 
     @Enumerated(EnumType.STRING)
