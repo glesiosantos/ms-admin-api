@@ -1,7 +1,6 @@
 package br.com.ohgestor.msadmin.api.services.impl;
 
 import br.com.ohgestor.msadmin.api.domains.Cliente;
-import br.com.ohgestor.msadmin.api.domains.ClienteModulo;
 import br.com.ohgestor.msadmin.api.domains.Usuario;
 import br.com.ohgestor.msadmin.api.enuns.Modulo;
 import br.com.ohgestor.msadmin.api.repositories.ClienteRepository;
@@ -9,15 +8,12 @@ import br.com.ohgestor.msadmin.api.repositories.UsuarioRepository;
 import br.com.ohgestor.msadmin.api.services.ClienteService;
 import br.com.ohgestor.msadmin.api.web.mappers.ClienteMapper;
 import br.com.ohgestor.msadmin.api.web.requests.ClienteRequest;
-import br.com.ohgestor.msadmin.api.web.responses.ClienteResponse;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service

@@ -7,8 +7,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Modulo {
 
-    OFICINA("Módulo de Oficinas", 24.9);
+    OFICINA("Módulo de Oficinas", 39.9, 24.9);
 
     private final String nome;
-    private final Double precoPorUsuario;
+    private final Double precoPorUsuarioMensal;
+    private final Double precoPorUsuarioAnual;
 }
