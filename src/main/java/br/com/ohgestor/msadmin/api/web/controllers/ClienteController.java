@@ -29,7 +29,7 @@ public class ClienteController {
         return ResponseEntity.created(location).build();
     }
 
-    @GetMapping("/filtros")
+    @GetMapping
 //    @PreAuthorize("hasAnyRole('ROLE_VENDE','ROLE_ADMIN')")
     public ResponseEntity<?> carregarClientes() {
         return ResponseEntity.ok(clienteService.filtrarClientes());

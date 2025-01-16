@@ -26,8 +26,8 @@ public class Cliente extends EntidadeAbstrata {
     @Column(name = "nm_fantasia", length = 150, nullable = false)
     private String nomeFantasia;
 
-    @Column(name = "proprietario", length = 150, nullable = false)
-    private String nomeDoProprietario;
+    @Column(length = 150, nullable = false)
+    private String proprietario;
 
     @Column(name = "cpf_cnpj", length = 15, nullable = false, unique = true)
     private String cpfCnpj;
@@ -37,6 +37,9 @@ public class Cliente extends EntidadeAbstrata {
 
     @Column(name = "ativo", columnDefinition = "boolean DEFAULT 'false'")
     private boolean ativo;
+
+    @Embedded
+    private Endereco endereco;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_cliente_contatos",
