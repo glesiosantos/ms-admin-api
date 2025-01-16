@@ -9,11 +9,12 @@ import org.mapstruct.MappingConstants;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ClienteMapper {
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "razaoSocial", source = "razaoSocial")
     @Mapping(target = "nomeFantasia", source = "nomeFantasia")
-    @Mapping(target = "dataVencimento", source = "dataVencimento")
     @Mapping(target = "nomeDoProprietario", source = "nomeDoProprietario")
-    @Mapping(target = "numeroDeUsuario", ignore = true)
+    @Mapping(target = "numeroDeUsuario", constant = "0")
+    @Mapping(target = "dataVencimento", constant = "0")
     @Mapping(target = "contatos", source = "contatos")
     Cliente converterRequestParaModel(ClienteRequest request);
 }

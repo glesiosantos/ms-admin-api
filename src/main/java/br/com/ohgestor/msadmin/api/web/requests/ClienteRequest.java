@@ -13,7 +13,6 @@ public record ClienteRequest(
         String estado,
         String latitude,
         String longitude,
-        int dataVencimento,
         String modulo,
         String cpfProprietario,
         String nomeDoProprietario,
