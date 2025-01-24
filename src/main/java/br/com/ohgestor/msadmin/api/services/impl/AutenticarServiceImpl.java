@@ -32,4 +32,9 @@ public class AutenticarServiceImpl implements AutenticarService {
         String token = jwtService.tokenGenerate((UserDetails) authenticated.getPrincipal());
         return new LoginResponse(token, usuario.getNome(), usuario.getAvatar(), usuario.getPerfil().name());
     }
+
+    @Override
+    public boolean validarToken(String token) {
+        return jwtService.validarToken(token).isEmpty();
+    }
 }
