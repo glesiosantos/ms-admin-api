@@ -23,7 +23,8 @@ public class AuthController {
 
     @GetMapping("/validar-token")
     public ResponseEntity<?> validarToken(HttpServletRequest request) {
-        System.out.println(request.getHeader("Authorization"));
-        return ResponseEntity.ok().build();
+        String token = request.getHeader("Authorization");
+        var isValid = autenticarService.validarToken(token.replace("Bearer ", ""));
+        return ResponseEntity.ok(isValid);
     }
 }

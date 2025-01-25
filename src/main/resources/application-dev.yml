@@ -25,4 +25,6 @@ spring:
 api:
   security:
     secret: ${security.secret}
-
+app:
+  consumidor:
+    urls: http://localhost:9000
