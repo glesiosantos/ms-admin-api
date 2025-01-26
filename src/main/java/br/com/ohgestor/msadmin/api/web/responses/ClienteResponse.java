@@ -1,7 +1,5 @@
 package br.com.ohgestor.msadmin.api.web.responses;
 
-import java.util.List;
-
 public record ClienteResponse(
         String cpfCnpj,
         String razao,
@@ -9,6 +7,8 @@ public record ClienteResponse(
         String proprietario,
         int vencimento,
         int totalUsuario,
-        List<String> contatos,
-        List<String> modulos
+        String cidade,
+        String estado,
+        String contatos,
+        String modulos
 ) {}
