@@ -35,6 +35,6 @@ public class AutenticarServiceImpl implements AutenticarService {
 
     @Override
     public boolean validarToken(String token) {
-        return jwtService.validarToken(token).isEmpty();
+        return jwtService.validarToken(token.substring(7)).isEmpty();
     }
 }

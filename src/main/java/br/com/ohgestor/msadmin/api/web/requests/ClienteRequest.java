@@ -7,10 +7,9 @@ public record ClienteRequest(
         String razaoSocial,
         String nomeFantasia,
         String nomeDoProprietario,
-        String cep,
-        String logradouro,
-        String bairro,
+        int vencimento,
         String cidade,
         String estado,
-        List<String> contatos
+        List<String> contatos,
+        List<String> modulos
 ) {}

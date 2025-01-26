@@ -38,6 +38,9 @@ public class Cliente extends EntidadeAbstrata {
     @Column(name = "ativo", columnDefinition = "boolean DEFAULT 'false'")
     private boolean ativo;
 
+    @Column(name = "nr_usuario", columnDefinition = "INT DEFAULT '0'")
+    private int numeroUsuario;
+
     @Embedded
     private Endereco endereco;
 
