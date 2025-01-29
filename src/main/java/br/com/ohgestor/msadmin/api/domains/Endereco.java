@@ -33,7 +33,7 @@ public class Endereco {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "uf", nullable = false, length = 2, columnDefinition = "CHAR(2) default 'PI'")
-    private UnidadeFederacao federacao;
+    private UnidadeFederacao estado;
 
     @Column(columnDefinition = "TEXT")
     private String complemento;

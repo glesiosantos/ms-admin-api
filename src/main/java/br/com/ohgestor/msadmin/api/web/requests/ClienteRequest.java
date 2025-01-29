@@ -3,13 +3,15 @@ package br.com.ohgestor.msadmin.api.web.requests;
 import java.util.List;
 
 public record ClienteRequest(
-        String cpfCnpj,
-        String razaoSocial,
-        String nomeFantasia,
-        String nomeDoProprietario,
-        int vencimento,
+        String documento,
+        String razao,
+        String fantasia,
+        String cep,
+        String logradouro,
+        String bairro,
         String cidade,
         String estado,
         List<String> contatos,
-        List<String> modulos
+        String latitude,
+        String longitude
 ) {}

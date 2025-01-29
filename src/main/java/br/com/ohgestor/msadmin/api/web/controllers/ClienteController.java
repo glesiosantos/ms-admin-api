@@ -26,7 +26,7 @@ public class ClienteController {
         var cliente = clienteService.addCliente(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(cliente.getCpfCnpj()).toUri();
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(null).build();
     }
 
     @GetMapping

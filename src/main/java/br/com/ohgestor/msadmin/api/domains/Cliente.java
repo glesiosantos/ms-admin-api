@@ -3,14 +3,12 @@ package br.com.ohgestor.msadmin.api.domains;
 import br.com.ohgestor.msadmin.api.abstrato.EntidadeAbstrata;
 import br.com.ohgestor.msadmin.api.enuns.Modulo;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Set;
 
+@ToString
 @Getter
 @Setter
 @SuperBuilder
@@ -26,7 +24,7 @@ public class Cliente extends EntidadeAbstrata {
     @Column(name = "nm_fantasia", length = 150, nullable = false)
     private String nomeFantasia;
 
-    @Column(length = 150, nullable = false)
+    @Column(length = 150)
     private String proprietario;
 
     @Column(name = "cpf_cnpj", length = 15, nullable = false, unique = true)
@@ -53,4 +51,10 @@ public class Cliente extends EntidadeAbstrata {
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_cliente_modulos")
     private Set<Modulo> modulos;
+
+    @Column(length = 60)
+    private String latitude;
+
+    @Column(length = 60)
+    private String longitude;
 }

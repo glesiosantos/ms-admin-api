@@ -11,10 +11,14 @@ import org.mapstruct.MappingConstants;
 public interface ClienteMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "razaoSocial", source = "razaoSocial")
-    @Mapping(target = "nomeFantasia", source = "nomeFantasia")
-    @Mapping(target = "proprietario", source = "nomeDoProprietario")
-    @Mapping(target = "dataVencimento", constant = "0")
+    @Mapping(target = "cpfCnpj", source = "documento")
+    @Mapping(target = "nomeFantasia", source = "fantasia")
+    @Mapping(target = "razaoSocial", source = "razao")
+    @Mapping(target = "endereco.cep", source = "cep")
+    @Mapping(target = "endereco.logradouro", source = "logradouro")
+    @Mapping(target = "endereco.bairro", source = "bairro")
+    @Mapping(target = "endereco.cidade", source = "cidade")
+    @Mapping(target = "endereco.estado", source = "estado")
     @Mapping(target = "contatos", source = "contatos")
     Cliente converterRequestParaModel(ClienteRequest request);
 
