@@ -1,7 +1,7 @@
 package br.com.ohgestor.msadmin.api.domains;
 
 import br.com.ohgestor.msadmin.api.abstrato.EntidadeAbstrata;
-import br.com.ohgestor.msadmin.api.enuns.Modulo;
+import br.com.ohgestor.msadmin.api.enuns.TipoComercio;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -48,9 +48,7 @@ public class Cliente extends EntidadeAbstrata {
     private Set<String> contatos;
 
     @Enumerated(EnumType.STRING)
-    @ElementCollection(fetch = FetchType.EAGER)
-    @JoinTable(name = "tb_cliente_modulos")
-    private Set<Modulo> modulos;
+    private TipoComercio tipo;
 
     @Column(length = 60)
     private String latitude;
