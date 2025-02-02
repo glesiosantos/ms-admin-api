@@ -48,6 +48,7 @@ public class Cliente extends EntidadeAbstrata {
     private Set<String> contatos;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "tp_comercio", length = 3, nullable = false, columnDefinition = "CHAR(3) default 'CVP'")
     private TipoComercio tipo;
 
     @Column(length = 60)
