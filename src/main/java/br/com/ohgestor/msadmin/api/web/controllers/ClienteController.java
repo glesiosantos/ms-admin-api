@@ -1,5 +1,7 @@
 package br.com.ohgestor.msadmin.api.web.controllers;
 
+import br.com.ohgestor.msadmin.api.enuns.TipoComercio;
+import br.com.ohgestor.msadmin.api.enuns.UnidadeFederacao;
 import br.com.ohgestor.msadmin.api.services.ClienteService;
 import br.com.ohgestor.msadmin.api.web.requests.ClienteRequest;
 import br.com.ohgestor.msadmin.api.web.responses.ClienteResponse;
@@ -26,7 +28,7 @@ public class ClienteController {
         var cliente = clienteService.addCliente(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(cliente.getCpfCnpj()).toUri();
-        return ResponseEntity.created(null).build();
+        return ResponseEntity.created(location).build();
     }
 
     @GetMapping
