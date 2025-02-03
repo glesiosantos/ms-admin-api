@@ -14,6 +14,7 @@ public interface ClienteMapper {
     @Mapping(target = "cpfCnpj", source = "documento")
     @Mapping(target = "nomeFantasia", source = "fantasia")
     @Mapping(target = "razaoSocial", source = "razao")
+    @Mapping(target = "estabelecimento", source = "estabelecimento")
     @Mapping(target = "endereco.cep", source = "cep")
     @Mapping(target = "endereco.logradouro", source = "logradouro")
     @Mapping(target = "endereco.bairro", source = "bairro")

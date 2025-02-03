@@ -1,10 +1,7 @@
 package br.com.ohgestor.msadmin.api.web.controllers;
 
-import br.com.ohgestor.msadmin.api.enuns.TipoComercio;
-import br.com.ohgestor.msadmin.api.enuns.UnidadeFederacao;
 import br.com.ohgestor.msadmin.api.services.ClienteService;
 import br.com.ohgestor.msadmin.api.web.requests.ClienteRequest;
-import br.com.ohgestor.msadmin.api.web.responses.ClienteResponse;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("v1/clientes")

@@ -1,7 +1,7 @@
 package br.com.ohgestor.msadmin.api.domains;
 
 import br.com.ohgestor.msadmin.api.abstrato.EntidadeAbstrata;
-import br.com.ohgestor.msadmin.api.enuns.TipoComercio;
+import br.com.ohgestor.msadmin.api.enuns.EstabelecimentoComercial;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -48,8 +48,8 @@ public class Cliente extends EntidadeAbstrata {
     private Set<String> contatos;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tp_comercio", length = 3, nullable = false, columnDefinition = "CHAR(3) default 'CVP'")
-    private TipoComercio tipo;
+    @Column(name = "estabelecimento", length = 3, nullable = false, columnDefinition = "CHAR(3) default 'OME'")
+    private EstabelecimentoComercial estabelecimento;
 
     @Column(length = 60)
     private String latitude;

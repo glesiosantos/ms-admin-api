@@ -11,6 +11,7 @@ public record ClienteRequest(
         String bairro,
         String cidade,
         String estado,
+        String estabelecimento,
         List<String> contatos,
         String latitude,
         String longitude
