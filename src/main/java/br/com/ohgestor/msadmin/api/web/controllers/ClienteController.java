@@ -2,6 +2,7 @@ package br.com.ohgestor.msadmin.api.web.controllers;
 
 import br.com.ohgestor.msadmin.api.services.ClienteService;
 import br.com.ohgestor.msadmin.api.web.requests.ClienteRequest;
+import jakarta.validation.Valid;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class ClienteController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_VENDE','ROLE_ADMIN')")
-    public ResponseEntity<?> cadastroDeClientes(@RequestBody ClienteRequest request) throws BadRequestException {
+    public ResponseEntity<?> cadastroDeClientes(@RequestBody @Valid ClienteRequest request) throws BadRequestException {
         var cliente = clienteService.addCliente(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(cliente.getCpfCnpj()).toUri();
