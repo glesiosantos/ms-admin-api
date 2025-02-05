@@ -35,7 +35,12 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Cliente> filtrarClientes() {
-        return clienteRepository.findAll();
+    public List<ClienteResponse> carregarClientes() {
+        List<ClienteResponse> clientes = new ArrayList<>();
+        clienteRepository.findAll().stream().forEach(cliente -> clientes.add(
+                        new ClienteResponse(cliente.getCpfCnpj(), cliente.getRazaoSocial(), cliente.getNomeFantasia(), cliente.getProprietario(), cliente.getDataVencimento(), cliente.getNumeroUsuario(), cliente.getEndereco().getCidade(), cliente.getEndereco().getEstado().toString(), cliente.getContatos(), cliente.isIntegrado(), cliente.getEstabelecimento().getNome())
+                ));
+
+        return clientes;
     }
 }

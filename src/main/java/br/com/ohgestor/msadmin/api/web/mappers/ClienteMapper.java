@@ -1,11 +1,10 @@
 package br.com.ohgestor.msadmin.api.web.mappers;
 
 import br.com.ohgestor.msadmin.api.domains.Cliente;
+import br.com.ohgestor.msadmin.api.enuns.EstabelecimentoComercial;
 import br.com.ohgestor.msadmin.api.web.requests.ClienteRequest;
 import br.com.ohgestor.msadmin.api.web.responses.ClienteResponse;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
+import org.mapstruct.*;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ClienteMapper {
@@ -22,5 +21,4 @@ public interface ClienteMapper {
     @Mapping(target = "endereco.estado", source = "estado")
     @Mapping(target = "contatos", source = "contatos")
     Cliente converterRequestParaModel(ClienteRequest request);
-
 }

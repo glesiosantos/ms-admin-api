@@ -42,6 +42,9 @@ public class Cliente extends EntidadeAbstrata {
     @Embedded
     private Endereco endereco;
 
+    @Column(columnDefinition = "BOOLEAN DEFAULT 'false'")
+    private boolean integrado;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_cliente_contatos",
             joinColumns = @JoinColumn(name = "cliente_id"))
@@ -50,10 +53,4 @@ public class Cliente extends EntidadeAbstrata {
     @Enumerated(EnumType.STRING)
     @Column(name = "estabelecimento", length = 3, nullable = false, columnDefinition = "CHAR(3) default 'OME'")
     private EstabelecimentoComercial estabelecimento;
-
-    @Column(length = 60)
-    private String latitude;
-
-    @Column(length = 60)
-    private String longitude;
 }

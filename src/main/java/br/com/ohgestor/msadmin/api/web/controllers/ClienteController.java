@@ -31,6 +31,6 @@ public class ClienteController {
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_VENDE','ROLE_ADMIN')")
     public ResponseEntity<?> carregarClientes() {
-        return ResponseEntity.ok(clienteService.filtrarClientes());
+        return ResponseEntity.ok(clienteService.carregarClientes());
     }
 }
