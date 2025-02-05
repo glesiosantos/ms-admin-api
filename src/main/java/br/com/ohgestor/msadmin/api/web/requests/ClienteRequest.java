@@ -1,13 +1,12 @@
 package br.com.ohgestor.msadmin.api.web.requests;
 
-import br.com.ohgestor.msadmin.api.web.validacao.CpfCnpj;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
 public record ClienteRequest(
-        @NotNull(message = "Campo DOCUMENTO é obrigatório") @CpfCnpj(message = "CPF ou CNPJ inválido") String documento,
+        @NotNull(message = "Campo DOCUMENTO é obrigatório") String documento,
         @NotNull(message = "Campo RAZÃO é obrigatório") String razao,
         @NotNull(message = "Campo NOME FANTASIA é obrigatório") String fantasia,
         @NotNull(message = "Campo CEP é obrigatório") String cep,
