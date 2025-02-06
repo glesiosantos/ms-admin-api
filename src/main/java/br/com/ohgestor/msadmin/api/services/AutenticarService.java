@@ -6,4 +6,6 @@ import br.com.ohgestor.msadmin.api.web.responses.LoginResponse;
 public interface AutenticarService {
 
     LoginResponse autenticar(LoginRequest request) throws Exception;
+
+    boolean validarToken(String token);
 }
