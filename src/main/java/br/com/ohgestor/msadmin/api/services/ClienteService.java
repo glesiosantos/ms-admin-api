@@ -11,5 +11,5 @@ public interface ClienteService {
 
     Cliente addCliente(ClienteRequest request) throws BadRequestException;
 
-    List<Cliente> filtrarClientes();
+    List<ClienteResponse> carregarClientes();
 }

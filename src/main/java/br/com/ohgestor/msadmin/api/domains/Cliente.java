@@ -1,7 +1,7 @@
 package br.com.ohgestor.msadmin.api.domains;
 
 import br.com.ohgestor.msadmin.api.abstrato.EntidadeAbstrata;
-import br.com.ohgestor.msadmin.api.enuns.Modulo;
+import br.com.ohgestor.msadmin.api.enuns.EstabelecimentoComercial;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -42,19 +42,15 @@ public class Cliente extends EntidadeAbstrata {
     @Embedded
     private Endereco endereco;
 
+    @Column(columnDefinition = "BOOLEAN DEFAULT 'false'")
+    private boolean integrado;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_cliente_contatos",
             joinColumns = @JoinColumn(name = "cliente_id"))
     private Set<String> contatos;
 
     @Enumerated(EnumType.STRING)
-    @ElementCollection(fetch = FetchType.EAGER)
-    @JoinTable(name = "tb_cliente_modulos")
-    private Set<Modulo> modulos;
-
-    @Column(length = 60)
-    private String latitude;
-
-    @Column(length = 60)
-    private String longitude;
+    @Column(name = "estabelecimento", length = 3, nullable = false, columnDefinition = "CHAR(3) default 'OME'")
+    private EstabelecimentoComercial estabelecimento;
 }

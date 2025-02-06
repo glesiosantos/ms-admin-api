@@ -37,4 +37,10 @@ public class Endereco {
 
     @Column(columnDefinition = "TEXT")
     private String complemento;
+
+    @Column(length = 60)
+    private String latitude;
+
+    @Column(length = 60)
+    private String longitude;
 }

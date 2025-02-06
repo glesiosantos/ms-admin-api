@@ -1,6 +1,8 @@
 package br.com.ohgestor.msadmin.api.config;
 
+import br.com.ohgestor.msadmin.api.security.CustomAccessHandler;
 import br.com.ohgestor.msadmin.api.security.SecurityFilter;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +29,9 @@ public class SecurityConfig {
     @Autowired
     private SecurityFilter securityFilter;
 
+    @Autowired
+    private CustomAccessHandler customAccessHandler;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -36,6 +41,7 @@ public class SecurityConfig {
                         .requestMatchers("v1/auth/autenticar").permitAll()
                         .anyRequest().authenticated()
                 )
+                .exceptionHandling(handling -> handling.authenticationEntryPoint(customAccessHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
 
