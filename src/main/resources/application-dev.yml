@@ -1,18 +1,14 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:msAdminDb
-    username: sa
-    password:
-    driverClassName: org.h2.Driver
-  h2:
-    console.enabled: true
-    settings.trace: false
-    settings.web-allow-others: false
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: create-drop
-    defer-datasource-initialization: true
+    url: jdbc:postgresql://localhost:5432/ms_admin_db
+    username: postgres
+    password: 102030
+    driver-class-name: org.postgresql.Driver
+    jpa:
+      show-sql: true
+      hibernate:
+        ddl-auto: update
+      defer-datasource-initialization: true
   mail:
     host: sandbox.smtp.mailtrap.io
     port: 465

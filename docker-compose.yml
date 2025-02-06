@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  db:
+    container_name: ps-oficina
+    restart: always
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 102030
+      POSTGRES_DB: ms_admin_db
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+volumes:
+  postgres-db:
+    driver: local
