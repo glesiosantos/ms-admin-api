@@ -26,3 +26,4 @@ api:
 app:
   consumidor:
     urls: http://localhost:9000
+

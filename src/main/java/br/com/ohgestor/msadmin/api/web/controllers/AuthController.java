@@ -3,11 +3,13 @@ package br.com.ohgestor.msadmin.api.web.controllers;
 import br.com.ohgestor.msadmin.api.services.AutenticarService;
 import br.com.ohgestor.msadmin.api.web.requests.LoginRequest;
 import br.com.ohgestor.msadmin.api.web.responses.LoginResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Autenticação")
 @RestController
 @RequestMapping("v1/auth")
 public class AuthController {

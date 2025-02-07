@@ -4,6 +4,7 @@ import br.com.ohgestor.msadmin.api.enuns.EstabelecimentoComercial;
 import br.com.ohgestor.msadmin.api.enuns.UnidadeFederacao;
 import br.com.ohgestor.msadmin.api.web.responses.EstadoResponse;
 import br.com.ohgestor.msadmin.api.web.responses.TipoComerciaisResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 
+@Tag(name = "Utilitários")
 @RestController
 @RequestMapping("v1/utils")
 public class UtilController {
