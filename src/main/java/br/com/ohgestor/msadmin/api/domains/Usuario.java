@@ -16,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_usuario")
+@Table(name = "usuarios")
 public class Usuario extends Auditoria {
 
     @Column(length = 150, nullable = false)

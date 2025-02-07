@@ -15,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_cliente")
+@Table(name = "clientes")
 public class Cliente extends EntidadeAbstrata {
 
     @Column(name = "razao", length = 150, nullable = false)
