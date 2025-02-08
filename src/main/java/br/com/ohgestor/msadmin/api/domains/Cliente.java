@@ -2,6 +2,7 @@ package br.com.ohgestor.msadmin.api.domains;
 
 import br.com.ohgestor.msadmin.api.abstrato.EntidadeAbstrata;
 import br.com.ohgestor.msadmin.api.enuns.EstabelecimentoComercial;
+import br.com.ohgestor.msadmin.api.utils.ContatoPadraoConverter;
 import br.com.ohgestor.msadmin.api.utils.UpperCaseConverter;
 import jakarta.persistence.*;
 import lombok.*;
@@ -48,6 +49,7 @@ public class Cliente extends EntidadeAbstrata {
     @Column(columnDefinition = "BOOLEAN DEFAULT 'false'")
     private boolean integrado;
 
+    @Convert(converter = ContatoPadraoConverter.class)
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_cliente_contatos",
             joinColumns = @JoinColumn(name = "cliente_id"))
