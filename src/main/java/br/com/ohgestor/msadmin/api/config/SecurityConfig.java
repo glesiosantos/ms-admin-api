@@ -2,6 +2,8 @@ package br.com.ohgestor.msadmin.api.config;
 
 import br.com.ohgestor.msadmin.api.security.CustomAccessHandler;
 import br.com.ohgestor.msadmin.api.security.SecurityFilter;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +26,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@SecurityScheme(name = SecurityConfig.SECURITY, type = SecuritySchemeType.HTTP, bearerFormat = "JWT", scheme = "bearer")
 public class SecurityConfig {
+
+    public static final String SECURITY = "bearerAuth";
 
     @Autowired
     private SecurityFilter securityFilter;
@@ -38,6 +43,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(request -> request
+                        .requestMatchers("/v3/api-docs/**","swagger-ui/**", "swagger-ui.html").permitAll()
                         .requestMatchers("v1/auth/autenticar").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -48,11 +54,12 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring()
-                .requestMatchers("/h2-console/**");
-    }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//
+//        return web -> web.ignoring()
+//                .requestMatchers(HttpMethod.OPTIONS, );
+//    }
 
     @Bean
     public AuthenticationManager authenticationManager (AuthenticationConfiguration configuration) throws Exception {

@@ -9,5 +9,4 @@ public class MsAdminApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MsAdminApiApplication.class, args);
 	}
-
 }

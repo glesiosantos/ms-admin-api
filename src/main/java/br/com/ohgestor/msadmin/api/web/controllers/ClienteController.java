@@ -2,6 +2,7 @@ package br.com.ohgestor.msadmin.api.web.controllers;
 
 import br.com.ohgestor.msadmin.api.services.ClienteService;
 import br.com.ohgestor.msadmin.api.web.requests.ClienteRequest;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
+@Tag(name = "Clientes")
 @RestController
 @RequestMapping("v1/clientes")
 @Validated
