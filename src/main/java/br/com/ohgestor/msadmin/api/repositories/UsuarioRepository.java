@@ -12,6 +12,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Optional<Usuario> findByEmail(String email);
 
-    @Query(value = "SELECT * FROM tb_usuario u WHERE u.ativo = true and email = :email", nativeQuery = true)
+    @Query(value = "SELECT * FROM usuarios u WHERE u.ativo = true and email = :email", nativeQuery = true)
     Optional<Usuario> findUsuarioAtivoPorEmail(@Param("email") String email);
 }

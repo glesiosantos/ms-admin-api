@@ -19,6 +19,8 @@ public interface ClienteMapper {
     @Mapping(target = "endereco.bairro", source = "bairro")
     @Mapping(target = "endereco.cidade", source = "cidade")
     @Mapping(target = "endereco.estado", source = "estado")
+    @Mapping(target = "endereco.latitude", source = "latitude")
+    @Mapping(target = "endereco.longitude", source = "longitude")
     @Mapping(target = "contatos", source = "contatos")
     Cliente converterRequestParaModel(ClienteRequest request);
 }
