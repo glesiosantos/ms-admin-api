@@ -2,6 +2,7 @@ package br.com.ohgestor.msadmin.api.domains;
 
 import br.com.ohgestor.msadmin.api.abstrato.EntidadeAbstrata;
 import br.com.ohgestor.msadmin.api.enuns.EstabelecimentoComercial;
+import br.com.ohgestor.msadmin.api.utils.UpperCaseConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -18,9 +19,11 @@ import java.util.Set;
 @Table(name = "clientes")
 public class Cliente extends EntidadeAbstrata {
 
+    @Convert(converter = UpperCaseConverter.class)
     @Column(name = "razao", length = 150, nullable = false)
     private String razaoSocial;
 
+    @Convert(converter = UpperCaseConverter.class)
     @Column(name = "nm_fantasia", length = 150, nullable = false)
     private String nomeFantasia;
 
