@@ -27,7 +27,6 @@ public class AuthController {
 //    @ApiResponse(responseCode = "500", description = "Ocorreu error no servidor")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) throws Exception {
         LoginResponse response = autenticarService.autenticar(request);
-        System.out.println("*** **** "+request);
         return ResponseEntity.ok(response);
     }
 
