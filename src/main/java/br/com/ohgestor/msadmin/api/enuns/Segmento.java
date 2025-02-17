@@ -4,16 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 public enum Segmento {
-    VAREJO,
-    ALIMENTACAO,
-    SAÚDE,
-    BELEZA,
-    VETERINARIO,
-    HOSPEDAGEM,
-    SERVIÇOS,
-    ATACADO,
-    INDUSTRIA,
-    ARTES,
-    EDUCACAO,
-    ENTRETENIMENTO;
+    BEBIDAS_ALIMENTOS,
+    MECANICA_AUTO_CENTER,
+    SAUDE_BELEZA,
+    COMERCIAL_SERVICOS;
 }
