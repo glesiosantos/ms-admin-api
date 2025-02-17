@@ -32,8 +32,11 @@ public class Cliente extends EntidadeAbstrata {
     @Column(length = 150)
     private String proprietario;
 
+    @Column(name = "cpf", length = 11)
+    private String cpfProprietario;
+
     @Column(name = "cpf_cnpj", length = 15, nullable = false, unique = true)
-    private String cpfCnpj;
+    private String cpfOuCnpj;
 
     @Column(name = "dt_vencimento", nullable = false)
     private int dataVencimento;

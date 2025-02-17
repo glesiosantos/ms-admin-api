@@ -9,10 +9,12 @@ import br.com.ohgestor.msadmin.api.web.exceptions.ObjetoNaoEncontradoException;
 import br.com.ohgestor.msadmin.api.web.mappers.ClienteMapper;
 import br.com.ohgestor.msadmin.api.web.requests.ClienteRequest;
 import br.com.ohgestor.msadmin.api.web.requests.VenderRequest;
-import br.com.ohgestor.msadmin.api.web.responses.ClienteResponse;
+import br.com.ohgestor.msadmin.api.web.responses.EstabelecimentoResponse;
 import org.apache.coyote.BadRequestException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +37,9 @@ public class ClienteServiceImpl implements ClienteService {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    @Value("${rabbitmq-exchange.oficina-exchange}")
+    private String exchangeName;
+
     @Override
     public Cliente addCliente(ClienteRequest request) throws BadRequestException {
         var cliente = clienteMapper.converterRequestParaModel(request);
@@ -47,30 +52,28 @@ public class ClienteServiceImpl implements ClienteService {
         if(optional.isEmpty()) throw new ObjetoNaoEncontradoException("Nenhum cliente encontrado com este id");
         // popular os dados do proprietário, a data de vencimento e total de usuário registrado
         optional.get().setProprietario(request.nomeProprietario());
+        optional.get().setCpfProprietario(request.cpf());
         optional.get().setDataVencimento(Vencimento.valueOf(request.diaVencimento()).getDia());
         optional.get().setNumeroUsuario(1);
+        optional.get().setAtivo(true);
         optional.get().setIntegrado(true);
-
-        Cliente cliente = clienteRepository.save(optional.get());
-
         // TODO: Registrar o estabelecimento em uma api de pagamento para gerar as cobranças via API da ASSAS
         //  - Estudar documentação - 3
-        notificarRabbitMQ(cliente, "ms-oficinas.ex");
+        // TODO: Ao receber uma confirmação da API de pagamento cadastrar a empresa na API correspondente
+        notificarRabbitMQ(clienteMapper.converterClienteEmEstabelecimento(clienteRepository.save(optional.get())), exchangeName);
     }
 
     @Override
-    public void notificarRabbitMQ(Cliente cliente, String exchange) {
-        rabbitTemplate.convertAndSend(exchange, "", cliente);
+    public void notificarRabbitMQ(EstabelecimentoResponse response, String exchange) {
+        rabbitTemplate.convertAndSend(exchange, "", response);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<ClienteResponse> carregarClientes() {
-        List<ClienteResponse> clientes = new ArrayList<>();
-        clienteRepository.findAll().stream().forEach(cliente -> clientes.add(
-                        new ClienteResponse(cliente.getCpfCnpj(), cliente.getRazaoSocial(), cliente.getNomeFantasia(), cliente.getProprietario(), cliente.getDataVencimento(), cliente.getNumeroUsuario(), cliente.getEndereco().getCidade(), cliente.getEndereco().getEstado().toString(), cliente.getContatos(), cliente.isIntegrado(), cliente.getEstabelecimento().getNome())
-                ));
-
-        return clientes;
+    public List<EstabelecimentoResponse> carregarClientes() {
+        List<EstabelecimentoResponse> estabelecimentos = new ArrayList<>();
+        clienteRepository.findAll().forEach(cliente -> estabelecimentos.add(clienteMapper.converterClienteEmEstabelecimento(cliente)));
+        return estabelecimentos;
     }
+
 }

@@ -28,7 +28,7 @@ public class ClienteController {
     public ResponseEntity<?> cadastroDeClientes(@RequestBody @Valid ClienteRequest request) throws BadRequestException {
         var cliente = clienteService.addCliente(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(cliente.getCpfCnpj()).toUri();
+                .path("/{id}").buildAndExpand(cliente.getCpfOuCnpj()).toUri();
         return ResponseEntity.created(location).build();
     }
 

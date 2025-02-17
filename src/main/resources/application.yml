@@ -8,8 +8,8 @@ spring:
     active: dev
   application:
     name: ms-admin-api
-api:
-  rabbitmq-exchange:
+
+rabbitmq-exchange:
     oficina-exchange: rabbitmq-ms-oficina.ex
 
 # swagger-ui custom path

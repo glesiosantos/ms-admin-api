@@ -3,7 +3,7 @@ package br.com.ohgestor.msadmin.api.services;
 import br.com.ohgestor.msadmin.api.domains.Cliente;
 import br.com.ohgestor.msadmin.api.web.requests.ClienteRequest;
 import br.com.ohgestor.msadmin.api.web.requests.VenderRequest;
-import br.com.ohgestor.msadmin.api.web.responses.ClienteResponse;
+import br.com.ohgestor.msadmin.api.web.responses.EstabelecimentoResponse;
 import org.apache.coyote.BadRequestException;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public interface ClienteService {
 
     void registrarModulo(VenderRequest request) throws Exception;
 
-    void notificarRabbitMQ(Cliente cliente, String exchange);
+    void notificarRabbitMQ(EstabelecimentoResponse response, String exchange);
 
-    List<ClienteResponse> carregarClientes();
+    List<EstabelecimentoResponse> carregarClientes();
 }
