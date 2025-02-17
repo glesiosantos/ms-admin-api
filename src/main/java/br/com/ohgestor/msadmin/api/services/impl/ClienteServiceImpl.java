@@ -1,6 +1,7 @@
 package br.com.ohgestor.msadmin.api.services.impl;
 
 import br.com.ohgestor.msadmin.api.domains.Cliente;
+import br.com.ohgestor.msadmin.api.enuns.Vencimento;
 import br.com.ohgestor.msadmin.api.repositories.ClienteRepository;
 import br.com.ohgestor.msadmin.api.repositories.UsuarioRepository;
 import br.com.ohgestor.msadmin.api.services.ClienteService;
@@ -10,6 +11,7 @@ import br.com.ohgestor.msadmin.api.web.requests.ClienteRequest;
 import br.com.ohgestor.msadmin.api.web.requests.VenderRequest;
 import br.com.ohgestor.msadmin.api.web.responses.ClienteResponse;
 import org.apache.coyote.BadRequestException;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +32,9 @@ public class ClienteServiceImpl implements ClienteService {
     @Autowired
     private ClienteMapper clienteMapper;
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
     @Override
     public Cliente addCliente(ClienteRequest request) throws BadRequestException {
         var cliente = clienteMapper.converterRequestParaModel(request);
@@ -38,18 +43,24 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public void registrarModulo(VenderRequest request) throws Exception{
-        Optional<Cliente> cliente = clienteRepository.findById(request.idEstabelecimento());
-        if(cliente.isEmpty()) throw new ObjetoNaoEncontradoException("Nenhum cliente encontrado com este id");
+        Optional<Cliente> optional = clienteRepository.findById(request.idCliente());
+        if(optional.isEmpty()) throw new ObjetoNaoEncontradoException("Nenhum cliente encontrado com este id");
         // popular os dados do proprietário, a data de vencimento e total de usuário registrado
-        cliente.get().setProprietario(request.nomeProprietario());
-        cliente.get().setDataVencimento(request.dataVencimento());
-        cliente.get().setNumeroUsuario(1);
+        optional.get().setProprietario(request.nomeProprietario());
+        optional.get().setDataVencimento(Vencimento.valueOf(request.diaVencimento()).getDia());
+        optional.get().setNumeroUsuario(1);
+        optional.get().setIntegrado(true);
+
+        Cliente cliente = clienteRepository.save(optional.get());
 
         // TODO: Registrar o estabelecimento em uma api de pagamento para gerar as cobranças via API da ASSAS
         //  - Estudar documentação - 3
-        // TODO: Deverá registrar o estabelecimento e usuário proprietário na api de destino (Mecânicas ou outros módulos)
-        //  - via RabbitMQ - 1
-        // TODO: Deverá retornar um valor de sucesso para sinalizar a integração dos modulos com o gestor - 2
+        notificarRabbitMQ(cliente, "ms-oficinas.ex");
+    }
+
+    @Override
+    public void notificarRabbitMQ(Cliente cliente, String exchange) {
+        rabbitTemplate.convertAndSend(exchange, "", cliente);
     }
 
     @Transactional(readOnly = true)

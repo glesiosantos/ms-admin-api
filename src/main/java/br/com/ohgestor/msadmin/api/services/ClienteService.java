@@ -14,5 +14,7 @@ public interface ClienteService {
 
     void registrarModulo(VenderRequest request) throws Exception;
 
+    void notificarRabbitMQ(Cliente cliente, String exchange);
+
     List<ClienteResponse> carregarClientes();
 }

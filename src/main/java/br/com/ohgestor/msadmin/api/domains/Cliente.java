@@ -28,6 +28,7 @@ public class Cliente extends EntidadeAbstrata {
     @Column(name = "nm_fantasia", length = 150, nullable = false)
     private String nomeFantasia;
 
+    @Convert(converter = UpperCaseConverter.class)
     @Column(length = 150)
     private String proprietario;
 
