@@ -38,8 +38,7 @@ public class Cliente extends EntidadeAbstrata {
     @Column(name = "cpf_cnpj", length = 15, nullable = false, unique = true)
     private String cpfOuCnpj;
 
-    @Column(name = "dt_vencimento", nullable = false)
-    private int dataVencimento;
+    private int vencimento;
 
     @Column(name = "ativo", columnDefinition = "boolean DEFAULT 'false'")
     private boolean ativo;

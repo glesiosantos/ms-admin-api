@@ -53,7 +53,7 @@ public class ClienteServiceImpl implements ClienteService {
         // popular os dados do proprietário, a data de vencimento e total de usuário registrado
         optional.get().setProprietario(request.nomeProprietario());
         optional.get().setCpfProprietario(request.cpf());
-        optional.get().setDataVencimento(Vencimento.valueOf(request.diaVencimento()).getDia());
+        optional.get().setVencimento(Vencimento.valueOf(request.diaVencimento()).getDia());
         optional.get().setNumeroUsuario(1);
         optional.get().setAtivo(true);
         optional.get().setIntegrado(true);

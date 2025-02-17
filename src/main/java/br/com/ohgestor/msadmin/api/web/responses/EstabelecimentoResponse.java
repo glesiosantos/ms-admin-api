@@ -4,6 +4,8 @@ public record EstabelecimentoResponse(
         String cpfOuCnpj,
         String razaoSocial,
         String nomeFantasia,
+        int totalDeUsuario,
+        int vencimento,
         String cpfProprietario,
         String proprietario,
         String cep,
