@@ -19,7 +19,7 @@ public class VendaController {
     @PostMapping
     @RequestMapping("/registrar-modulo")
     public ResponseEntity<?> vender(@RequestBody VenderRequest request) throws Exception {
-        clienteService.registrarModulo(request);
-        return ResponseEntity.ok("Registrado com sucesso!");
+        var response = clienteService.registrarModulo(request);
+        return ResponseEntity.ok(null);
     }
 }

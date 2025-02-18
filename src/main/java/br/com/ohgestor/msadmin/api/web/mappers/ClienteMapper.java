@@ -1,6 +1,7 @@
 package br.com.ohgestor.msadmin.api.web.mappers;
 
 import br.com.ohgestor.msadmin.api.domains.Cliente;
+import br.com.ohgestor.msadmin.api.enuns.EstabelecimentoComercial;
 import br.com.ohgestor.msadmin.api.web.requests.ClienteRequest;
 import br.com.ohgestor.msadmin.api.web.responses.EstabelecimentoResponse;
 import org.mapstruct.*;
@@ -23,6 +24,7 @@ public interface ClienteMapper {
     @Mapping(target = "contatos", source = "contatos")
     Cliente converterRequestParaModel(ClienteRequest request);
 
+    @Mapping(target = "id", source = "id")
     @Mapping(target = "cpfOuCnpj", source = "cpfOuCnpj")
     @Mapping(target = "nomeFantasia", source = "nomeFantasia")
     @Mapping(target = "razaoSocial", source = "razaoSocial")
@@ -37,5 +39,11 @@ public interface ClienteMapper {
     @Mapping(target = "longitude", source = "endereco.longitude")
     @Mapping(target = "proprietario", source = "proprietario")
     @Mapping(target = "cpfProprietario", source = "cpfProprietario")
+    @Mapping(target = "estabelecimento", expression = "java(getTipoDeEstabelecimento(cliente))")
+    @Mapping(target = "contatos", source = "contatos")
     EstabelecimentoResponse converterClienteEmEstabelecimento(Cliente cliente);
+
+    default String getTipoDeEstabelecimento(Cliente cliente) {
+        return cliente.getEstabelecimento().getNome().toUpperCase();
+    }
 }

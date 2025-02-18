@@ -1,4 +1,4 @@
-INSERT INTO clientes (cpf_cnpj, razao, nm_fantasia, proprietario, cpf, dt_vencimento, ativo, integrado, cep, logradouro, bairro,cidade, uf, estabelecimento) VALUES
+INSERT INTO clientes (cpf_cnpj, razao, nm_fantasia, proprietario, cpf, vencimento, ativo, integrado, cep, logradouro, bairro,cidade, uf, estabelecimento) VALUES
     ('37620840000167','GLESIO SANTOS DA SILVA 96548517334','SANTOS AUTO CENTER',NULL,null, 0, false, false, '64010530','Rua Des. Caio Oliveira, 8115','Mocambinho', 'Teresina', 'PI', 'OMC');
 
 INSERT INTO tb_cliente_contatos (cliente_id, contatos) VALUES

@@ -1,9 +1,9 @@
 package br.com.ohgestor.msadmin.api.web.requests;
 
 public record VenderRequest(
-        Long idCliente,
+        Long idEstabelecimento,
         String cpf,
-        String nomeProprietario,
+        String proprietario,
         String modulo,
-        String diaVencimento
+        String vencimento
 ) {}

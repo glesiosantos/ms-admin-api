@@ -47,20 +47,22 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public void registrarModulo(VenderRequest request) throws Exception{
-        Optional<Cliente> optional = clienteRepository.findById(request.idCliente());
+    public EstabelecimentoResponse registrarModulo(VenderRequest request) throws Exception{
+        Optional<Cliente> optional = clienteRepository.findById(request.idEstabelecimento());
         if(optional.isEmpty()) throw new ObjetoNaoEncontradoException("Nenhum cliente encontrado com este id");
         // popular os dados do proprietário, a data de vencimento e total de usuário registrado
-        optional.get().setProprietario(request.nomeProprietario());
-        optional.get().setCpfProprietario(request.cpf());
-        optional.get().setVencimento(Vencimento.valueOf(request.diaVencimento()).getDia());
+        optional.get().setProprietario(request.proprietario());
+        optional.get().setCpfProprietario(request.cpf().replace(".", "").replace("-",""));
+        optional.get().setVencimento(Vencimento.valueOf(request.vencimento()).getDia());
         optional.get().setNumeroUsuario(1);
         optional.get().setAtivo(true);
         optional.get().setIntegrado(true);
         // TODO: Registrar o estabelecimento em uma api de pagamento para gerar as cobranças via API da ASSAS
         //  - Estudar documentação - 3
         // TODO: Ao receber uma confirmação da API de pagamento cadastrar a empresa na API correspondente
-        notificarRabbitMQ(clienteMapper.converterClienteEmEstabelecimento(clienteRepository.save(optional.get())), exchangeName);
+        var response = clienteMapper.converterClienteEmEstabelecimento(clienteRepository.save(optional.get()));
+        notificarRabbitMQ( response, exchangeName);
+        return response;
     }
 
     @Override
