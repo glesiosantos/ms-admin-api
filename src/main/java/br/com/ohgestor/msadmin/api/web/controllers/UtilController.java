@@ -42,7 +42,9 @@ public class UtilController {
     public ResponseEntity<?> carregarModulos() {
         List<ModuloResponse> modulos = new ArrayList<>();
         for (Modulo modulo : Modulo.values()){
-            modulos.add(new ModuloResponse(modulo.name(), modulo.getNome()));
+            modulos.add(new ModuloResponse(modulo.name(),
+                    String.format("%s %d x R$ %.2f", modulo.getNome(), modulo.getTotalUsuario(), modulo.getPreco())
+                    , modulo.getTotalUsuario(), modulo.getPreco()));
         }
         return ResponseEntity.ok(modulos);
     }
