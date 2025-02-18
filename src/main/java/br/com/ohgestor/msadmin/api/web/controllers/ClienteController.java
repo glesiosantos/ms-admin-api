@@ -25,7 +25,7 @@ public class ClienteController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_VENDE','ROLE_ADMIN')")
-    public ResponseEntity<?> cadastroDeClientes(@RequestBody @Valid ClienteRequest request) throws BadRequestException {
+    public ResponseEntity<?> cadastroDeClientes(@RequestBody @Valid ClienteRequest request) throws Exception {
         var cliente = clienteService.addCliente(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(cliente.getCpfOuCnpj()).toUri();

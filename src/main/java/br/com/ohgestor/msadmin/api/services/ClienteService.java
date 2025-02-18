@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ClienteService {
 
-    Cliente addCliente(ClienteRequest request) throws BadRequestException;
+    Cliente addCliente(ClienteRequest request) throws BadRequestException, Exception;
 
     EstabelecimentoResponse registrarModulo(VenderRequest request) throws Exception;
 

@@ -6,6 +6,7 @@ import br.com.ohgestor.msadmin.api.repositories.ClienteRepository;
 import br.com.ohgestor.msadmin.api.repositories.UsuarioRepository;
 import br.com.ohgestor.msadmin.api.services.ClienteService;
 import br.com.ohgestor.msadmin.api.services.exceptions.ObjetoNaoEncontradoException;
+import br.com.ohgestor.msadmin.api.services.exceptions.ObjetoRegistradoException;
 import br.com.ohgestor.msadmin.api.web.mappers.ClienteMapper;
 import br.com.ohgestor.msadmin.api.web.requests.ClienteRequest;
 import br.com.ohgestor.msadmin.api.web.requests.VenderRequest;
@@ -40,7 +41,13 @@ public class ClienteServiceImpl implements ClienteService {
     private String exchangeName;
 
     @Override
-    public Cliente addCliente(ClienteRequest request) throws BadRequestException {
+    public Cliente addCliente(ClienteRequest request) throws Exception {
+
+        Optional<Cliente> optional = clienteRepository.findByCpfOuCnpj(request.documento());
+
+        if(optional.isPresent()) throw new ObjetoRegistradoException(
+                String.format("Cliente ja registrado em nossa base com este CPF ou CNPJ %s", request.documento()));
+
         var cliente = clienteMapper.converterRequestParaModel(request);
         return clienteRepository.save(cliente);
     }
@@ -48,7 +55,9 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public EstabelecimentoResponse registrarModulo(VenderRequest request) throws Exception{
         Optional<Cliente> optional = clienteRepository.findById(request.idEstabelecimento());
-        if(optional.isEmpty()) throw new ObjetoNaoEncontradoException("Nenhum cliente encontrado com este id");
+        if(optional.isEmpty()) throw new ObjetoNaoEncontradoException(
+                String.format("Nenhum cliente encontrado com este id %s", request.idEstabelecimento())
+        );
         // popular os dados do proprietário, a data de vencimento e total de usuário registrado
         optional.get().setProprietario(request.proprietario());
         optional.get().setCpfProprietario(request.cpf().replace(".", "").replace("-",""));
