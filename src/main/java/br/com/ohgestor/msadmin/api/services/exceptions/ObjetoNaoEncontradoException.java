@@ -1,4 +1,4 @@
-package br.com.ohgestor.msadmin.api.web.exceptions;
+package br.com.ohgestor.msadmin.api.services.exceptions;
 
 public class ObjetoNaoEncontradoException extends Exception {
 
