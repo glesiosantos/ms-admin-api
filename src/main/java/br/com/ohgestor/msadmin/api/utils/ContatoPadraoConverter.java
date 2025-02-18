@@ -16,7 +16,6 @@ public class ContatoPadraoConverter implements AttributeConverter<String, String
     }
 
     public String padraoContato(String atributo) {
-        System.out.println("**** ***** "+atributo);
         return atributo.replace("(","")
                 .replace(")","")
                 .replace(".", "")

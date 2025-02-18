@@ -1,7 +1,7 @@
 package br.com.ohgestor.msadmin.api.domains;
 
 import br.com.ohgestor.msadmin.api.abstrato.EntidadeAbstrata;
-import br.com.ohgestor.msadmin.api.enuns.EstabelecimentoComercial;
+import br.com.ohgestor.msadmin.api.enuns.Modulo;
 import br.com.ohgestor.msadmin.api.utils.ContatoPadraoConverter;
 import br.com.ohgestor.msadmin.api.utils.UpperCaseConverter;
 import jakarta.persistence.*;
@@ -59,6 +59,5 @@ public class Cliente extends EntidadeAbstrata {
     private Set<String> contatos;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "estabelecimento", length = 3, nullable = false, columnDefinition = "CHAR(3) default 'OME'")
-    private EstabelecimentoComercial estabelecimento;
+    private Modulo modulo;
 }

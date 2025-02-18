@@ -1,7 +1,6 @@
 package br.com.ohgestor.msadmin.api.web.mappers;
 
 import br.com.ohgestor.msadmin.api.domains.Cliente;
-import br.com.ohgestor.msadmin.api.enuns.EstabelecimentoComercial;
 import br.com.ohgestor.msadmin.api.web.requests.ClienteRequest;
 import br.com.ohgestor.msadmin.api.web.responses.EstabelecimentoResponse;
 import org.mapstruct.*;
@@ -13,7 +12,6 @@ public interface ClienteMapper {
     @Mapping(target = "cpfOuCnpj", source = "documento")
     @Mapping(target = "nomeFantasia", source = "fantasia")
     @Mapping(target = "razaoSocial", source = "razao")
-    @Mapping(target = "estabelecimento", source = "estabelecimento")
     @Mapping(target = "endereco.cep", source = "cep")
     @Mapping(target = "endereco.logradouro", source = "logradouro")
     @Mapping(target = "endereco.bairro", source = "bairro")
@@ -39,11 +37,11 @@ public interface ClienteMapper {
     @Mapping(target = "longitude", source = "endereco.longitude")
     @Mapping(target = "proprietario", source = "proprietario")
     @Mapping(target = "cpfProprietario", source = "cpfProprietario")
-    @Mapping(target = "estabelecimento", expression = "java(getTipoDeEstabelecimento(cliente))")
+    @Mapping(target = "modulo", expression = "java(getModulo(cliente))")
     @Mapping(target = "contatos", source = "contatos")
     EstabelecimentoResponse converterClienteEmEstabelecimento(Cliente cliente);
 
-    default String getTipoDeEstabelecimento(Cliente cliente) {
-        return cliente.getEstabelecimento().getNome().toUpperCase();
+    default String getModulo(Cliente cliente) {
+        return cliente.getModulo().getNome().toUpperCase();
     }
 }

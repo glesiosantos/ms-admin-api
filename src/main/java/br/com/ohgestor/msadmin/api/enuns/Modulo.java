@@ -7,7 +7,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Modulo {
 
-    OM("Oficinas Mecânicas");
+    OMG("Gestor de Oficinas Mecânicas", 1, 29.9);
 
     private final String nome;
+    private final int totalUsuario;
+    private final Double preco;
 }

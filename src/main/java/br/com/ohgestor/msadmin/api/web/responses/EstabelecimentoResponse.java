@@ -18,6 +18,6 @@ public record EstabelecimentoResponse(
         String estado,
         String latitude,
         String longitude,
-        String estabelecimento,
+        String modulo,
         Set<String> contatos
 ) {}
