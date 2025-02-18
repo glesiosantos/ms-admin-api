@@ -42,6 +42,6 @@ public interface ClienteMapper {
     EstabelecimentoResponse converterClienteEmEstabelecimento(Cliente cliente);
 
     default String getModulo(Cliente cliente) {
-        return cliente.getModulo().getNome().toUpperCase();
+        return  cliente.getModulo() != null ? cliente.getModulo().getNome().toUpperCase() : "";
     }
 }

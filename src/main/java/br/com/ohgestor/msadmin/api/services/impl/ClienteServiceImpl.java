@@ -52,25 +52,39 @@ public class ClienteServiceImpl implements ClienteService {
         return clienteRepository.save(cliente);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public Cliente buscarClientePeloCpfOuCnpj(String documento) throws Exception {
+        return clienteRepository.findByCpfOuCnpj(documento)
+                .orElseThrow(() -> new ObjetoNaoEncontradoException(String.format("Nenhum cliente encontrado com este CPF ou CNPJ '%s'", documento)));
+    }
+
     @Override
     public EstabelecimentoResponse registrarModulo(VenderRequest request) throws Exception{
         Optional<Cliente> optional = clienteRepository.findById(request.idEstabelecimento());
         if(optional.isEmpty()) throw new ObjetoNaoEncontradoException(
                 String.format("Nenhum cliente encontrado com este id %s", request.idEstabelecimento())
         );
-        // popular os dados do proprietário, a data de vencimento e total de usuário registrado
+
+        // popular os dados do proprietário (CPF e NOME), a data de vencimento e total de usuário registrado
         optional.get().setProprietario(request.proprietario());
         optional.get().setCpfProprietario(request.cpf().replace(".", "").replace("-",""));
         optional.get().setVencimento(Vencimento.valueOf(request.vencimento()).getDia());
-        optional.get().setNumeroUsuario(1);
-        optional.get().setAtivo(true);
-        optional.get().setIntegrado(true);
+
+        // TODO: Manda os dados do cliente para a API de pagamento e gerar o pagamento,
+        //  deixando com status de pendente
+
+        // TODO: Ao confirmar a transação - pendente/concluído, registrar o estabelecimento na api de oficinas (RabbitMQ)
+        //  e atualizar as informações na tabela de cliente (nr de usuários, ativo e integrado)
+//        var response = clienteMapper.converterClienteEmEstabelecimento(clienteRepository.save(optional.get()));
+//        notificarRabbitMQ( response, exchangeName);
+        // TODO:
+
         // TODO: Registrar o estabelecimento em uma api de pagamento para gerar as cobranças via API da ASSAS
         //  - Estudar documentação - 3
         // TODO: Ao receber uma confirmação da API de pagamento cadastrar a empresa na API correspondente
-        var response = clienteMapper.converterClienteEmEstabelecimento(clienteRepository.save(optional.get()));
-        notificarRabbitMQ( response, exchangeName);
-        return response;
+
+        return null;
     }
 
     @Override

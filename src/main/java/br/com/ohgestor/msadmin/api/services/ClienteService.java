@@ -12,6 +12,8 @@ public interface ClienteService {
 
     Cliente addCliente(ClienteRequest request) throws BadRequestException, Exception;
 
+    Cliente buscarClientePeloCpfOuCnpj(String documento) throws Exception;
+
     EstabelecimentoResponse registrarModulo(VenderRequest request) throws Exception;
 
     void notificarRabbitMQ(EstabelecimentoResponse response, String exchange);
