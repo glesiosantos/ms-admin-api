@@ -2,6 +2,7 @@ package br.com.ohgestor.msadmin.api.web.controllers;
 
 import br.com.ohgestor.msadmin.api.services.ClienteService;
 import br.com.ohgestor.msadmin.api.web.requests.VenderRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ public class VendaController {
 
     @PostMapping
     @RequestMapping("/registrar-modulo")
-    public ResponseEntity<?> vender(@RequestBody VenderRequest request) throws Exception {
+    public ResponseEntity<?> vender(@RequestBody @Valid VenderRequest request) throws Exception {
         var response = clienteService.registrarModulo(request);
         return ResponseEntity.ok(null);
     }
