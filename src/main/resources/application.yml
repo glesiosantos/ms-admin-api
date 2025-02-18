@@ -9,6 +9,9 @@ spring:
   application:
     name: ms-admin-api
 
+rabbitmq-exchange:
+    oficina-exchange: rabbitmq-ms-oficina.ex
+
 # swagger-ui custom path
 springdoc:
   swagger-ui:

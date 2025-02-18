@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/ms_admin_db
+    url: jdbc:postgresql://localhost:5432/msadmindb
     username: postgres
     password: 102030
   sql:
@@ -20,6 +20,11 @@ spring:
       auth: true
       starttls:
         enable: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: ${rabbitmq.username}
+    password: ${rabbitmq.password}
 api:
   security:
     secret: ${security.secret}

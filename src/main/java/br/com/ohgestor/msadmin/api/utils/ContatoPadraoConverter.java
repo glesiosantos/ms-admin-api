@@ -16,10 +16,9 @@ public class ContatoPadraoConverter implements AttributeConverter<String, String
     }
 
     public String padraoContato(String atributo) {
-        var contato = atributo.replace("(","")
+        return atributo.replace("(","")
                 .replace(")","")
                 .replace(".", "")
                 .replace(" ", "").trim();
-        return String.format("+55%s", contato);
     }
 }
