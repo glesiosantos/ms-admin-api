@@ -1,0 +1,30 @@
+package br.com.ohgestor.msadmin.api.web.controllers;
+
+import br.com.ohgestor.msadmin.api.services.PedidoService;
+import br.com.ohgestor.msadmin.api.web.requests.PedidoRequest;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+
+@RestController
+@RequestMapping("/v1/pedidos")
+public class PedidoController {
+
+    @Autowired
+    private PedidoService pedidoService;
+
+    @PostMapping
+    @RequestMapping
+    public ResponseEntity<?> venderModulo(@RequestBody @Valid PedidoRequest request) throws Exception {
+        var pedido = pedidoService.registrarPedido(request);
+        return ResponseEntity.ok(pedido);
+    }
+
+}
