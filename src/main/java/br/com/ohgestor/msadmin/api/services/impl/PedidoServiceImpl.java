@@ -9,8 +9,10 @@ import br.com.ohgestor.msadmin.api.enuns.Vencimento;
 import br.com.ohgestor.msadmin.api.repositories.ClienteRepository;
 import br.com.ohgestor.msadmin.api.repositories.PedidoRepository;
 import br.com.ohgestor.msadmin.api.repositories.UsuarioRepository;
+import br.com.ohgestor.msadmin.api.services.AsaasClientService;
 import br.com.ohgestor.msadmin.api.services.PedidoService;
 import br.com.ohgestor.msadmin.api.services.exceptions.ObjetoNaoEncontradoException;
+import br.com.ohgestor.msadmin.api.web.requests.CobrancaPixRequest;
 import br.com.ohgestor.msadmin.api.web.requests.PedidoRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,6 +31,9 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Autowired
     private PedidoRepository pedidoRepository;
+
+    @Autowired
+    private AsaasClientService asaasClientService;
 
     @Override
     public Pedido registrarPedido(PedidoRequest request) throws Exception{
@@ -50,8 +55,7 @@ public class PedidoServiceImpl implements PedidoService {
                 .quantidadeDeUsuarios(request.qtdUsuario())
                 .build();
 
-        // TODO: caso o cliente queira fechar, gere um pedido local com a situação de 'PENDENTE'
-        //  e enviar as informações para api de pagamento e gerar a cobrança tipo pix
+        asaasClientService.gerarCobrancaPixAsaas(pedido);
         return pedidoRepository.save(pedido);
     }
 
