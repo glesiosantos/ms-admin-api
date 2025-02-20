@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -24,4 +25,11 @@ public class GlobalExceptionHandler {
         var error = new ErroResponse(exception.getMessage(), HttpStatus.BAD_REQUEST.value(), System.currentTimeMillis(), request.getServletPath());
         return ResponseEntity.badRequest().body(error);
     }
+
+    @ExceptionHandler({HttpClientErrorException.class})
+    public ResponseEntity<?> clientCustomException(Exception exception, HttpServletRequest request) {
+        var error = new ErroResponse(exception.getMessage(), HttpStatus.BAD_REQUEST.value(), System.currentTimeMillis(), request.getServletPath());
+        return ResponseEntity.badRequest().body(error);
+    }
+
 }
