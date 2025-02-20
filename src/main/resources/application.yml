@@ -2,18 +2,13 @@ server:
   port: 5000
   servlet:
     context-path: /api
-
 spring:
   profiles:
     active: dev
   application:
     name: ms-admin-api
 
-rabbitmq-exchange:
-    oficina-exchange: rabbitmq-ms-oficina.ex
-
 # swagger-ui custom path
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
-
