@@ -10,5 +10,9 @@ public interface AsaasClientService {
 
     ResponseEntity<String> buscarClienteAsaas(Cliente cliente);
 
-    ResponseEntity<String> gerarCobrancaPixAsaas(Pedido pedido) throws Exception;
+    String gerarCobrancaPixAsaas(Pedido pedido) throws Exception;
+
+    ResponseEntity<String> carregarCobrancasAsaas();
+
+    String carregarCobrancasPixComQrCode(Pedido pedido) throws Exception;
 }

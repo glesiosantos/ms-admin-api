@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,7 +55,7 @@ public class AsaasClientServiceImpl implements AsaasClientService {
     }
 
     @Override
-    public ResponseEntity<String> gerarCobrancaPixAsaas(Pedido pedido) throws Exception {
+    public String gerarCobrancaPixAsaas(Pedido pedido) throws Exception {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
@@ -78,10 +77,35 @@ public class AsaasClientServiceImpl implements AsaasClientService {
         asaasPagamento.put("customer", customerId);
         asaasPagamento.put("billingType", "PIX");
         asaasPagamento.put("value", pedido.getCliente().getModulo().getPreco() * pedido.getQuantidadeDeUsuarios());
-        asaasPagamento.put("dueDate", LocalDate.now().toString());
+        asaasPagamento.put("dueDate", LocalDate.now().plusDays(1).toString());
         asaasPagamento.put("description","Referente a pagamento de licença de uso Mumec");
 
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(asaasPagamento, headers);
-        return restTemplate.exchange(asaasConfig.getBaseUrl()+"/payments", HttpMethod.POST, entity, String.class);
+        var cobranca = restTemplate.exchange(asaasConfig.getBaseUrl()+"/payments", HttpMethod.POST, entity, String.class).getBody();
+        return mapper.readTree(cobranca).get("id").asText();
+    }
+
+    @Override
+    public ResponseEntity<String> carregarCobrancasAsaas() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+        headers.set("access_token", asaasConfig.getAccessToken());
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        return restTemplate.exchange(asaasConfig.getBaseUrl()+"/payments", HttpMethod.GET, entity, String.class);
+    }
+
+    @Override
+    public String carregarCobrancasPixComQrCode(Pedido pedido) throws Exception{
+
+        String idCobrancaAsaas = gerarCobrancaPixAsaas(pedido);
+
+        String path = String.format("/payments/%s/pixQrCode",idCobrancaAsaas);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+        headers.set("access_token", asaasConfig.getAccessToken());
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        return restTemplate.exchange(asaasConfig.getBaseUrl()+path, HttpMethod.GET, entity, String.class).getBody();
     }
 }
