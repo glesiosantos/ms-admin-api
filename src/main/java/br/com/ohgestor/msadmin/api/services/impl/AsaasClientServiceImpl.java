@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,21 +56,32 @@ public class AsaasClientServiceImpl implements AsaasClientService {
     }
 
     @Override
-    public String gerarCobrancaPixAsaas(Pedido pedido) throws Exception {
+    public ResponseEntity<String> gerarCobrancaPixAsaas(Pedido pedido) throws Exception {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+        headers.set("access_token", asaasConfig.getAccessToken());
+
         String customerId = null;
         String asaasCustomer = buscarClienteAsaas(pedido.getCliente()).getBody();
         JsonNode jsonNode = mapper.readTree(asaasCustomer);
 
         if(jsonNode.get("totalCount").asInt() > 0 && !jsonNode.get("data").isEmpty() ) {
-            customerId = jsonNode.get("data").get(0).get("id").toString();
-            System.out.println("*** *** Customer id"+ customerId);
+            customerId = jsonNode.get("data").get(0).get("id").asText();
         } else {
             String criarAsaasCliente = cadastrarClienteAsaas(pedido.getCliente()).getBody();
             JsonNode node = mapper.readTree(criarAsaasCliente);
-            System.out.println(node.get("id").toString());
-            customerId = node.get("id").toString();
+            customerId = node.get("id").asText();
         }
 
-        return "";
+        Map<String, Object> asaasPagamento = new HashMap<>();
+        asaasPagamento.put("customer", customerId);
+        asaasPagamento.put("billingType", "PIX");
+        asaasPagamento.put("value", pedido.getCliente().getModulo().getPreco() * pedido.getQuantidadeDeUsuarios());
+        asaasPagamento.put("dueDate", LocalDate.now().toString());
+        asaasPagamento.put("description","Referente a pagamento de licença de uso Mumec");
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(asaasPagamento, headers);
+        return restTemplate.exchange(asaasConfig.getBaseUrl()+"/payments", HttpMethod.POST, entity, String.class);
     }
 }

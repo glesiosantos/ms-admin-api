@@ -34,9 +34,6 @@ public class ClienteServiceImpl implements ClienteService {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    @Value("${rabbitmq-exchange.oficina-exchange}")
-    private String exchangeName;
-
     @Override
     public Cliente addCliente(ClienteRequest request) throws Exception {
 
