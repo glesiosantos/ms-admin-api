@@ -36,4 +36,13 @@ public class Pedido extends Auditoria {
     @ManyToOne
     @JoinColumn(name = "usuario_responsavel_id")
     private Usuario usuarioVenda;
+
+    @Column(name = "qr-code", unique = true, nullable = false, columnDefinition = "TEXT")
+    private String qrCode;
+
+    @Column(name = "chave_compartilhamento", unique = true, nullable = false)
+    private String chaveCompartilhamento;
+
+    @Column(name = "dt_expiracao", unique = true, nullable = false)
+    private String dataExpiracao;
 }

@@ -12,8 +12,11 @@ import br.com.ohgestor.msadmin.api.repositories.UsuarioRepository;
 import br.com.ohgestor.msadmin.api.services.AsaasClientService;
 import br.com.ohgestor.msadmin.api.services.PedidoService;
 import br.com.ohgestor.msadmin.api.services.exceptions.ObjetoNaoEncontradoException;
-import br.com.ohgestor.msadmin.api.web.requests.CobrancaPixRequest;
+import br.com.ohgestor.msadmin.api.web.mappers.PedidoMapper;
 import br.com.ohgestor.msadmin.api.web.requests.PedidoRequest;
+import br.com.ohgestor.msadmin.api.web.responses.PedidoResponse;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -35,8 +38,13 @@ public class PedidoServiceImpl implements PedidoService {
     @Autowired
     private AsaasClientService asaasClientService;
 
+    @Autowired
+    private PedidoMapper pedidoMapper;
+
+    private final ObjectMapper mapper = new ObjectMapper();
+
     @Override
-    public Pedido registrarPedido(PedidoRequest request) throws Exception{
+    public PedidoResponse registrarPedido(PedidoRequest request) throws Exception{
         var cliente = retornarClienteCadastrado(request);
 
         // salvando dados do proprietário
@@ -55,8 +63,13 @@ public class PedidoServiceImpl implements PedidoService {
                 .quantidadeDeUsuarios(request.qtdUsuario())
                 .build();
 
-        asaasClientService.gerarCobrancaPixAsaas(pedido);
-        return pedidoRepository.save(pedido);
+        String cobranca = asaasClientService.carregarCobrancasPixComQrCode(pedido);
+        JsonNode jsonNode = mapper.readTree(cobranca);
+        pedido.setQrCode(jsonNode.get("encodedImage").asText());
+        pedido.setChaveCompartilhamento(jsonNode.get("payload").asText());
+        pedido.setDataExpiracao(jsonNode.get("expirationDate").asText());
+        var pedidoSalvo = pedidoRepository.save(pedido);
+        return pedidoMapper.converterModeloParaResponse(pedidoSalvo);
     }
 
     @Override

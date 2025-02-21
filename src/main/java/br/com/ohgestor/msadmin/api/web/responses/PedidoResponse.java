@@ -5,6 +5,8 @@ public record PedidoResponse (
         String modulo,
         int quantidade,
         double valor,
-        String chavePix
+        String encodeImage,
+        String payload,
+        String expirationDate
 ) {
 }
