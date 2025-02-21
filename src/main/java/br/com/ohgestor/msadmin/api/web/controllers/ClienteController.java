@@ -4,7 +4,6 @@ import br.com.ohgestor.msadmin.api.services.ClienteService;
 import br.com.ohgestor.msadmin.api.web.requests.ClienteRequest;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,6 +29,12 @@ public class ClienteController {
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(cliente.getCpfOuCnpj()).toUri();
         return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping("/{documento}")
+    @PreAuthorize("hasAnyRole('ROLE_VENDE','ROLE_ADMIN')")
+    public ResponseEntity<?> carregarClientePorId(@PathVariable(required = true) String documento) throws Exception {
+        return ResponseEntity.ok(clienteService.buscarClientePeloCpfOuCnpj(documento));
     }
 
     @GetMapping

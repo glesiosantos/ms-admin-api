@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Tag(name = "Utilitários")
 @RestController
@@ -40,12 +42,10 @@ public class UtilController {
 
     @GetMapping("/modulos")
     public ResponseEntity<?> carregarModulos() {
-        List<ModuloResponse> modulos = new ArrayList<>();
-        for (Modulo modulo : Modulo.values()){
-            modulos.add(new ModuloResponse(modulo.name(),
-                    String.format("%s %d x R$ %.2f", modulo.getNome(), modulo.getTotalUsuario(), modulo.getPreco())
-                    , modulo.getTotalUsuario(), modulo.getPreco()));
-        }
+        List<ModuloResponse> modulos = Arrays.stream(Modulo.values()).map(modulo -> {
+            String descricao = String.format("%s %d x R$ %.2f",modulo.getNome(), modulo.getTotalUsuario(), modulo.getPreco());
+            return new ModuloResponse(modulo.name(), descricao, modulo.getTotalUsuario(), modulo.getPreco());
+        }).collect(Collectors.toList());
         return ResponseEntity.ok(modulos);
     }
 }

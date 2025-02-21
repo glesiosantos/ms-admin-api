@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class MsOficinaRabbitMQ {
 
+    // todo: configurar application.yml para fixar as exhange e queue apos a confirmação do pagamento registrar a oficina
     @Value("${rabbitmq-exchange.oficina-exchange}")
     private String exchangeName;
 
