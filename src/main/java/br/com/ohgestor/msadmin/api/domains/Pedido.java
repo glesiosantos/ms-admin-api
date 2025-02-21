@@ -43,6 +43,6 @@ public class Pedido extends Auditoria {
     @Column(name = "chave_compartilhamento", unique = true, nullable = false)
     private String chaveCompartilhamento;
 
-    @Column(name = "dt_expiracao", unique = true, nullable = false)
+    @Column(name = "dt_expiracao", nullable = false)
     private String dataExpiracao;
 }

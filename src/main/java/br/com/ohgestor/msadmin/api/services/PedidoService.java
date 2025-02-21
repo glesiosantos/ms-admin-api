@@ -11,4 +11,6 @@ public interface PedidoService {
     PedidoResponse registrarPedido(PedidoRequest request) throws Exception;
 
     List<Pedido> carregarMeusPedido(Usuario usuario);
+
+    PedidoResponse buscarPedidoPeloId(Long id) throws Exception;
 }

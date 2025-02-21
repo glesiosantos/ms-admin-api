@@ -10,6 +10,7 @@ import org.mapstruct.MappingConstants;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface PedidoMapper {
 
+    @Mapping(target = "idPedido", source = "id")
     @Mapping(target = "modulo", expression = "java(obterNomeModulo(pedido))")
     @Mapping(target = "quantidade", source = "quantidadeDeUsuarios")
     @Mapping(target = "valor", expression = "java(obterValorModulo(pedido))")

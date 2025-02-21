@@ -5,10 +5,7 @@ import br.com.ohgestor.msadmin.api.web.requests.PedidoRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -21,9 +18,15 @@ public class PedidoController {
     private PedidoService pedidoService;
 
     @PostMapping
-    @RequestMapping
-    public ResponseEntity<?> venderModulo(@RequestBody @Valid PedidoRequest request) throws Exception {
+    public ResponseEntity<?> registrarVendaModulo(@RequestBody @Valid PedidoRequest request) throws Exception {
         var pedido = pedidoService.registrarPedido(request);
+        return ResponseEntity.ok(pedido);
+    }
+
+    @GetMapping("/{pedidoId}")
+    public ResponseEntity<?> buscarPedidoRealizado(@PathVariable Long pedidoId) throws Exception {
+        System.out.println("**** pedido "+pedidoId);
+        var pedido = pedidoService.buscarPedidoPeloId(pedidoId);
         return ResponseEntity.ok(pedido);
     }
 

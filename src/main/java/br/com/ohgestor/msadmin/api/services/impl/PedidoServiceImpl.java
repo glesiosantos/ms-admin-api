@@ -77,6 +77,13 @@ public class PedidoServiceImpl implements PedidoService {
         return List.of();
     }
 
+    @Override
+    public PedidoResponse buscarPedidoPeloId(Long id) throws Exception {
+        var pedido = pedidoRepository.findById(id)
+                .orElseThrow(() -> new ObjetoNaoEncontradoException(String.format("Nenhum pedido encontrado com id %s", id)));
+        return pedidoMapper.converterModeloParaResponse(pedido);
+    }
+
     private Cliente retornarClienteCadastrado(PedidoRequest request) throws ObjetoNaoEncontradoException {
         return clienteRepository.findById(request.idEstabelecimento()).orElseThrow(() ->
                 new ObjetoNaoEncontradoException(String.format("Nenhum empresa encontrada com este %s", request.idEstabelecimento())));
