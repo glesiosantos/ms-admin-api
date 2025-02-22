@@ -1,10 +1,12 @@
 package br.com.ohgestor.msadmin.api.web.controllers;
 
 import br.com.ohgestor.msadmin.api.enuns.Modulo;
+import br.com.ohgestor.msadmin.api.enuns.Perfil;
 import br.com.ohgestor.msadmin.api.enuns.UnidadeFederacao;
 import br.com.ohgestor.msadmin.api.enuns.Vencimento;
 import br.com.ohgestor.msadmin.api.web.responses.EstadoResponse;
 import br.com.ohgestor.msadmin.api.web.responses.ModuloResponse;
+import br.com.ohgestor.msadmin.api.web.responses.PerfilResponse;
 import br.com.ohgestor.msadmin.api.web.responses.VencimentoResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -47,5 +49,13 @@ public class UtilController {
             return new ModuloResponse(modulo.name(), descricao, modulo.getTotalUsuario(), modulo.getPreco());
         }).collect(Collectors.toList());
         return ResponseEntity.ok(modulos);
+    }
+
+    @GetMapping("/perfis")
+    public ResponseEntity<?> carregarPerfis() {
+        List<PerfilResponse> perfis = Arrays.stream(Perfil.values()).map(perfil -> {
+            return new PerfilResponse(perfil.getNome(), perfil.name());
+        }).collect(Collectors.toList());
+        return ResponseEntity.ok(perfis);
     }
 }

@@ -2,6 +2,7 @@ package br.com.ohgestor.msadmin.api.domains;
 
 import br.com.ohgestor.msadmin.api.abstrato.Auditoria;
 import br.com.ohgestor.msadmin.api.enuns.Perfil;
+import br.com.ohgestor.msadmin.api.utils.UpperCaseConverter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ public class Usuario extends Auditoria {
     @Column(length = 150, nullable = false)
     private String avatar;
 
+    @Convert(converter = UpperCaseConverter.class)
     @Column(length = 150, nullable = false)
     private String nome;
 

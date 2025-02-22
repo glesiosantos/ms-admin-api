@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,10 +39,14 @@ public class UsuarioServiceImpl implements UsuarioService {
         Optional<Usuario> optional = usuarioRepository.findByEmail(request.email());
         if(optional.isPresent()) throw new BadRequestException("Usuário ja cadastrado no sistema");
         var usuario = usuarioMapper.converterRequestParaModel(request);
-        usuario.setSenha(passwordEncoder.encode("102030"));
 
-        envioDeEmail(usuario);
-
+        // gerar senha aleatoria
+        SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[6];
+        random.nextBytes(bytes);
+        var senha = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes).substring(0,6);
+        usuario.setSenha(passwordEncoder.encode(senha));
+        envioDeEmail(usuario, senha);
         return usuarioRepository.save(usuario);
     }
 
@@ -57,12 +63,14 @@ public class UsuarioServiceImpl implements UsuarioService {
                 .orElseThrow(() -> new BadRequestException("Nenhum usuário encontrado"));
     }
 
-    private void envioDeEmail(Usuario usuario) {
+    private void envioDeEmail(Usuario usuario, String senha) {
         var emailRequest = new EmailRequest(usuario.getEmail(),
                 "Novo usuário no Oh Gestor", "Obrigado por se registrar no nosso sistema de vendas. Agora você tem acesso a uma plataforma completa para gerenciar suas compras, vendas e muito mais.");
         Context context = new Context();
         context.setVariable("nomeUsuario", usuario.getNome());
         context.setVariable("texto", emailRequest.texto());
+        context.setVariable("email", usuario.getEmail());
+        context.setVariable("senha", senha);
         envioEmailService.enviarEmailComTemplate(emailRequest,"email-template", context);
     }
 }

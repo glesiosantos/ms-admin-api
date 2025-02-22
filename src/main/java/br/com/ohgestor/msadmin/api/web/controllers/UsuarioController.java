@@ -27,6 +27,7 @@ public class UsuarioController {
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> addUsuario(@RequestBody UsuarioRequest request) throws Exception {
+        System.out.println(request.email());
         var usuario = usuarioService.cadastraUsuario(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(usuario.getId()).toUri();
