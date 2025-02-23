@@ -5,6 +5,7 @@ import br.com.ohgestor.msadmin.api.repositories.UsuarioRepository;
 import br.com.ohgestor.msadmin.api.services.EnvioEmailService;
 import br.com.ohgestor.msadmin.api.services.UsuarioService;
 import br.com.ohgestor.msadmin.api.services.exceptions.ObjetoNaoEncontradoException;
+import br.com.ohgestor.msadmin.api.utils.GeradorUtils;
 import br.com.ohgestor.msadmin.api.web.mappers.UsuarioMapper;
 import br.com.ohgestor.msadmin.api.web.requests.EmailRequest;
 import br.com.ohgestor.msadmin.api.web.requests.UsuarioRequest;
@@ -42,11 +43,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         var usuario = usuarioMapper.converterRequestParaModel(request);
 
         // gerar senha aleatoria
-        SecureRandom random = new SecureRandom();
-        byte[] bytes = new byte[6];
-        random.nextBytes(bytes);
-        var senha = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes).substring(0,6);
-        usuario.setSenha(passwordEncoder.encode(senha));
+        var senha = GeradorUtils.geradorSenhaAleatorias(6);
         envioDeEmail(usuario, senha);
         return usuarioRepository.save(usuario);
     }
