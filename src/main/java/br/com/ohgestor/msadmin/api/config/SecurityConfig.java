@@ -44,7 +44,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/v3/api-docs/**","swagger-ui/**", "swagger-ui.html").permitAll()
-                        .requestMatchers("v1/auth/autenticar").permitAll()
+                        .requestMatchers("v1/auth/autenticar", "v1/auth/recuperar-acesso").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(handling -> handling.authenticationEntryPoint(customAccessHandler))

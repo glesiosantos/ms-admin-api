@@ -4,6 +4,7 @@ import br.com.ohgestor.msadmin.api.domains.Usuario;
 import br.com.ohgestor.msadmin.api.repositories.UsuarioRepository;
 import br.com.ohgestor.msadmin.api.services.EnvioEmailService;
 import br.com.ohgestor.msadmin.api.services.UsuarioService;
+import br.com.ohgestor.msadmin.api.services.exceptions.ObjetoNaoEncontradoException;
 import br.com.ohgestor.msadmin.api.web.mappers.UsuarioMapper;
 import br.com.ohgestor.msadmin.api.web.requests.EmailRequest;
 import br.com.ohgestor.msadmin.api.web.requests.UsuarioRequest;
@@ -56,11 +57,16 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepository.findAll();
     }
 
+    @Override
+    public void updateDadosUsuario(Usuario usuario) {
+        usuarioRepository.save(usuario);
+    }
+
     @Transactional(readOnly = true)
     @Override
     public Usuario buscarPeloEmail(String email) throws Exception{
         return usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new BadRequestException("Nenhum usuário encontrado"));
+                .orElseThrow(() -> new ObjetoNaoEncontradoException("Nenhum usuário encontrado"));
     }
 
     private void envioDeEmail(Usuario usuario, String senha) {
