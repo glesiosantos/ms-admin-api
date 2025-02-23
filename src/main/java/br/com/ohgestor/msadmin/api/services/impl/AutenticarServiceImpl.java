@@ -30,7 +30,7 @@ public class AutenticarServiceImpl implements AutenticarService {
                 .authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.senha()));
         Usuario usuario = usuarioService.buscarPeloEmail(authenticated.getName());
         String token = jwtService.tokenGenerate((UserDetails) authenticated.getPrincipal());
-        return new LoginResponse(token, usuario.getNome(), usuario.getAvatar(), usuario.getPerfil().name());
+        return new LoginResponse(token, usuario.getNome(), usuario.getEmail(), usuario.getAvatar(), usuario.getPerfil().name());
     }
 
     @Override
