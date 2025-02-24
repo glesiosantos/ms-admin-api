@@ -2,7 +2,9 @@ package br.com.ohgestor.msadmin.api.web.controllers;
 
 import br.com.ohgestor.msadmin.api.config.SecurityConfig;
 import br.com.ohgestor.msadmin.api.services.AutenticarService;
+import br.com.ohgestor.msadmin.api.web.requests.AlterarSenhaRequest;
 import br.com.ohgestor.msadmin.api.web.requests.LoginRequest;
+import br.com.ohgestor.msadmin.api.web.requests.RecuperarAcessoRequest;
 import br.com.ohgestor.msadmin.api.web.responses.LoginResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -22,21 +24,27 @@ public class AuthController {
     private AutenticarService autenticarService;
 
     @PostMapping("/autenticar")
-//    @ApiResponse(responseCode = "200", description = "Usuário autenticado com sucesso")
-//    @ApiResponse(responseCode = "400", description = "Usuário não encontrado")
-//    @ApiResponse(responseCode = "500", description = "Ocorreu error no servidor")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) throws Exception {
         LoginResponse response = autenticarService.autenticar(request);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/validar-token")
-//    @ApiResponse(responseCode = "200", description = "Token validado com sucesso")
-//    @ApiResponse(responseCode = "400", description = "Usuário não encontrado")
-//    @ApiResponse(responseCode = "500", description = "Ocorreu error no servidor")
     public ResponseEntity<?> validarToken(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         var isValid = autenticarService.validarToken(token.replace("Bearer ", ""));
         return ResponseEntity.ok(isValid);
+    }
+
+    @PostMapping("/alterar-senha")
+    public ResponseEntity<?> alterarSenhaAcesso(@RequestBody AlterarSenhaRequest request) throws Exception {
+        autenticarService.alterarSenha(request.nova());
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/recuperar-acesso")
+    public ResponseEntity<?> recuperarAcesso(@RequestBody RecuperarAcessoRequest request) throws Exception {
+        autenticarService.recuperarAcesso(request.email());
+        return ResponseEntity.noContent().build();
     }
 }

@@ -11,5 +11,7 @@ public interface UsuarioService {
 
     List<Usuario> carregarUsuarios();
 
+    void updateDadosUsuario(Usuario usuario);
+
     Usuario buscarPeloEmail(String email) throws Exception;
 }

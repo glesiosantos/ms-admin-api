@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @Getter
 @Setter
@@ -40,4 +41,8 @@ public class Usuario extends Auditoria {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 5, columnDefinition = "CHAR(5) default 'COMUM'")
     private Perfil perfil;
+
+    public static String recuperarUsuarioLogado() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
 }
