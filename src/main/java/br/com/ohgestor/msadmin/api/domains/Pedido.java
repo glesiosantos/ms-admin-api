@@ -37,11 +37,14 @@ public class Pedido extends Auditoria {
     @JoinColumn(name = "usuario_responsavel_id")
     private Usuario usuarioVenda;
 
-    @Column(name = "qr-code", unique = true, nullable = false, columnDefinition = "TEXT")
+    @Column(name = "qr_code", unique = true, nullable = false, columnDefinition = "TEXT")
     private String qrCode;
 
     @Column(name = "chave_compartilhamento", unique = true, nullable = false)
     private String chaveCompartilhamento;
+
+    @Column(name = "id_cob_asaas", nullable = false, unique = true)
+    private String codigoAsaasCobranca;
 
     @Column(name = "dt_expiracao", nullable = false)
     private String dataExpiracao;
