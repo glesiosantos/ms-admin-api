@@ -10,9 +10,11 @@ import br.com.ohgestor.msadmin.api.enuns.Vencimento;
 import br.com.ohgestor.msadmin.api.repositories.ClienteRepository;
 import br.com.ohgestor.msadmin.api.repositories.PedidoRepository;
 import br.com.ohgestor.msadmin.api.repositories.UsuarioRepository;
+import br.com.ohgestor.msadmin.api.repositories.filtros.PedidoSpecification;
 import br.com.ohgestor.msadmin.api.services.AsaasClientService;
 import br.com.ohgestor.msadmin.api.services.PedidoService;
 import br.com.ohgestor.msadmin.api.services.exceptions.ObjetoNaoEncontradoException;
+import br.com.ohgestor.msadmin.api.services.filtros.PedidoFiltro;
 import br.com.ohgestor.msadmin.api.web.mappers.PedidoMapper;
 import br.com.ohgestor.msadmin.api.web.requests.PedidoRequest;
 import br.com.ohgestor.msadmin.api.web.responses.PedidoResponse;
@@ -80,8 +82,8 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public List<PedidoResponse> buscarPedidos() {
-        return pedidoRepository.findAll()
+    public List<PedidoResponse> buscarPedidos(PedidoFiltro filtro) {
+        return pedidoRepository.findAll(PedidoSpecification.comFiltros(filtro))
                 .stream().map(pedido -> pedidoMapper.converterModeloParaResponse(pedido)).toList();
     }
 

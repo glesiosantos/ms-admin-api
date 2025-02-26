@@ -1,6 +1,7 @@
 package br.com.ohgestor.msadmin.api.web.controllers;
 
 import br.com.ohgestor.msadmin.api.services.PedidoService;
+import br.com.ohgestor.msadmin.api.services.filtros.PedidoFiltro;
 import br.com.ohgestor.msadmin.api.web.requests.PedidoRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,11 @@ public class PedidoController {
     }
 
     @GetMapping
-    public ResponseEntity<?> carregarPedidos() {
-        var pedidos = pedidoService.buscarPedidos();
+    public ResponseEntity<?> carregarPedidos(@RequestParam(required = false) String dataInicial,
+                                             @RequestParam(required = false) String dataFinal,
+                                             @RequestParam(required = false) String situacao) {
+        var filtro = new PedidoFiltro(dataInicial, dataFinal, situacao);
+        var pedidos = pedidoService.buscarPedidos(filtro);
         return ResponseEntity.ok(pedidos);
     }
 }
