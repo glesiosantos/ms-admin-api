@@ -4,6 +4,7 @@ import br.com.ohgestor.msadmin.api.domains.Cliente;
 import br.com.ohgestor.msadmin.api.domains.Pedido;
 import br.com.ohgestor.msadmin.api.domains.Usuario;
 import br.com.ohgestor.msadmin.api.enuns.Modulo;
+import br.com.ohgestor.msadmin.api.enuns.Perfil;
 import br.com.ohgestor.msadmin.api.enuns.SituacaoPedido;
 import br.com.ohgestor.msadmin.api.enuns.Vencimento;
 import br.com.ohgestor.msadmin.api.repositories.ClienteRepository;
@@ -15,13 +16,17 @@ import br.com.ohgestor.msadmin.api.services.exceptions.ObjetoNaoEncontradoExcept
 import br.com.ohgestor.msadmin.api.web.mappers.PedidoMapper;
 import br.com.ohgestor.msadmin.api.web.requests.PedidoRequest;
 import br.com.ohgestor.msadmin.api.web.responses.PedidoResponse;
+import br.com.ohgestor.msadmin.api.web.responses.PerfilResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PedidoServiceImpl implements PedidoService {
@@ -54,22 +59,12 @@ public class PedidoServiceImpl implements PedidoService {
         cliente.setVencimento(Vencimento.valueOf(request.vencimento()).getDia());
         clienteRepository.save(cliente);
 
-        // Gerando pedido
-        var pedido = Pedido.builder()
-                .cliente(cliente)
-                .usuarioVenda(buscarUsuarioVenda())
-                .situacao(SituacaoPedido.PENDENTE)
-                .modulo(Modulo.valueOf(request.modulo()))
-                .quantidadeDeUsuarios(request.qtdUsuario())
-                .build();
+        Usuario usuario = usuarioRepository.findByEmail(Usuario.recuperarUsuarioLogado())
+                .orElseThrow(() -> new ObjetoNaoEncontradoException("Responsável de vendas não encontrado"));
 
-        String cobranca = asaasClientService.carregarCobrancasPixComQrCode(pedido);
-        JsonNode jsonNode = mapper.readTree(cobranca);
-        pedido.setQrCode(jsonNode.get("encodedImage").asText());
-        pedido.setChaveCompartilhamento(jsonNode.get("payload").asText());
-        pedido.setDataExpiracao(jsonNode.get("expirationDate").asText());
-        var pedidoSalvo = pedidoRepository.save(pedido);
-        return pedidoMapper.converterModeloParaResponse(pedidoSalvo);
+        // Gerando pedido
+        var pedido = asaasClientService.carregarCobrancasPixComQrCode(cliente, usuario, SituacaoPedido.PENDENTE, Modulo.valueOf(request.modulo()), request.qtdUsuario());
+        return pedidoMapper.converterModeloParaResponse(pedidoRepository.save(pedido));
     }
 
     @Override
@@ -82,6 +77,12 @@ public class PedidoServiceImpl implements PedidoService {
         var pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new ObjetoNaoEncontradoException(String.format("Nenhum pedido encontrado com id %s", id)));
         return pedidoMapper.converterModeloParaResponse(pedido);
+    }
+
+    @Override
+    public List<PedidoResponse> buscarPedidos() {
+        return pedidoRepository.findAll()
+                .stream().map(pedido -> pedidoMapper.converterModeloParaResponse(pedido)).toList();
     }
 
     private Cliente retornarClienteCadastrado(PedidoRequest request) throws ObjetoNaoEncontradoException {

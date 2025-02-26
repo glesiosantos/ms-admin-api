@@ -12,6 +12,8 @@ public interface PedidoMapper {
 
     @Mapping(target = "idPedido", source = "id")
     @Mapping(target = "modulo", expression = "java(obterNomeModulo(pedido))")
+    @Mapping(target = "asaasId", source = "codigoAsaasCobranca")
+    @Mapping(target = "situacao", expression = "java(obterSituacao(pedido))")
     @Mapping(target = "quantidade", source = "quantidadeDeUsuarios")
     @Mapping(target = "valor", expression = "java(obterValorModulo(pedido))")
     @Mapping(target = "encodeImage", source = "qrCode")
@@ -25,5 +27,9 @@ public interface PedidoMapper {
 
     default Double obterValorModulo(Pedido pedido) {
         return  pedido.getCliente().getModulo() != null ? pedido.getCliente().getModulo().getPreco() : 0.0;
+    }
+
+    default String obterSituacao(Pedido pedido) {
+        return  pedido.getSituacao() != null ? pedido.getSituacao().name() : "";
     }
 }

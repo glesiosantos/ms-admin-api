@@ -25,9 +25,13 @@ public class PedidoController {
 
     @GetMapping("/{pedidoId}")
     public ResponseEntity<?> buscarPedidoRealizado(@PathVariable Long pedidoId) throws Exception {
-        System.out.println("**** pedido "+pedidoId);
         var pedido = pedidoService.buscarPedidoPeloId(pedidoId);
         return ResponseEntity.ok(pedido);
     }
 
+    @GetMapping
+    public ResponseEntity<?> carregarPedidos() {
+        var pedidos = pedidoService.buscarPedidos();
+        return ResponseEntity.ok(pedidos);
+    }
 }

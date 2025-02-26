@@ -13,4 +13,6 @@ public interface PedidoService {
     List<Pedido> carregarMeusPedido(Usuario usuario);
 
     PedidoResponse buscarPedidoPeloId(Long id) throws Exception;
+
+    List<PedidoResponse> buscarPedidos();
 }
