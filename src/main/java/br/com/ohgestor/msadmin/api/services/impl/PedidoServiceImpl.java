@@ -4,7 +4,6 @@ import br.com.ohgestor.msadmin.api.domains.Cliente;
 import br.com.ohgestor.msadmin.api.domains.Pedido;
 import br.com.ohgestor.msadmin.api.domains.Usuario;
 import br.com.ohgestor.msadmin.api.enuns.Modulo;
-import br.com.ohgestor.msadmin.api.enuns.Perfil;
 import br.com.ohgestor.msadmin.api.enuns.SituacaoPedido;
 import br.com.ohgestor.msadmin.api.enuns.Vencimento;
 import br.com.ohgestor.msadmin.api.repositories.ClienteRepository;
@@ -18,17 +17,12 @@ import br.com.ohgestor.msadmin.api.services.filtros.PedidoFiltro;
 import br.com.ohgestor.msadmin.api.web.mappers.PedidoMapper;
 import br.com.ohgestor.msadmin.api.web.requests.PedidoRequest;
 import br.com.ohgestor.msadmin.api.web.responses.PedidoResponse;
-import br.com.ohgestor.msadmin.api.web.responses.PerfilResponse;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class PedidoServiceImpl implements PedidoService {
@@ -85,6 +79,13 @@ public class PedidoServiceImpl implements PedidoService {
     public List<PedidoResponse> buscarPedidos(PedidoFiltro filtro) {
         return pedidoRepository.findAll(PedidoSpecification.comFiltros(filtro))
                 .stream().map(pedido -> pedidoMapper.converterModeloParaResponse(pedido)).toList();
+    }
+
+    @Override
+    public List<Pedido> buscarPedidoPelaSituacao(SituacaoPedido situacao) {
+        var pedidos = pedidoRepository.findPedidoPelaSuaSituacao(situacao.name());
+        System.out.println("tamanho da lista "+pedidos.size());
+        return pedidos;
     }
 
     private Cliente retornarClienteCadastrado(PedidoRequest request) throws ObjetoNaoEncontradoException {

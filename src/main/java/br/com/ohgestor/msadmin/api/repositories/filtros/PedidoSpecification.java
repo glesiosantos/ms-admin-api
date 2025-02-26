@@ -15,7 +15,7 @@ public class PedidoSpecification {
         return ((root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            if (!filtro.dataInicial().isEmpty() && !filtro.dataFinal().isEmpty()) {
+            if (filtro.dataInicial() != null && filtro.dataFinal() != null) {
                 predicates.add(criteriaBuilder.between(
                         root.get("dtCriadoEm"), // Ajuste o nome do campo conforme sua entidade
                         LocalDate.parse(filtro.dataInicial()),
@@ -23,7 +23,7 @@ public class PedidoSpecification {
                 ));
             }
 
-            if(!filtro.situacao().isEmpty()) {
+            if(filtro.situacao() != null) {
                 predicates.add(criteriaBuilder.equal(root.get("situacao"), filtro.situacao()));
             }
 

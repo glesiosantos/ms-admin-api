@@ -89,15 +89,15 @@ public class AsaasClientServiceImpl implements AsaasClientService {
         return mapper.readTree(cobranca).get("id").asText();
     }
 
-    @Override
-    public ResponseEntity<String> carregarCobrancasAsaas() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type", "application/json");
-        headers.set("access_token", asaasConfig.getAccessToken());
-
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        return restTemplate.exchange(asaasConfig.getBaseUrl()+"/payments", HttpMethod.GET, entity, String.class);
-    }
+//    @Override
+//    public ResponseEntity<String> carregarCobrancasAsaas() {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set("Content-Type", "application/json");
+//        headers.set("access_token", asaasConfig.getAccessToken());
+//
+//        HttpEntity<String> entity = new HttpEntity<>(headers);
+//        return restTemplate.exchange(asaasConfig.getBaseUrl()+"/payments", HttpMethod.GET, entity, String.class);
+//    }
 
     @Override
     public Pedido carregarCobrancasPixComQrCode(Cliente cliente, Usuario usuario, SituacaoPedido situacao, Modulo modulo, int quantidade) throws Exception{
@@ -124,5 +124,22 @@ public class AsaasClientServiceImpl implements AsaasClientService {
                 .dataExpiracao(jsonNode.get("expirationDate").asText())
                 .codigoAsaasCobranca(idCobrancaAsaas)
                 .build();
+    }
+
+    @Override
+    public String carregarStatusDoPagamentoAsaas(String idCobranca) throws Exception {
+
+        String path = String.format("/payments/%s/status",idCobranca);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+        headers.set("access_token", asaasConfig.getAccessToken());
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        var cobranca = restTemplate.exchange(asaasConfig.getBaseUrl()+path, HttpMethod.GET, entity, String.class).getBody();
+        JsonNode jsonNode = mapper.readTree(cobranca);
+
+        System.out.println("**** "+jsonNode.get("status").asText());
+
+        return jsonNode.get("status").asText();
     }
 }

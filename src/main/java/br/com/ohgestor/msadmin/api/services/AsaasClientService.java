@@ -16,6 +16,7 @@ public interface AsaasClientService {
 
     String gerarCobrancaPixAsaas(Cliente cliente, int quantidade) throws Exception;
 
-    ResponseEntity<String> carregarCobrancasAsaas();
     Pedido carregarCobrancasPixComQrCode(Cliente cliente, Usuario responsavel, SituacaoPedido situacao, Modulo modulo, int quantidade) throws Exception;
+
+    String carregarStatusDoPagamentoAsaas(String idCobranca) throws Exception;
 }
