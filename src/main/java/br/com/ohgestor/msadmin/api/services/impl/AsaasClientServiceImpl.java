@@ -137,9 +137,6 @@ public class AsaasClientServiceImpl implements AsaasClientService {
         HttpEntity<String> entity = new HttpEntity<>(headers);
         var cobranca = restTemplate.exchange(asaasConfig.getBaseUrl()+path, HttpMethod.GET, entity, String.class).getBody();
         JsonNode jsonNode = mapper.readTree(cobranca);
-
-        System.out.println("**** "+jsonNode.get("status").asText());
-
         return jsonNode.get("status").asText();
     }
 }
