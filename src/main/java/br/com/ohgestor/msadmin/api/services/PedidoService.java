@@ -18,5 +18,7 @@ public interface PedidoService {
 
     List<PedidoResponse> buscarPedidos(PedidoFiltro filtro);
 
-    List<Pedido> buscarPedidoPelaSituacao(SituacaoPedido situacao);
+    void confirmarPagamentoDePedidosPendentes();
+
+    boolean confirmarPagamento(Pedido pedido) throws Exception;
 }
