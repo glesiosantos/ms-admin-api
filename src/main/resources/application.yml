@@ -12,3 +12,7 @@ spring:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+
+rabbitmq:
+  exchanges:
+    criar-oficinas: criar-oficinas.ex

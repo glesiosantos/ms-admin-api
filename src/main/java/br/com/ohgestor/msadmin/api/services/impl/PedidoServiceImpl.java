@@ -102,6 +102,10 @@ public class PedidoServiceImpl implements PedidoService {
                 if("RECEIVED".equals(statusCobbranca)) {
                     pedido.setSituacao(SituacaoPedido.CONCLUIDO);
                     pedidoRepository.save(pedido);
+
+                    var cliente = pedido.getCliente();
+                    cliente.setAtivo(true);
+                    clienteRepository.save(cliente);
                     LOGGER.info("Pedido ID {} atualizado para CONCLUIDO", pedido.getId());
                 }
             } catch (Exception e) {

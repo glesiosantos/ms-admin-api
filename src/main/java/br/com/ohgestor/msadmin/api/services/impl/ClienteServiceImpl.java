@@ -9,9 +9,12 @@ import br.com.ohgestor.msadmin.api.services.exceptions.ObjetoRegistradoException
 import br.com.ohgestor.msadmin.api.web.mappers.ClienteMapper;
 import br.com.ohgestor.msadmin.api.web.requests.ClienteRequest;
 import br.com.ohgestor.msadmin.api.web.responses.EstabelecimentoResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +24,8 @@ import java.util.Optional;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClienteServiceImpl.class);
 
     @Autowired
     private ClienteRepository clienteRepository;
@@ -33,6 +38,9 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
+
+    @Value("${rabbitmq.exchanges.criar-oficinas}")
+    private String exchangeName;
 
     @Override
     public Cliente addCliente(ClienteRequest request) throws Exception {
@@ -64,6 +72,19 @@ public class ClienteServiceImpl implements ClienteService {
         List<EstabelecimentoResponse> estabelecimentos = new ArrayList<>();
         clienteRepository.findAll().forEach(cliente -> estabelecimentos.add(clienteMapper.converterClienteEmEstabelecimento(cliente)));
         return estabelecimentos;
+    }
+
+    @Scheduled(fixedDelay = 300000)
+    @Override
+    public void registrarClienteAtivosNasApis() {
+        LOGGER.info("Enviando informações da ");
+        clienteRepository.findClientesAtivosNaoIntegrados().forEach(cliente -> {
+            var response = clienteMapper.converterClienteEmEstabelecimento(cliente);
+            notificarRabbitMQ(response, exchangeName);
+            // atualiza as informações
+            cliente.setIntegrado(true);
+            clienteRepository.save(cliente);
+        });
     }
 
 }
