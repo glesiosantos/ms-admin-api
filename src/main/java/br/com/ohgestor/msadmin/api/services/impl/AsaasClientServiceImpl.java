@@ -5,6 +5,7 @@ import br.com.ohgestor.msadmin.api.domains.Cliente;
 import br.com.ohgestor.msadmin.api.domains.Pedido;
 import br.com.ohgestor.msadmin.api.domains.Usuario;
 import br.com.ohgestor.msadmin.api.enuns.Modulo;
+import br.com.ohgestor.msadmin.api.enuns.Plano;
 import br.com.ohgestor.msadmin.api.enuns.SituacaoPedido;
 import br.com.ohgestor.msadmin.api.services.AsaasClientService;
 import br.com.ohgestor.msadmin.api.web.responses.PedidoResponse;
@@ -59,7 +60,7 @@ public class AsaasClientServiceImpl implements AsaasClientService {
     }
 
     @Override
-    public String gerarCobrancaPixAsaas(Cliente cliente, int quantidade) throws Exception {
+    public String gerarCobrancaPixAsaas(Cliente cliente) throws Exception {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
@@ -80,7 +81,7 @@ public class AsaasClientServiceImpl implements AsaasClientService {
         Map<String, Object> asaasPagamento = new HashMap<>();
         asaasPagamento.put("customer", customerId);
         asaasPagamento.put("billingType", "PIX");
-        asaasPagamento.put("value", cliente.getModulo().getPreco() * quantidade);
+        asaasPagamento.put("value", cliente.getPlano().getValor());
         asaasPagamento.put("dueDate", LocalDate.now().plusDays(1).toString());
         asaasPagamento.put("description","Referente a pagamento de licença de uso Mumec");
 
@@ -89,20 +90,10 @@ public class AsaasClientServiceImpl implements AsaasClientService {
         return mapper.readTree(cobranca).get("id").asText();
     }
 
-//    @Override
-//    public ResponseEntity<String> carregarCobrancasAsaas() {
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.set("Content-Type", "application/json");
-//        headers.set("access_token", asaasConfig.getAccessToken());
-//
-//        HttpEntity<String> entity = new HttpEntity<>(headers);
-//        return restTemplate.exchange(asaasConfig.getBaseUrl()+"/payments", HttpMethod.GET, entity, String.class);
-//    }
-
     @Override
-    public Pedido carregarCobrancasPixComQrCode(Cliente cliente, Usuario usuario, SituacaoPedido situacao, Modulo modulo, int quantidade) throws Exception{
+    public Pedido carregarCobrancasPixComQrCode(Cliente cliente, Usuario usuario, SituacaoPedido situacao, Plano plano) throws Exception{
 
-        String idCobrancaAsaas = gerarCobrancaPixAsaas(cliente, quantidade);
+        String idCobrancaAsaas = gerarCobrancaPixAsaas(cliente);
 
         String path = String.format("/payments/%s/pixQrCode",idCobrancaAsaas);
         HttpHeaders headers = new HttpHeaders();
@@ -114,8 +105,7 @@ public class AsaasClientServiceImpl implements AsaasClientService {
         JsonNode jsonNode = mapper.readTree(cobranca);
 
         return Pedido.builder()
-                .modulo(modulo)
-                .quantidadeDeUsuarios(quantidade)
+                .plano(plano)
                 .situacao(situacao)
                 .cliente(cliente)
                 .usuarioVenda(usuario)

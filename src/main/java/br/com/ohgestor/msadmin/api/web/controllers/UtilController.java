@@ -1,13 +1,7 @@
 package br.com.ohgestor.msadmin.api.web.controllers;
 
-import br.com.ohgestor.msadmin.api.enuns.Modulo;
-import br.com.ohgestor.msadmin.api.enuns.Perfil;
-import br.com.ohgestor.msadmin.api.enuns.UnidadeFederacao;
-import br.com.ohgestor.msadmin.api.enuns.Vencimento;
-import br.com.ohgestor.msadmin.api.web.responses.EstadoResponse;
-import br.com.ohgestor.msadmin.api.web.responses.ModuloResponse;
-import br.com.ohgestor.msadmin.api.web.responses.PerfilResponse;
-import br.com.ohgestor.msadmin.api.web.responses.VencimentoResponse;
+import br.com.ohgestor.msadmin.api.enuns.*;
+import br.com.ohgestor.msadmin.api.web.responses.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,10 +39,18 @@ public class UtilController {
     @GetMapping("/modulos")
     public ResponseEntity<?> carregarModulos() {
         List<ModuloResponse> modulos = Arrays.stream(Modulo.values()).map(modulo -> {
-            String descricao = String.format("%s %d x R$ %.2f",modulo.getNome(), modulo.getTotalUsuario(), modulo.getPreco());
-            return new ModuloResponse(modulo.name(), descricao, modulo.getTotalUsuario(), modulo.getPreco());
+            return new ModuloResponse(modulo.name(), modulo.getNome());
         }).collect(Collectors.toList());
         return ResponseEntity.ok(modulos);
+    }
+
+    @GetMapping("/planos")
+    public ResponseEntity<?> carregarPlanos() {
+        List<PlanoResponse> planos = Arrays.stream(Plano.values()).map(plano -> {
+            String descricao = String.format("%s - R$ %.2f", plano.getDescricao(), plano.getValor()) ;
+            return new PlanoResponse(descricao, plano.name(), plano.getValor(), plano.getTotalUsuario());
+        }).collect(Collectors.toList());
+        return ResponseEntity.ok(planos);
     }
 
     @GetMapping("/perfis")

@@ -12,6 +12,7 @@ public interface ClienteMapper {
     @Mapping(target = "cpfOuCnpj", source = "documento")
     @Mapping(target = "nomeFantasia", source = "fantasia")
     @Mapping(target = "razaoSocial", source = "razao")
+    @Mapping(target = "modulo", source = "modulo")
     @Mapping(target = "endereco.cep", source = "cep")
     @Mapping(target = "endereco.logradouro", source = "logradouro")
     @Mapping(target = "endereco.bairro", source = "bairro")
@@ -26,7 +27,7 @@ public interface ClienteMapper {
     @Mapping(target = "cpfOuCnpj", source = "cpfOuCnpj")
     @Mapping(target = "nomeFantasia", source = "nomeFantasia")
     @Mapping(target = "razaoSocial", source = "razaoSocial")
-    @Mapping(target = "totalDeUsuario", source = "numeroUsuario")
+    @Mapping(target = "plano", expression = "java(getPlano(cliente))")
     @Mapping(target = "vencimento", source = "vencimento")
     @Mapping(target = "cep", source = "endereco.cep")
     @Mapping(target = "logradouro", source = "endereco.logradouro")
@@ -40,6 +41,10 @@ public interface ClienteMapper {
     @Mapping(target = "modulo", expression = "java(getModulo(cliente))")
     @Mapping(target = "contatos", source = "contatos")
     EstabelecimentoResponse converterClienteEmEstabelecimento(Cliente cliente);
+
+    default String getPlano(Cliente cliente) {
+        return  cliente.getPlano() != null ? cliente.getPlano().getDescricao() : "";
+    }
 
     default String getModulo(Cliente cliente) {
         return  cliente.getModulo() != null ? cliente.getModulo().getNome().toUpperCase() : "";

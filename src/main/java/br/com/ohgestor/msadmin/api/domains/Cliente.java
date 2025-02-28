@@ -2,6 +2,7 @@ package br.com.ohgestor.msadmin.api.domains;
 
 import br.com.ohgestor.msadmin.api.abstrato.EntidadeAbstrata;
 import br.com.ohgestor.msadmin.api.enuns.Modulo;
+import br.com.ohgestor.msadmin.api.enuns.Plano;
 import br.com.ohgestor.msadmin.api.utils.ContatoPadraoConverter;
 import br.com.ohgestor.msadmin.api.utils.UpperCaseConverter;
 import jakarta.persistence.*;
@@ -43,9 +44,6 @@ public class Cliente extends EntidadeAbstrata {
     @Column(name = "ativo", columnDefinition = "boolean DEFAULT 'false'")
     private boolean ativo;
 
-    @Column(name = "nr_usuario", columnDefinition = "INT DEFAULT '0'")
-    private int numeroUsuario;
-
     @Embedded
     private Endereco endereco;
 
@@ -60,4 +58,7 @@ public class Cliente extends EntidadeAbstrata {
 
     @Enumerated(EnumType.STRING)
     private Modulo modulo;
+
+    @Enumerated(EnumType.STRING)
+    private Plano plano;
 }

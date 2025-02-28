@@ -18,9 +18,8 @@ public interface PedidoMapper {
     @Mapping(target = "modulo", expression = "java(obterNomeModulo(pedido))")
     @Mapping(target = "asaasId", source = "codigoAsaasCobranca")
     @Mapping(target = "situacao", expression = "java(obterSituacao(pedido))")
-    @Mapping(target = "quantidade", source = "quantidadeDeUsuarios")
-    @Mapping(target = "valor", expression = "java(obterValorModulo(pedido))")
-    @Mapping(target = "total", expression = "java(calcularTotal(pedido))")
+    @Mapping(target = "plano", expression = "java(obterNomePlano(pedido))")
+    @Mapping(target = "valor", expression = "java(obterValorPlano(pedido))")
     @Mapping(target = "encodeImage", source = "qrCode")
     @Mapping(target = "payload", source = "chaveCompartilhamento")
     @Mapping(target = "dataCriadoEm", expression = "java(converterData(pedido))")
@@ -31,8 +30,12 @@ public interface PedidoMapper {
         return  pedido.getCliente().getModulo() != null ? pedido.getCliente().getModulo().getNome().toUpperCase() : "";
     }
 
-    default Double obterValorModulo(Pedido pedido) {
-        return  pedido.getCliente().getModulo() != null ?  pedido.getCliente().getModulo().getPreco() : 0.0;
+    default String obterNomePlano(Pedido pedido) {
+        return  pedido.getCliente().getPlano() != null ? pedido.getCliente().getPlano().getDescricao().toUpperCase() : "";
+    }
+
+    default Double obterValorPlano(Pedido pedido) {
+        return pedido.getCliente().getPlano() != null ?  pedido.getCliente().getPlano().getValor() : 0.0;
     }
 
     default String obterSituacao(Pedido pedido) {
@@ -43,19 +46,11 @@ public interface PedidoMapper {
         return  pedido.getCliente() != null ? unificarDadosCliente(pedido.getCliente()) : "";
     }
 
-    default String calcularTotal(Pedido pedido) {
-        return  pedido != null ? String.format("R$ %.2f", calcular(pedido)) : "R$ 0.00";
-    }
-
     default String converterData(Pedido pedido) {
         return LocalDate.ofInstant(pedido.getDataCriadoEm(), ZoneOffset.UTC).toString();
     }
 
     private String unificarDadosCliente(Cliente cliente) {
         return String.format("%s - %s", cliente.getCpfOuCnpj(), cliente.getRazaoSocial());
-    }
-
-    private Double calcular(Pedido pedido) {
-        return pedido.getQuantidadeDeUsuarios() * pedido.getModulo().getPreco();
     }
 }

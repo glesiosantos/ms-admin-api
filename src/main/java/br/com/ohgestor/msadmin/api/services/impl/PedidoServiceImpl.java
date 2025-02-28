@@ -4,6 +4,7 @@ import br.com.ohgestor.msadmin.api.domains.Cliente;
 import br.com.ohgestor.msadmin.api.domains.Pedido;
 import br.com.ohgestor.msadmin.api.domains.Usuario;
 import br.com.ohgestor.msadmin.api.enuns.Modulo;
+import br.com.ohgestor.msadmin.api.enuns.Plano;
 import br.com.ohgestor.msadmin.api.enuns.SituacaoPedido;
 import br.com.ohgestor.msadmin.api.enuns.Vencimento;
 import br.com.ohgestor.msadmin.api.repositories.ClienteRepository;
@@ -12,7 +13,6 @@ import br.com.ohgestor.msadmin.api.repositories.UsuarioRepository;
 import br.com.ohgestor.msadmin.api.repositories.filtros.PedidoSpecification;
 import br.com.ohgestor.msadmin.api.services.AsaasClientService;
 import br.com.ohgestor.msadmin.api.services.PedidoService;
-import br.com.ohgestor.msadmin.api.services.agendador.AsaasAgendador;
 import br.com.ohgestor.msadmin.api.services.exceptions.ObjetoNaoEncontradoException;
 import br.com.ohgestor.msadmin.api.services.filtros.PedidoFiltro;
 import br.com.ohgestor.msadmin.api.web.mappers.PedidoMapper;
@@ -57,7 +57,7 @@ public class PedidoServiceImpl implements PedidoService {
         // salvando dados do proprietário
         cliente.setProprietario(request.proprietario());
         cliente.setCpfProprietario(request.cpf().replace(".", "").replace("-",""));
-        cliente.setModulo(Modulo.valueOf(request.modulo()));
+        cliente.setPlano(Plano.valueOf(request.plano()));
         cliente.setVencimento(Vencimento.valueOf(request.vencimento()).getDia());
         clienteRepository.save(cliente);
 
@@ -65,7 +65,7 @@ public class PedidoServiceImpl implements PedidoService {
                 .orElseThrow(() -> new ObjetoNaoEncontradoException("Responsável de vendas não encontrado"));
 
         // Gerando pedido
-        var pedido = asaasClientService.carregarCobrancasPixComQrCode(cliente, usuario, SituacaoPedido.PENDENTE, Modulo.valueOf(request.modulo()), request.qtdUsuario());
+        var pedido = asaasClientService.carregarCobrancasPixComQrCode(cliente, usuario, SituacaoPedido.PENDENTE, Plano.valueOf(request.plano()));
         return pedidoMapper.converterModeloParaResponse(pedidoRepository.save(pedido));
     }
 

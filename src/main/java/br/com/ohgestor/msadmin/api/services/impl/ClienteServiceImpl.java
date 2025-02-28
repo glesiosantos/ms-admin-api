@@ -74,10 +74,10 @@ public class ClienteServiceImpl implements ClienteService {
         return estabelecimentos;
     }
 
-    @Scheduled(fixedDelay = 300000)
+    @Scheduled(cron = "0 */2 * * * *")
     @Override
     public void registrarClienteAtivosNasApis() {
-        LOGGER.info("Enviando informações da ");
+        LOGGER.info("Enviando informações do estabelecimento para a RabbitMQ");
         clienteRepository.findClientesAtivosNaoIntegrados().forEach(cliente -> {
             var response = clienteMapper.converterClienteEmEstabelecimento(cliente);
             notificarRabbitMQ(response, exchangeName);
@@ -85,6 +85,7 @@ public class ClienteServiceImpl implements ClienteService {
             cliente.setIntegrado(true);
             clienteRepository.save(cliente);
         });
+        LOGGER.info("Finalizado processo de envio");
     }
 
 }

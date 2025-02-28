@@ -2,7 +2,6 @@ package br.com.ohgestor.msadmin.api.services;
 
 import br.com.ohgestor.msadmin.api.domains.Pedido;
 import br.com.ohgestor.msadmin.api.domains.Usuario;
-import br.com.ohgestor.msadmin.api.enuns.SituacaoPedido;
 import br.com.ohgestor.msadmin.api.services.filtros.PedidoFiltro;
 import br.com.ohgestor.msadmin.api.web.requests.PedidoRequest;
 import br.com.ohgestor.msadmin.api.web.responses.PedidoResponse;
