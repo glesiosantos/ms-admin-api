@@ -45,7 +45,7 @@
     }
     .button {
         display: inline-block;
-        background-color: #4CAF50;
+        background-color: #1976D2;
         color: #fff;
         padding: 10px 20px;
         text-decoration: none;
@@ -70,7 +70,7 @@
 <div class="container">
   <!-- Cabeçalho -->
   <div class="header">
-    <img src="https://via.placeholder.com/150" alt="Logo">
+    <img src="https://raw.githubusercontent.com/glesiosantos/web-manager-app/refs/heads/develop/src/assets/img/oh_gestor.png">
   </div>
 
   <!-- Título e mensagem -->
@@ -81,6 +81,10 @@
     <p>Olá, <strong th:text="${nomeUsuario}"></strong>!</p>
     <p th:text="${texto}"></p>
     <p>Para começar, acesse o seu painel e explore as funcionalidades:</p>
+    <p>Suas credencias de acesso:
+      <b>Email:</b> <span th:text="${email}"></span>
+      <b>Senha:</b> <span th:text="${senha}"></span>
+    </p>
     <p><a href="#" class="button">Acessar o Sistema</a></p>
   </div>
 

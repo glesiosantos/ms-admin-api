@@ -3,6 +3,7 @@ package br.com.ohgestor.msadmin.api.web.controllers;
 import br.com.ohgestor.msadmin.api.services.EnvioEmailService;
 import br.com.ohgestor.msadmin.api.services.UsuarioService;
 import br.com.ohgestor.msadmin.api.web.requests.UsuarioRequest;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,6 +13,7 @@ import org.thymeleaf.context.Context;
 
 import java.net.URI;
 
+@Tag(name = "Usuarios")
 @RestController
 @RequestMapping("v1/usuarios")
 public class UsuarioController {
@@ -25,6 +27,7 @@ public class UsuarioController {
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> addUsuario(@RequestBody UsuarioRequest request) throws Exception {
+        System.out.println(request.email());
         var usuario = usuarioService.cadastraUsuario(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(usuario.getId()).toUri();

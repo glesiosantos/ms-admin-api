@@ -1,17 +1,15 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:msAdminDb
-    username: sa
-    password:
-    driverClassName: org.h2.Driver
-  h2:
-    console.enabled: true
-    settings.trace: false
-    settings.web-allow-others: false
+    url: jdbc:postgresql://localhost:5432/msadmindb
+    username: postgres
+    password: 102030
+  sql:
+    init:
+      mode: always
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
+    show-sql: true
     defer-datasource-initialization: true
   mail:
     host: sandbox.smtp.mailtrap.io
@@ -22,9 +20,20 @@ spring:
       auth: true
       starttls:
         enable: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: ${rabbitmq.username}
+    password: ${rabbitmq.password}
+
 api:
   security:
     secret: ${security.secret}
+
 app:
   consumidor:
     urls: http://localhost:9000
+
+asaas:
+  token: $aact_MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OmEwNDAyZjQ2LWQ2YTAtNGM3ZS05YTYzLTMwNTlmMjk5N2RmMzo6JGFhY2hfZjIwNTllZDItYWQ1MC00YWM0LTk0ZGUtMjgzNWM2NDcwYTUz
+  url: https://api-sandbox.asaas.com/v3
