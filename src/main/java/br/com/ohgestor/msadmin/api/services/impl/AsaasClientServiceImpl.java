@@ -3,7 +3,12 @@ package br.com.ohgestor.msadmin.api.services.impl;
 import br.com.ohgestor.msadmin.api.config.AsaasConfig;
 import br.com.ohgestor.msadmin.api.domains.Cliente;
 import br.com.ohgestor.msadmin.api.domains.Pedido;
+import br.com.ohgestor.msadmin.api.domains.Usuario;
+import br.com.ohgestor.msadmin.api.enuns.Modulo;
+import br.com.ohgestor.msadmin.api.enuns.Plano;
+import br.com.ohgestor.msadmin.api.enuns.SituacaoPedido;
 import br.com.ohgestor.msadmin.api.services.AsaasClientService;
+import br.com.ohgestor.msadmin.api.web.responses.PedidoResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,20 +60,20 @@ public class AsaasClientServiceImpl implements AsaasClientService {
     }
 
     @Override
-    public String gerarCobrancaPixAsaas(Pedido pedido) throws Exception {
+    public String gerarCobrancaPixAsaas(Cliente cliente) throws Exception {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         headers.set("access_token", asaasConfig.getAccessToken());
 
         String customerId = null;
-        String asaasCustomer = buscarClienteAsaas(pedido.getCliente()).getBody();
+        String asaasCustomer = buscarClienteAsaas(cliente).getBody();
         JsonNode jsonNode = mapper.readTree(asaasCustomer);
 
         if(jsonNode.get("totalCount").asInt() > 0 && !jsonNode.get("data").isEmpty() ) {
             customerId = jsonNode.get("data").get(0).get("id").asText();
         } else {
-            String criarAsaasCliente = cadastrarClienteAsaas(pedido.getCliente()).getBody();
+            String criarAsaasCliente = cadastrarClienteAsaas(cliente).getBody();
             JsonNode node = mapper.readTree(criarAsaasCliente);
             customerId = node.get("id").asText();
         }
@@ -76,7 +81,7 @@ public class AsaasClientServiceImpl implements AsaasClientService {
         Map<String, Object> asaasPagamento = new HashMap<>();
         asaasPagamento.put("customer", customerId);
         asaasPagamento.put("billingType", "PIX");
-        asaasPagamento.put("value", pedido.getCliente().getModulo().getPreco() * pedido.getQuantidadeDeUsuarios());
+        asaasPagamento.put("value", cliente.getPlano().getValor());
         asaasPagamento.put("dueDate", LocalDate.now().plusDays(1).toString());
         asaasPagamento.put("description","Referente a pagamento de licença de uso Mumec");
 
@@ -86,19 +91,9 @@ public class AsaasClientServiceImpl implements AsaasClientService {
     }
 
     @Override
-    public ResponseEntity<String> carregarCobrancasAsaas() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type", "application/json");
-        headers.set("access_token", asaasConfig.getAccessToken());
+    public Pedido carregarCobrancasPixComQrCode(Cliente cliente, Usuario usuario, SituacaoPedido situacao, Plano plano) throws Exception{
 
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        return restTemplate.exchange(asaasConfig.getBaseUrl()+"/payments", HttpMethod.GET, entity, String.class);
-    }
-
-    @Override
-    public String carregarCobrancasPixComQrCode(Pedido pedido) throws Exception{
-
-        String idCobrancaAsaas = gerarCobrancaPixAsaas(pedido);
+        String idCobrancaAsaas = gerarCobrancaPixAsaas(cliente);
 
         String path = String.format("/payments/%s/pixQrCode",idCobrancaAsaas);
         HttpHeaders headers = new HttpHeaders();
@@ -106,6 +101,32 @@ public class AsaasClientServiceImpl implements AsaasClientService {
         headers.set("access_token", asaasConfig.getAccessToken());
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
-        return restTemplate.exchange(asaasConfig.getBaseUrl()+path, HttpMethod.GET, entity, String.class).getBody();
+        var cobranca = restTemplate.exchange(asaasConfig.getBaseUrl()+path, HttpMethod.GET, entity, String.class).getBody();
+        JsonNode jsonNode = mapper.readTree(cobranca);
+
+        return Pedido.builder()
+                .plano(plano)
+                .situacao(situacao)
+                .cliente(cliente)
+                .usuarioVenda(usuario)
+                .qrCode(jsonNode.get("encodedImage").asText())
+                .chaveCompartilhamento(jsonNode.get("payload").asText())
+                .dataExpiracao(jsonNode.get("expirationDate").asText())
+                .codigoAsaasCobranca(idCobrancaAsaas)
+                .build();
+    }
+
+    @Override
+    public String carregarStatusDoPagamentoAsaas(String idCobranca) throws Exception {
+
+        String path = String.format("/payments/%s/status",idCobranca);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+        headers.set("access_token", asaasConfig.getAccessToken());
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        var cobranca = restTemplate.exchange(asaasConfig.getBaseUrl()+path, HttpMethod.GET, entity, String.class).getBody();
+        JsonNode jsonNode = mapper.readTree(cobranca);
+        return jsonNode.get("status").asText();
     }
 }

@@ -2,6 +2,7 @@ package br.com.ohgestor.msadmin.api.domains;
 
 import br.com.ohgestor.msadmin.api.abstrato.Auditoria;
 import br.com.ohgestor.msadmin.api.enuns.Modulo;
+import br.com.ohgestor.msadmin.api.enuns.Plano;
 import br.com.ohgestor.msadmin.api.enuns.SituacaoPedido;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,23 +26,23 @@ public class Pedido extends Auditoria {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Modulo modulo;
+    private Plano plano;
 
     @Enumerated(EnumType.STRING)
     private SituacaoPedido situacao;
-
-    @Column(name = "qtd_usuario")
-    private int quantidadeDeUsuarios;
 
     @ManyToOne
     @JoinColumn(name = "usuario_responsavel_id")
     private Usuario usuarioVenda;
 
-    @Column(name = "qr-code", unique = true, nullable = false, columnDefinition = "TEXT")
+    @Column(name = "qr_code", unique = true, nullable = false, columnDefinition = "TEXT")
     private String qrCode;
 
     @Column(name = "chave_compartilhamento", unique = true, nullable = false)
     private String chaveCompartilhamento;
+
+    @Column(name = "id_cob_asaas", nullable = false, unique = true)
+    private String codigoAsaasCobranca;
 
     @Column(name = "dt_expiracao", nullable = false)
     private String dataExpiracao;

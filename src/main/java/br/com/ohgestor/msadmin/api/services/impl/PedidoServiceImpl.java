@@ -4,20 +4,25 @@ import br.com.ohgestor.msadmin.api.domains.Cliente;
 import br.com.ohgestor.msadmin.api.domains.Pedido;
 import br.com.ohgestor.msadmin.api.domains.Usuario;
 import br.com.ohgestor.msadmin.api.enuns.Modulo;
+import br.com.ohgestor.msadmin.api.enuns.Plano;
 import br.com.ohgestor.msadmin.api.enuns.SituacaoPedido;
 import br.com.ohgestor.msadmin.api.enuns.Vencimento;
 import br.com.ohgestor.msadmin.api.repositories.ClienteRepository;
 import br.com.ohgestor.msadmin.api.repositories.PedidoRepository;
 import br.com.ohgestor.msadmin.api.repositories.UsuarioRepository;
+import br.com.ohgestor.msadmin.api.repositories.filtros.PedidoSpecification;
 import br.com.ohgestor.msadmin.api.services.AsaasClientService;
 import br.com.ohgestor.msadmin.api.services.PedidoService;
 import br.com.ohgestor.msadmin.api.services.exceptions.ObjetoNaoEncontradoException;
+import br.com.ohgestor.msadmin.api.services.filtros.PedidoFiltro;
 import br.com.ohgestor.msadmin.api.web.mappers.PedidoMapper;
 import br.com.ohgestor.msadmin.api.web.requests.PedidoRequest;
 import br.com.ohgestor.msadmin.api.web.responses.PedidoResponse;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +30,8 @@ import java.util.List;
 
 @Service
 public class PedidoServiceImpl implements PedidoService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PedidoServiceImpl.class);
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -50,26 +57,16 @@ public class PedidoServiceImpl implements PedidoService {
         // salvando dados do proprietário
         cliente.setProprietario(request.proprietario());
         cliente.setCpfProprietario(request.cpf().replace(".", "").replace("-",""));
-        cliente.setModulo(Modulo.valueOf(request.modulo()));
+        cliente.setPlano(Plano.valueOf(request.plano()));
         cliente.setVencimento(Vencimento.valueOf(request.vencimento()).getDia());
         clienteRepository.save(cliente);
 
-        // Gerando pedido
-        var pedido = Pedido.builder()
-                .cliente(cliente)
-                .usuarioVenda(buscarUsuarioVenda())
-                .situacao(SituacaoPedido.PENDENTE)
-                .modulo(Modulo.valueOf(request.modulo()))
-                .quantidadeDeUsuarios(request.qtdUsuario())
-                .build();
+        Usuario usuario = usuarioRepository.findByEmail(Usuario.recuperarUsuarioLogado())
+                .orElseThrow(() -> new ObjetoNaoEncontradoException("Responsável de vendas não encontrado"));
 
-        String cobranca = asaasClientService.carregarCobrancasPixComQrCode(pedido);
-        JsonNode jsonNode = mapper.readTree(cobranca);
-        pedido.setQrCode(jsonNode.get("encodedImage").asText());
-        pedido.setChaveCompartilhamento(jsonNode.get("payload").asText());
-        pedido.setDataExpiracao(jsonNode.get("expirationDate").asText());
-        var pedidoSalvo = pedidoRepository.save(pedido);
-        return pedidoMapper.converterModeloParaResponse(pedidoSalvo);
+        // Gerando pedido
+        var pedido = asaasClientService.carregarCobrancasPixComQrCode(cliente, usuario, SituacaoPedido.PENDENTE, Plano.valueOf(request.plano()));
+        return pedidoMapper.converterModeloParaResponse(pedidoRepository.save(pedido));
     }
 
     @Override
@@ -82,6 +79,47 @@ public class PedidoServiceImpl implements PedidoService {
         var pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new ObjetoNaoEncontradoException(String.format("Nenhum pedido encontrado com id %s", id)));
         return pedidoMapper.converterModeloParaResponse(pedido);
+    }
+
+    @Override
+    public List<PedidoResponse> buscarPedidos(PedidoFiltro filtro) {
+        return pedidoRepository.findAll(PedidoSpecification.comFiltros(filtro))
+                .stream().map(pedido -> pedidoMapper.converterModeloParaResponse(pedido)).toList();
+    }
+
+    @Override
+    @Scheduled(fixedRate = 60000)
+    public void confirmarPagamentoDePedidosPendentes() {
+        LOGGER.info("Inicializando confirmação de pagamento .... ");
+        pedidoRepository.findPedidoPelaSuaSituacao(SituacaoPedido.PENDENTE.name()).forEach(pedido -> {
+            try {
+                if (pedido.getCodigoAsaasCobranca() == null || pedido.getCodigoAsaasCobranca().isEmpty()) {
+                   LOGGER.warn("Código Asaas não encontrado para o pedido ID: {}", pedido.getId());
+                   return;
+                }
+
+                String statusCobbranca = asaasClientService.carregarStatusDoPagamentoAsaas(pedido.getCodigoAsaasCobranca());
+                if("RECEIVED".equals(statusCobbranca)) {
+                    pedido.setSituacao(SituacaoPedido.CONCLUIDO);
+                    pedidoRepository.save(pedido);
+
+                    var cliente = pedido.getCliente();
+                    cliente.setAtivo(true);
+                    clienteRepository.save(cliente);
+                    LOGGER.info("Pedido ID {} atualizado para CONCLUIDO", pedido.getId());
+                }
+            } catch (Exception e) {
+                LOGGER.error("Erro ao processar pedido ID {}: {}", pedido.getId(), e.getMessage(), e);
+            }
+        });
+        LOGGER.info("Finalizando confirmação de pagamento .... ");
+    }
+
+    @Override
+    public boolean confirmarPagamento(Pedido pedido) throws Exception {
+        var cobranca = asaasClientService.carregarStatusDoPagamentoAsaas(pedido.getCodigoAsaasCobranca());
+        System.out.println("status "+cobranca);
+        return false;
     }
 
     private Cliente retornarClienteCadastrado(PedidoRequest request) throws ObjetoNaoEncontradoException {

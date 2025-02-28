@@ -7,8 +7,11 @@ public record EstabelecimentoResponse(
         String cpfOuCnpj,
         String razaoSocial,
         String nomeFantasia,
-        int totalDeUsuario,
+        String planoSelecionado,
+        String plano,
+        String modulo,
         int vencimento,
+        boolean integrado,
         String cpfProprietario,
         String proprietario,
         String cep,
@@ -18,6 +21,5 @@ public record EstabelecimentoResponse(
         String estado,
         String latitude,
         String longitude,
-        String modulo,
         Set<String> contatos
 ) {}

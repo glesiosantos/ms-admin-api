@@ -16,4 +16,6 @@ public interface ClienteService {
     void notificarRabbitMQ(EstabelecimentoResponse response, String exchange);
 
     List<EstabelecimentoResponse> carregarClientes();
+
+    void registrarClienteAtivosNasApis();
 }

@@ -5,5 +5,6 @@ import lombok.Getter;
 @Getter
 public enum SituacaoPedido {
     PENDENTE,
+    CANCELADO,
     CONCLUIDO;
 }
