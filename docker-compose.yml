@@ -1,18 +1,28 @@
 version: '3.9'
 
 services:
+  ms-admin-api:
+    image: ms-admin-api
+    environment:
+      spring.profiles.active: test
+    depends_on:
+      rabbit-mq:
+        condition: service_healthy
+    ports:
+      - "5000:5000"
   db:
-    container_name: ps-oficina
     restart: always
     image: postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 102030
-      POSTGRES_DB: ms_admin_db
-    volumes:
-      - ./data:/var/lib/postgresql/data
+      POSTGRES_DB: ms_admin_db_product
+  rabbit-mq:
+    image: rabbitmq:3-management
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      timeout: 5s
+      interval: 5s
+      retries: 3
     ports:
-      - "5432:5432"
-volumes:
-  postgres-db:
-    driver: local
+      - "15672:15672"
