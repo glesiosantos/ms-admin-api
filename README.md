@@ -57,7 +57,9 @@ mvn clean install
 E então executar o JAR gerado:
 
 ```bash
-java -jar target/gerenciamento-de-vendas.jar
+- mvn clean 
+- mvn package
+- docker build -t ms-admin-api .
 ```
 
 ### 4. Acessar a Documentação Swagger
