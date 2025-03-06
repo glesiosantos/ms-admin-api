@@ -19,6 +19,7 @@ services:
       POSTGRES_DB: ms_admin_db_product
   rabbit-mq:
     image: rabbitmq:3-management
+    restart: always
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       timeout: 5s
@@ -26,3 +27,4 @@ services:
       retries: 3
     ports:
       - "15672:15672"
+      - "5672:5672"
