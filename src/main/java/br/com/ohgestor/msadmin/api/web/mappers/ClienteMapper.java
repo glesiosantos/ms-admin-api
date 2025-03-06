@@ -28,6 +28,7 @@ public interface ClienteMapper {
     @Mapping(target = "nomeFantasia", source = "nomeFantasia")
     @Mapping(target = "razaoSocial", source = "razaoSocial")
     @Mapping(target = "integrado", source = "integrado")
+    @Mapping(target = "ativo", source = "ativo")
     @Mapping(target = "planoSelecionado", expression = "java(getPlano(cliente))")
     @Mapping(target = "plano", source = "plano")
     @Mapping(target = "vencimento", source = "vencimento")

@@ -10,6 +10,7 @@ public record EstabelecimentoResponse(
         String planoSelecionado,
         String plano,
         String modulo,
+        boolean ativo,
         int vencimento,
         boolean integrado,
         String cpfProprietario,
