@@ -18,8 +18,6 @@ import java.util.stream.Collectors;
 @Service
 public class JwtServiceImpl implements JwtService {
 
-//    private final static Logger LOGGER = LoggerFactory.getLogger(JwtServiceImpl.class);
-
     @Value("${api.security.secret}")
     private String secret;
 

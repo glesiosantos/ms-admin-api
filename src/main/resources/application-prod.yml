@@ -3,14 +3,9 @@ spring:
     url: jdbc:postgresql://localhost:5433/msadmindb
     username: postgres
     password: 102030
-  sql:
-    init:
-      mode: always
   jpa:
     hibernate:
-      ddl-auto: create-drop
-    show-sql: true
-    defer-datasource-initialization: true
+      ddl-auto: update
   mail:
     host: sandbox.smtp.mailtrap.io
     port: 465
@@ -22,18 +17,18 @@ spring:
         enable: true
   rabbitmq:
     host: chimpanzee.rmq.cloudamqp.com
-    port: 1883
-    username: kouixnrk:kouixnrk
+    port: 5671
+    username: kouixnrk
     password: 7AB7frG82_OlFizS5TpuYyjHEt3hf-L1
-
+    virtual-host: kouixnrk
+    ssl:
+      enabled: true
 api:
   security:
     secret: 3cf6db6589fb49b871228515ca36f2edcc718ef4
-
 app:
   consumidor:
     urls: http://localhost:9000
-
 asaas:
-  token: $aact_MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OmEwNDAyZjQ2LWQ2YTAtNGM3ZS05YTYzLTMwNTlmMjk5N2RmMzo6JGFhY2hfZjIwNTllZDItYWQ1MC00YWM0LTk0ZGUtMjgzNWM2NDcwYTUz
-  url: https://api-sandbox.asaas.com/v3
+  token: $aact_prod_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OjIwZmVlZjVlLWI2YmMtNDdmNS04NDRjLTdjZGQyYjM1YTNlNDo6JGFhY2hfMjNmZWIwYTctOTk3ZS00Y2M2LThkZDAtOGE3N2RiMTBjZDhm
+  url: https://api.asaas.com/v3

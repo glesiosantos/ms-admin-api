@@ -39,7 +39,7 @@ public class Usuario extends Auditoria {
     private boolean ativo;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 5, columnDefinition = "CHAR(5) default 'COMUM'")
+    @Column(nullable = false)
     private Perfil perfil;
 
     public static String recuperarUsuarioLogado() {

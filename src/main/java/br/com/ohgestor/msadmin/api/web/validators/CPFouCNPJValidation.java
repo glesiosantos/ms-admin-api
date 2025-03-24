@@ -12,7 +12,6 @@ public class CPFouCNPJValidation implements ConstraintValidator<CPFouCNPJ, Strin
 
     @Override
     public boolean isValid(String documento, ConstraintValidatorContext context) {
-        System.out.println("********** ********** "+documento);
         if(!StringUtils.hasText(documento)) return false;
         return BR.isValidCPF(documento) || BR.isValidCNPJ(documento);
     }

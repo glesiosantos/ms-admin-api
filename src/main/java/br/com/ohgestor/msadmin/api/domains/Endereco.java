@@ -32,7 +32,7 @@ public class Endereco {
     private String cidade;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "uf", nullable = false, length = 2, columnDefinition = "CHAR(2) default 'PI'")
+    @Column(name = "uf", nullable = false, length = 2)
     private UnidadeFederacao estado;
 
     @Column(columnDefinition = "TEXT")

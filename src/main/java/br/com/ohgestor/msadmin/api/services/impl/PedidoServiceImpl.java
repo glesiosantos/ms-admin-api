@@ -3,7 +3,6 @@ package br.com.ohgestor.msadmin.api.services.impl;
 import br.com.ohgestor.msadmin.api.domains.Cliente;
 import br.com.ohgestor.msadmin.api.domains.Pedido;
 import br.com.ohgestor.msadmin.api.domains.Usuario;
-import br.com.ohgestor.msadmin.api.enuns.Modulo;
 import br.com.ohgestor.msadmin.api.enuns.Plano;
 import br.com.ohgestor.msadmin.api.enuns.SituacaoPedido;
 import br.com.ohgestor.msadmin.api.enuns.Vencimento;
@@ -66,7 +65,8 @@ public class PedidoServiceImpl implements PedidoService {
 
         // Gerando pedido
         var pedido = asaasClientService.carregarCobrancasPixComQrCode(cliente, usuario, SituacaoPedido.PENDENTE, Plano.valueOf(request.plano()));
-        return pedidoMapper.converterModeloParaResponse(pedidoRepository.save(pedido));
+        var registrarPedido = pedidoRepository.save(pedido);
+        return pedidoMapper.converterModeloParaResponse(registrarPedido);
     }
 
     @Override
@@ -118,7 +118,6 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public boolean confirmarPagamento(Pedido pedido) throws Exception {
         var cobranca = asaasClientService.carregarStatusDoPagamentoAsaas(pedido.getCodigoAsaasCobranca());
-        System.out.println("status "+cobranca);
         return false;
     }
 

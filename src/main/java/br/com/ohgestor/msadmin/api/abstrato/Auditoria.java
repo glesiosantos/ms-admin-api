@@ -21,7 +21,7 @@ import java.time.Instant;
 public class Auditoria extends EntidadeAbstrata{
 
     @CreatedDate
-    @Column(name = "dt_criado_em", nullable = false, updatable = false, columnDefinition = "DATE default 'now()'")
+    @Column(name = "dt_criado_em", nullable = false, updatable = false)
     private Instant dataCriadoEm;
 
     @LastModifiedDate
