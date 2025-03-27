@@ -21,14 +21,14 @@ spring:
       starttls:
         enable: true
   rabbitmq:
-    host: chimpanzee.rmq.cloudamqp.com
-    port: 1883
-    username: kouixnrk:kouixnrk
-    password: 7AB7frG82_OlFizS5TpuYyjHEt3hf-L1
+    host: localhost
+    port: 5672
+    username: ${rabbitmq.username}
+    password: ${rabbitmq.password}
 
 api:
   security:
-    secret: 3cf6db6589fb49b871228515ca36f2edcc718ef4
+    secret: ${security.secret}
 
 app:
   consumidor:
