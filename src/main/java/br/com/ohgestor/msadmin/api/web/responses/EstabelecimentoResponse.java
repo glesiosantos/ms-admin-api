@@ -3,7 +3,7 @@ package br.com.ohgestor.msadmin.api.web.responses;
 import java.util.Set;
 
 public record EstabelecimentoResponse(
-        Long id,
+        String id,
         String cpfOuCnpj,
         String razaoSocial,
         String nomeFantasia,
