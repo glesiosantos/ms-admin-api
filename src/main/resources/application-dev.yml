@@ -5,12 +5,11 @@ spring:
     password: 102030
   sql:
     init:
-      mode: never
+      mode: always
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     show-sql: true
-    defer-datasource-initialization: true
   mail:
     host: sandbox.smtp.mailtrap.io
     port: 465

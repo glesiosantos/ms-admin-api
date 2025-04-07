@@ -1,9 +1,6 @@
 package br.com.ohgestor.msadmin.api.abstrato;
 
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.PrePersist;
+import jakarta.persistence.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,10 +20,6 @@ import java.util.UUID;
 public abstract class EntidadeAbstrata implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
-
-    @PrePersist
-    private void generateId() {
-        this.id = UUID.randomUUID().toString().replaceAll("-", "");
-    }
 }
