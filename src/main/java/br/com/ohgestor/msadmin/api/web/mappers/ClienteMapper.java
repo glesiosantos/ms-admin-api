@@ -10,6 +10,7 @@ public interface ClienteMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "cpfOuCnpj", source = "documento")
+    @Mapping(target = "tipo", source = "tipo")
     @Mapping(target = "nomeFantasia", source = "fantasia")
     @Mapping(target = "razaoSocial", source = "razao")
     @Mapping(target = "modulo", source = "modulo")

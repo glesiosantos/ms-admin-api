@@ -7,7 +7,9 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 public record ClienteRequest(
-        @CPFouCNPJ String documento,
+        String idCliente,
+        @CPFouCNPJ(message = "CPF/CNPJ é obrigatório") String documento,
+        @NotNull(message = "Campo Tipo de Pessoa é obrigatório") String tipo,
         @NotNull(message = "Campo RAZÃO é obrigatório") String razao,
         @NotNull(message = "Campo NOME FANTASIA é obrigatório") String fantasia,
         @NotNull(message = "Campo MÓDULO é obrigatório") String modulo,

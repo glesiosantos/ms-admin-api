@@ -75,7 +75,7 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public PedidoResponse buscarPedidoPeloId(Long id) throws Exception {
+    public PedidoResponse buscarPedidoPeloId(String id) throws Exception {
         var pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new ObjetoNaoEncontradoException(String.format("Nenhum pedido encontrado com id %s", id)));
         return pedidoMapper.converterModeloParaResponse(pedido);

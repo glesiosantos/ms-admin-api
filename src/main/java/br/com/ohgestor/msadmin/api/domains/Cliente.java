@@ -1,8 +1,10 @@
 package br.com.ohgestor.msadmin.api.domains;
 
 import br.com.ohgestor.msadmin.api.abstrato.EntidadeAbstrata;
+import br.com.ohgestor.msadmin.api.conversores.DocumentoConversor;
 import br.com.ohgestor.msadmin.api.enuns.Modulo;
 import br.com.ohgestor.msadmin.api.enuns.Plano;
+import br.com.ohgestor.msadmin.api.enuns.TipoPessoa;
 import br.com.ohgestor.msadmin.api.utils.ContatoPadraoConverter;
 import br.com.ohgestor.msadmin.api.utils.UpperCaseConverter;
 import jakarta.persistence.*;
@@ -21,6 +23,9 @@ import java.util.Set;
 @Table(name = "clientes")
 public class Cliente extends EntidadeAbstrata {
 
+    @Enumerated(EnumType.STRING)
+    private TipoPessoa tipo;
+
     @Convert(converter = UpperCaseConverter.class)
     @Column(name = "razao", length = 150, nullable = false)
     private String razaoSocial;
@@ -33,21 +38,21 @@ public class Cliente extends EntidadeAbstrata {
     @Column(length = 150)
     private String proprietario;
 
-    @Column(name = "cpf", length = 11)
+    @Column(name = "cpf_propr")
     private String cpfProprietario;
 
-    @Column(name = "cpf_cnpj", length = 15, nullable = false, unique = true)
+    @Convert(converter = DocumentoConversor.class)
+    @Column(name = "cpf_cnpj")
     private String cpfOuCnpj;
 
     private int vencimento;
 
-    @Column(name = "ativo", columnDefinition = "boolean DEFAULT 'false'")
+    @Column(name = "ativo")
     private boolean ativo;
 
     @Embedded
     private Endereco endereco;
 
-    @Column(columnDefinition = "BOOLEAN DEFAULT 'false'")
     private boolean integrado;
 
     @Convert(converter = ContatoPadraoConverter.class)

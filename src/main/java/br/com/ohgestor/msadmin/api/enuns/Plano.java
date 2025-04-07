@@ -7,11 +7,13 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Plano {
 
-    BASIC("Básico", 29.9, 2),
-    INTER("Intermediário", 59.9, 5),
-    PROFI("Profissional", 99.9, 10);
+    TESTE("Teste", 0.0, 1, 7),
+    BASIC("Básico", 29.9, 2, 30),
+    INTER("Intermediário", 59.9, 5, 30),
+    PROFI("Profissional", 99.9, 10,30);
 
     private final String descricao;
     private final double valor;
     private final int totalUsuario;
+    private final int totalDias;
 }

@@ -25,7 +25,7 @@ public class PedidoController {
     }
 
     @GetMapping("/{pedidoId}")
-    public ResponseEntity<?> buscarPedidoRealizado(@PathVariable Long pedidoId) throws Exception {
+    public ResponseEntity<?> buscarPedidoRealizado(@PathVariable String pedidoId) throws Exception {
         var pedido = pedidoService.buscarPedidoPeloId(pedidoId);
         return ResponseEntity.ok(pedido);
     }

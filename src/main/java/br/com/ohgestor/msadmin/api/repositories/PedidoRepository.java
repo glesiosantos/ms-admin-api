@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface PedidoRepository extends JpaRepository<Pedido, Long>, JpaSpecificationExecutor<Pedido> {
+public interface PedidoRepository extends JpaRepository<Pedido, String>, JpaSpecificationExecutor<Pedido> {
 
     @Query(value = "SELECT * FROM pedidos p WHERE p.situacao = :situacao", nativeQuery = true)
     List<Pedido> findPedidoPelaSuaSituacao(String situacao);
