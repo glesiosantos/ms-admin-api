@@ -1,16 +1,16 @@
-insert into clientes (ativo, integrado,  vencimento, cpf_cnpj, razao, nm_fantasia, modulo, cep, logradouro, bairro, cidade, uf, complemento, latitude, longitude, plano, proprietario, cpf_propr) values
-	(true, false,10,'21344844000120','MAURICIO RODRIGUES SANTOS','AUTO GIRO','GOM','64009330','Rua Castelo do Piauí 3365 memorare','Buenos Aires','Teresina','PI',null, '-5.040072','-42.8138079', 'BASIC','MAURICIO RODRIGUES SANTOS', '51620803062'),
-	(false, false,0,'10584231000143','M DE SOUSA TRINDADE','G MOTOS','GOM','64008400','R. Eng. Alves Noronha, 5605','Buenos Aires','Teresina','PI',null, '-5.0356601','-42.8153797', null, null, null),
-	(false, false,0,'14626628000101','C R MOTOS LTDA','ULTRAPOWER MOTOS','GOM','64078165','Rua Benedito Feitosa Cardoso, 2008 - Conj Dirceu Arcoverde II','Itarare','Teresina','PI',null, '-5.1081643','-42.7673233', null, null, null),
-	(false, false,0,'10818016000160','CLEMILTON GOMES LOPES','CR MOTOS','GOM','64008400','R. Eng. Alves Noronha, 5605','Buenos Aires','Teresina','PI',null, '-5.0356601','-42.8153797', null, null, null)
+insert into clientes (ativo, integrado, vencimento, cpf_cnpj, razao, nm_fantasia, modulo, cep, logradouro, bairro, cidade, uf, complemento, latitude, longitude, plano, proprietario, cpf_propr, tipo) values
+	(false, false,0,'21344844000120','MAURICIO RODRIGUES SANTOS','AUTO GIRO',null,'64009330','Rua Castelo do Piauí 3365 memorare','Buenos Aires','Teresina','PI',null, '-5.040072','-42.8138079', null,null, null, 'PJ'),
+	(false, false,0,'10584231000143','M DE SOUSA TRINDADE','G MOTOS',null,'64008400','R. Eng. Alves Noronha, 5605','Buenos Aires','Teresina','PI',null, '-5.0356601','-42.8153797', null, null, null, 'PJ'),
+	(false, false,0,'14626628000101','C R MOTOS LTDA','ULTRAPOWER MOTOS',null,'64078165','Rua Benedito Feitosa Cardoso, 2008 - Conj Dirceu Arcoverde II','Itarare','Teresina','PI',null, '-5.1081643','-42.7673233', null, null, null, 'PJ'),
+	(false, false,0,'10179034090','CLEMILTON GOMES LOPES','CR MOTOS',null,'64008400','R. Eng. Alves Noronha, 5605','Buenos Aires','Teresina','PI',null, '-5.0356601','-42.8153797', null, null, null, 'PF')
 on conflict do nothing;
 
-insert into tb_cliente_contatos (cliente_id, contatos) values
-	((select id from clientes c where c.cpf_cnpj = '21344844000120'), '+5586999095638'),
-	((select id from clientes c where c.cpf_cnpj = '21344844000120'), '+5586988647628'),
-	((select id from clientes c where c.cpf_cnpj = '10584231000143'), '+558632257154'),
-	((select id from clientes c where c.cpf_cnpj = '14626628000101'), '+558632267160'),
-	((select id from clientes c where c.cpf_cnpj = '10818016000160'), '+558632257190')
+insert into cliente_contatos (cliente_id, contatos) values
+	((select id from clientes c where c.cpf_cnpj = '21344844000120'), '86999095638'),
+	((select id from clientes c where c.cpf_cnpj = '21344844000120'), '86988647628'),
+	((select id from clientes c where c.cpf_cnpj = '10584231000143'), '86998257154'),
+	((select id from clientes c where c.cpf_cnpj = '14626628000101'), '86988267160'),
+	((select id from clientes c where c.cpf_cnpj = '10179034090'),    '86999257190')
 on conflict do nothing;
 
 --insert into pedidos (cliente_id, usuario_responsavel_id, chave_compartilhamento, dt_expiracao, id_cob_asaas, plano, qr_code,situacao, dt_criado_em) values

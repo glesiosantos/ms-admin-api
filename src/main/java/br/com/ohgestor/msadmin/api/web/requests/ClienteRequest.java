@@ -12,7 +12,7 @@ public record ClienteRequest(
         @NotNull(message = "Campo Tipo de Pessoa é obrigatório") String tipo,
         @NotNull(message = "Campo RAZÃO é obrigatório") String razao,
         @NotNull(message = "Campo NOME FANTASIA é obrigatório") String fantasia,
-        @NotNull(message = "Campo MÓDULO é obrigatório") String modulo,
+        String modulo,
         @NotNull(message = "Campo CEP é obrigatório") String cep,
         @NotNull(message = "Campo LOGRADOURO é obrigatório") String logradouro,
         @NotNull(message = "Campo BAIRRO é obrigatório") String bairro,

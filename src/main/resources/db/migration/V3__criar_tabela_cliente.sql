@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS clientes (
     vencimento INTEGER DEFAULT '0',
     integrado boolean NOT NULL DEFAULT 'false',
     ativo boolean NOT NULL DEFAULT 'false',
-    modulo CHAR(3) NOT NULL DEFAULT 'GOM',
+    modulo CHAR(3),
     plano CHAR(5),
     cep VARCHAR(10) NOT NULL,
     logradouro VARCHAR(150) NOT NULL,
@@ -19,6 +19,9 @@ CREATE TABLE IF NOT EXISTS clientes (
     complemento TEXT,
     latitude VARCHAR(60),
     longitude VARCHAR(60),
+    periodo_teste BOOLEAN DEFAULT 'false',
+    total_dias_teste INT DEFAULT '0',
+    dt_vencimento_teste DATE,
     dt_criado_em DATE NOT NULL DEFAULT 'now()',
     dt_atualizado_em DATE
 );

@@ -24,14 +24,13 @@ public interface ClienteMapper {
     @Mapping(target = "contatos", source = "contatos")
     Cliente converterRequestParaModel(ClienteRequest request);
 
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "cpfOuCnpj", source = "cpfOuCnpj")
-    @Mapping(target = "nomeFantasia", source = "nomeFantasia")
-    @Mapping(target = "razaoSocial", source = "razaoSocial")
+    @Mapping(target = "idCliente", source = "id")
+    @Mapping(target = "documento", source = "cpfOuCnpj")
+    @Mapping(target = "fantasia", source = "nomeFantasia")
+    @Mapping(target = "razao", source = "razaoSocial")
     @Mapping(target = "integrado", source = "integrado")
     @Mapping(target = "ativo", source = "ativo")
-    @Mapping(target = "planoSelecionado", expression = "java(getPlano(cliente))")
-    @Mapping(target = "plano", source = "plano")
+    @Mapping(target = "plano", expression = "java(getPlano(cliente))")
     @Mapping(target = "vencimento", source = "vencimento")
     @Mapping(target = "cep", source = "endereco.cep")
     @Mapping(target = "logradouro", source = "endereco.logradouro")
@@ -42,7 +41,9 @@ public interface ClienteMapper {
     @Mapping(target = "longitude", source = "endereco.longitude")
     @Mapping(target = "proprietario", source = "proprietario")
     @Mapping(target = "cpfProprietario", source = "cpfProprietario")
+    @Mapping(target = "periodoDeTeste", source = "periodoDeTeste")
     @Mapping(target = "modulo", expression = "java(getModulo(cliente))")
+    @Mapping(target = "tipoPessoa", expression = "java(getTipoPessoa(cliente))")
     @Mapping(target = "contatos", source = "contatos")
     EstabelecimentoResponse converterClienteEmEstabelecimento(Cliente cliente);
 
@@ -52,5 +53,9 @@ public interface ClienteMapper {
 
     default String getModulo(Cliente cliente) {
         return  cliente.getModulo() != null ? cliente.getModulo().getNome().toUpperCase() : "";
+    }
+
+    default String getTipoPessoa(Cliente cliente) {
+        return  cliente.getTipo().getTipo().toUpperCase();
     }
 }

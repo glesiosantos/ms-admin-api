@@ -17,6 +17,7 @@ public class DocumentoConversor implements AttributeConverter<String, String> {
     }
 
     private String limparFormatacao(String documento) {
-        return documento.replaceAll("[\\.\\-/]", "").trim();
+        String doc = documento.replaceAll("[\\.\\-/]", "").trim();
+        return doc;
     }
 }

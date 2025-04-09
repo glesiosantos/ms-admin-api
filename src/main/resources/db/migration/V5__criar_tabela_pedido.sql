@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS pedidos (
     qr_code TEXT,
     chave_compartilhamento VARCHAR(250) UNIQUE NOT NULL,
     id_cob_asaas VARCHAR(150) NOT NULL DEFAULT 'COMUM',
-    dt_expiracao DATE NOT NULL,
+    dt_expiracao VARCHAR(50) NOT NULL,
     dt_criado_em DATE NOT NULL DEFAULT 'now()',
     dt_atualizado_em DATE,
     CONSTRAINT fk_cliente_pedido FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE ON UPDATE NO ACTION,

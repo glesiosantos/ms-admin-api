@@ -17,5 +17,7 @@ public interface ClienteService {
 
     List<EstabelecimentoResponse> carregarClientes();
 
+    void editarCliente(ClienteRequest request);
+
     void registrarClienteAtivosNasApis();
 }
