@@ -28,18 +28,15 @@ public class Usuario extends Auditoria {
     @Column(length = 150, nullable = false)
     private String nome;
 
-    @Column(length = 150, nullable = false, unique = true, updatable = false)
+    @Column(nullable = false, updatable = false)
     private String email;
 
     @JsonIgnore
-    @Column(length = 150, nullable = false)
     private String senha;
 
-    @Column(columnDefinition = "BOOLEAN default 'false'")
     private boolean ativo;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 5, columnDefinition = "CHAR(5) default 'COMUM'")
     private Perfil perfil;
 
     public static String recuperarUsuarioLogado() {

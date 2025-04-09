@@ -20,12 +20,13 @@ public class PedidoController {
 
     @PostMapping
     public ResponseEntity<?> registrarVendaModulo(@RequestBody @Valid PedidoRequest request) throws Exception {
-        var pedido = pedidoService.registrarPedido(request);
-        return ResponseEntity.ok(pedido);
+//        var pedido = pedidoService.registrarPedido(request);
+        System.out.println(request.toString());
+        return ResponseEntity.ok(null);
     }
 
     @GetMapping("/{pedidoId}")
-    public ResponseEntity<?> buscarPedidoRealizado(@PathVariable Long pedidoId) throws Exception {
+    public ResponseEntity<?> buscarPedidoRealizado(@PathVariable String pedidoId) throws Exception {
         var pedido = pedidoService.buscarPedidoPeloId(pedidoId);
         return ResponseEntity.ok(pedido);
     }

@@ -7,6 +7,10 @@ spring:
     active: dev
   application:
     name: ms-admin-api
+  flyway:
+    enabled: true
+    locations:
+      - classpath:/db/migration
 
 # swagger-ui custom path
 springdoc:

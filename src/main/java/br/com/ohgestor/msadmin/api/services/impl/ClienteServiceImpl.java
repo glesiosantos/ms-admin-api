@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
@@ -72,6 +73,14 @@ public class ClienteServiceImpl implements ClienteService {
         List<EstabelecimentoResponse> estabelecimentos = new ArrayList<>();
         clienteRepository.findAll().forEach(cliente -> estabelecimentos.add(clienteMapper.converterClienteEmEstabelecimento(cliente)));
         return estabelecimentos;
+    }
+
+    // TODO: Finalizar editar cliente
+    @Override
+    public void editarCliente(ClienteRequest request) {
+        Cliente cliente = clienteRepository.findById(request.idCliente()).get();
+        cliente.setNomeFantasia(request.fantasia());
+        cliente.setContatos(request.contatos().stream().collect(Collectors.toSet()));
     }
 
     @Scheduled(cron = "0 */2 * * * *")

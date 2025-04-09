@@ -3,7 +3,7 @@ package br.com.ohgestor.msadmin.api.services.impl;
 import br.com.ohgestor.msadmin.api.domains.Cliente;
 import br.com.ohgestor.msadmin.api.domains.Pedido;
 import br.com.ohgestor.msadmin.api.domains.Usuario;
-import br.com.ohgestor.msadmin.api.enuns.Modulo;
+import br.com.ohgestor.msadmin.api.enuns.Gratuito;
 import br.com.ohgestor.msadmin.api.enuns.Plano;
 import br.com.ohgestor.msadmin.api.enuns.SituacaoPedido;
 import br.com.ohgestor.msadmin.api.enuns.Vencimento;
@@ -26,6 +26,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -55,8 +56,14 @@ public class PedidoServiceImpl implements PedidoService {
         var cliente = retornarClienteCadastrado(request);
 
         // salvando dados do proprietário
-        cliente.setProprietario(request.proprietario());
-        cliente.setCpfProprietario(request.cpf().replace(".", "").replace("-",""));
+        cliente.setProprietario(request.nomeProprietario());
+        cliente.setCpfProprietario(request.cpfProprietario().replace(".", "").replace("-",""));
+
+        if (request.testeGratuito()) {
+            cliente.setPeriodoDeTeste(true);
+            cliente.setDataVencimentoTeste(LocalDate.now().plusDays(Gratuito.valueOf(request.periodoTeste()).getTotalDias()));
+        }
+
         cliente.setPlano(Plano.valueOf(request.plano()));
         cliente.setVencimento(Vencimento.valueOf(request.vencimento()).getDia());
         clienteRepository.save(cliente);
@@ -75,7 +82,7 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public PedidoResponse buscarPedidoPeloId(Long id) throws Exception {
+    public PedidoResponse buscarPedidoPeloId(String id) throws Exception {
         var pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new ObjetoNaoEncontradoException(String.format("Nenhum pedido encontrado com id %s", id)));
         return pedidoMapper.converterModeloParaResponse(pedido);
@@ -123,8 +130,8 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     private Cliente retornarClienteCadastrado(PedidoRequest request) throws ObjetoNaoEncontradoException {
-        return clienteRepository.findById(request.idEstabelecimento()).orElseThrow(() ->
-                new ObjetoNaoEncontradoException(String.format("Nenhum empresa encontrada com este %s", request.idEstabelecimento())));
+        return clienteRepository.findById(request.idCliente()).orElseThrow(() ->
+                new ObjetoNaoEncontradoException(String.format("Nenhum empresa encontrada com este %s", request.idCliente())));
     }
 
     private Usuario buscarUsuarioVenda() throws ObjetoNaoEncontradoException {

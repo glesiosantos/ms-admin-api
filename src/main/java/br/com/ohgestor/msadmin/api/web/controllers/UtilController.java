@@ -53,6 +53,14 @@ public class UtilController {
         return ResponseEntity.ok(planos);
     }
 
+    @GetMapping("/gratuitos")
+    public ResponseEntity<?> carregarGratuitos() {
+        List<GratuitoResponse> gratuitos = Arrays.stream(Gratuito.values()).map(g -> {
+            return new GratuitoResponse(g.name(), g.getDescricao());
+        }).collect(Collectors.toList());
+        return ResponseEntity.ok(gratuitos);
+    }
+
     @GetMapping("/perfis")
     public ResponseEntity<?> carregarPerfis() {
         List<PerfilResponse> perfis = Arrays.stream(Perfil.values()).map(perfil -> {

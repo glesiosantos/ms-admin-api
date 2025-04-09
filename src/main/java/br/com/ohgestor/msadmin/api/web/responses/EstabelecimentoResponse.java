@@ -3,11 +3,11 @@ package br.com.ohgestor.msadmin.api.web.responses;
 import java.util.Set;
 
 public record EstabelecimentoResponse(
-        String id,
-        String cpfOuCnpj,
-        String razaoSocial,
-        String nomeFantasia,
-        String planoSelecionado,
+        String idCliente,
+        String tipoPessoa,
+        String documento,
+        String razao,
+        String fantasia,
         String plano,
         String modulo,
         boolean ativo,
@@ -22,5 +22,6 @@ public record EstabelecimentoResponse(
         String estado,
         String latitude,
         String longitude,
+        boolean periodoDeTeste,
         Set<String> contatos
 ) {}
