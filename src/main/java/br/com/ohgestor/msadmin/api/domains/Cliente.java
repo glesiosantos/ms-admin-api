@@ -40,6 +40,7 @@ public class Cliente extends EntidadeAbstrata {
     @Column(length = 150)
     private String proprietario;
 
+    @Convert(converter = DocumentoConversor.class)
     @Column(name = "cpf_propr")
     private String cpfProprietario;
 

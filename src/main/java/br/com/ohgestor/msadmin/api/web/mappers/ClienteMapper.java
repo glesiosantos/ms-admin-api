@@ -13,7 +13,6 @@ public interface ClienteMapper {
     @Mapping(target = "tipo", source = "tipo")
     @Mapping(target = "nomeFantasia", source = "fantasia")
     @Mapping(target = "razaoSocial", source = "razao")
-    @Mapping(target = "modulo", source = "modulo")
     @Mapping(target = "endereco.cep", source = "cep")
     @Mapping(target = "endereco.logradouro", source = "logradouro")
     @Mapping(target = "endereco.bairro", source = "bairro")

@@ -20,8 +20,7 @@ public class PedidoController {
 
     @PostMapping
     public ResponseEntity<?> registrarVendaModulo(@RequestBody @Valid PedidoRequest request) throws Exception {
-//        var pedido = pedidoService.registrarPedido(request);
-        System.out.println(request.toString());
+        var pedido = pedidoService.registrarPedido(request);
         return ResponseEntity.ok(null);
     }
 

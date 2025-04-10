@@ -50,6 +50,10 @@ public interface PedidoMapper {
         return LocalDate.ofInstant(pedido.getDataCriadoEm(), ZoneOffset.UTC).toString();
     }
 
+    default String converterModulo(Pedido pedido) {
+        return pedido.getCliente().getModulo().getNome();
+    }
+
     private String unificarDadosCliente(Cliente cliente) {
         return String.format("%s - %s", cliente.getCpfOuCnpj(), cliente.getRazaoSocial());
     }

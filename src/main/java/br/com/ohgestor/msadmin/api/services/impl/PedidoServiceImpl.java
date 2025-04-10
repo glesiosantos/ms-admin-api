@@ -3,10 +3,7 @@ package br.com.ohgestor.msadmin.api.services.impl;
 import br.com.ohgestor.msadmin.api.domains.Cliente;
 import br.com.ohgestor.msadmin.api.domains.Pedido;
 import br.com.ohgestor.msadmin.api.domains.Usuario;
-import br.com.ohgestor.msadmin.api.enuns.Gratuito;
-import br.com.ohgestor.msadmin.api.enuns.Plano;
-import br.com.ohgestor.msadmin.api.enuns.SituacaoPedido;
-import br.com.ohgestor.msadmin.api.enuns.Vencimento;
+import br.com.ohgestor.msadmin.api.enuns.*;
 import br.com.ohgestor.msadmin.api.repositories.ClienteRepository;
 import br.com.ohgestor.msadmin.api.repositories.PedidoRepository;
 import br.com.ohgestor.msadmin.api.repositories.UsuarioRepository;
@@ -57,13 +54,16 @@ public class PedidoServiceImpl implements PedidoService {
 
         // salvando dados do proprietário
         cliente.setProprietario(request.nomeProprietario());
-        cliente.setCpfProprietario(request.cpfProprietario().replace(".", "").replace("-",""));
+        cliente.setCpfProprietario(request.cpfProprietario());
 
         if (request.testeGratuito()) {
             cliente.setPeriodoDeTeste(true);
+            cliente.setAtivo(true);
+            cliente.setTotalDiasTeste(Gratuito.valueOf(request.periodoTeste()).getTotalDias());
             cliente.setDataVencimentoTeste(LocalDate.now().plusDays(Gratuito.valueOf(request.periodoTeste()).getTotalDias()));
         }
 
+        cliente.setModulo(Modulo.valueOf(request.modulo()));
         cliente.setPlano(Plano.valueOf(request.plano()));
         cliente.setVencimento(Vencimento.valueOf(request.vencimento()).getDia());
         clienteRepository.save(cliente);
