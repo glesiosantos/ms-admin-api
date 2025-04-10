@@ -41,6 +41,7 @@ public interface ClienteMapper {
     @Mapping(target = "proprietario", source = "proprietario")
     @Mapping(target = "cpfProprietario", source = "cpfProprietario")
     @Mapping(target = "periodoDeTeste", source = "periodoDeTeste")
+    @Mapping(target = "dataVencimentoTeste", source = "dataVencimentoTeste")
     @Mapping(target = "modulo", expression = "java(getModulo(cliente))")
     @Mapping(target = "tipoPessoa", expression = "java(getTipoPessoa(cliente))")
     @Mapping(target = "contatos", source = "contatos")

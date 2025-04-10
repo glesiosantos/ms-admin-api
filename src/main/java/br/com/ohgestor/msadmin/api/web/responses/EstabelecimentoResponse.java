@@ -1,5 +1,6 @@
 package br.com.ohgestor.msadmin.api.web.responses;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 public record EstabelecimentoResponse(
@@ -23,5 +24,6 @@ public record EstabelecimentoResponse(
         String latitude,
         String longitude,
         boolean periodoDeTeste,
+        LocalDate dataVencimentoTeste,
         Set<String> contatos
 ) {}

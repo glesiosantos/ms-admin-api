@@ -44,6 +44,7 @@ public class AsaasClientServiceImpl implements AsaasClientService {
         asaasCliente.put("name", cliente.getRazaoSocial());
         asaasCliente.put("cpfCnpj", cliente.getCpfOuCnpj());
         asaasCliente.put("company", cliente.getNomeFantasia());
+        asaasCliente.put("mobilePhone", cliente.getContatos().stream().findFirst());
 
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(asaasCliente, headers);
         return restTemplate.exchange(asaasConfig.getBaseUrl()+"/customers", HttpMethod.POST, entity, String.class);
