@@ -1,7 +1,6 @@
 package br.com.ohgestor.msadmin.api.domains;
 
 import br.com.ohgestor.msadmin.api.abstrato.Auditoria;
-import br.com.ohgestor.msadmin.api.enuns.Modulo;
 import br.com.ohgestor.msadmin.api.enuns.Plano;
 import br.com.ohgestor.msadmin.api.enuns.SituacaoPedido;
 import jakarta.persistence.*;
@@ -45,5 +44,5 @@ public class Pedido extends Auditoria {
     private String codigoAsaasCobranca;
 
     @Column(name = "dt_expiracao", nullable = false)
-    private String dataExpiracao;
+    private String dataExpiracaoPagamento;
 }

@@ -31,7 +31,7 @@ api:
 
 app:
   consumidor:
-    urls: http://localhost:9000
+    urls: http://localhost:9001
 
 asaas:
   token: $aact_MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OmEwNDAyZjQ2LWQ2YTAtNGM3ZS05YTYzLTMwNTlmMjk5N2RmMzo6JGFhY2hfZjIwNTllZDItYWQ1MC00YWM0LTk0ZGUtMjgzNWM2NDcwYTUz

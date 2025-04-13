@@ -1,5 +1,7 @@
 package br.com.ohgestor.msadmin.api.web.responses;
 
+import java.time.LocalDate;
+
 public record PedidoResponse (
         String idPedido,
         String cliente,
@@ -11,6 +13,8 @@ public record PedidoResponse (
         String encodeImage,
         String payload,
         String dataCriadoEm,
-        String expirationDate
+        String expirationDate,
+        boolean periodoTeste,
+        LocalDate dataExpiracaoTeste
 ) {
 }

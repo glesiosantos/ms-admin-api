@@ -52,27 +52,33 @@ public class PedidoServiceImpl implements PedidoService {
     public PedidoResponse registrarPedido(PedidoRequest request) throws Exception{
         var cliente = retornarClienteCadastrado(request);
 
-        // salvando dados do proprietário
+        // salvando dados do proprietário e Módulo selecionado
         cliente.setProprietario(request.nomeProprietario());
         cliente.setCpfProprietario(request.cpfProprietario());
+        cliente.setModulo(Modulo.valueOf(request.modulo()));
+
+        Usuario usuario = usuarioRepository.findByEmail(Usuario.recuperarUsuarioLogado())
+                .orElseThrow(() -> new ObjetoNaoEncontradoException("Responsável de vendas não encontrado"));
+
+        Pedido pedido = null;
 
         if (request.testeGratuito()) {
             cliente.setPeriodoDeTeste(true);
             cliente.setAtivo(true);
             cliente.setTotalDiasTeste(Gratuito.valueOf(request.periodoTeste()).getTotalDias());
             cliente.setDataVencimentoTeste(LocalDate.now().plusDays(Gratuito.valueOf(request.periodoTeste()).getTotalDias()));
+            pedido = Pedido.builder()
+                    .usuarioVenda(usuario)
+                    .cliente(cliente)
+                    .situacao(SituacaoPedido.PENDENTE)
+                    .build();
+        } else {
+            cliente.setPlano(Plano.valueOf(request.plano()));
+            cliente.setVencimento(Vencimento.valueOf(request.vencimento()).getDia());
+            pedido = asaasClientService.carregarCobrancasPixComQrCode(cliente, usuario, SituacaoPedido.PENDENTE, Plano.valueOf(request.plano()));
         }
 
-        cliente.setModulo(Modulo.valueOf(request.modulo()));
-        cliente.setPlano(Plano.valueOf(request.plano()));
-        cliente.setVencimento(Vencimento.valueOf(request.vencimento()).getDia());
         clienteRepository.save(cliente);
-
-        Usuario usuario = usuarioRepository.findByEmail(Usuario.recuperarUsuarioLogado())
-                .orElseThrow(() -> new ObjetoNaoEncontradoException("Responsável de vendas não encontrado"));
-
-        // Gerando pedido
-        var pedido = asaasClientService.carregarCobrancasPixComQrCode(cliente, usuario, SituacaoPedido.PENDENTE, Plano.valueOf(request.plano()));
         return pedidoMapper.converterModeloParaResponse(pedidoRepository.save(pedido));
     }
 

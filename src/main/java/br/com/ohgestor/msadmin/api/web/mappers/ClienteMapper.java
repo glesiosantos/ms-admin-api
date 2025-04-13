@@ -30,7 +30,7 @@ public interface ClienteMapper {
     @Mapping(target = "integrado", source = "integrado")
     @Mapping(target = "ativo", source = "ativo")
     @Mapping(target = "plano", expression = "java(getPlano(cliente))")
-    @Mapping(target = "vencimento", source = "vencimento")
+    @Mapping(target = "diaVencimento", source = "vencimento")
     @Mapping(target = "cep", source = "endereco.cep")
     @Mapping(target = "logradouro", source = "endereco.logradouro")
     @Mapping(target = "bairro", source = "endereco.bairro")
@@ -47,7 +47,35 @@ public interface ClienteMapper {
     @Mapping(target = "contatos", source = "contatos")
     EstabelecimentoResponse converterClienteEmEstabelecimento(Cliente cliente);
 
+    @Mapping(target = "idCliente", source = "id")
+    @Mapping(target = "documento", source = "cpfOuCnpj")
+    @Mapping(target = "fantasia", source = "nomeFantasia")
+    @Mapping(target = "razao", source = "razaoSocial")
+    @Mapping(target = "integrado", source = "integrado")
+    @Mapping(target = "ativo", source = "ativo")
+    @Mapping(target = "plano", expression = "java(getPlanoDescricao(cliente))")
+    @Mapping(target = "diaVencimento", source = "vencimento")
+    @Mapping(target = "cep", source = "endereco.cep")
+    @Mapping(target = "logradouro", source = "endereco.logradouro")
+    @Mapping(target = "bairro", source = "endereco.bairro")
+    @Mapping(target = "cidade", source = "endereco.cidade")
+    @Mapping(target = "estado", source = "endereco.estado")
+    @Mapping(target = "latitude", source = "endereco.latitude")
+    @Mapping(target = "longitude", source = "endereco.longitude")
+    @Mapping(target = "proprietario", source = "proprietario")
+    @Mapping(target = "cpfProprietario", source = "cpfProprietario")
+    @Mapping(target = "periodoDeTeste", source = "periodoDeTeste")
+    @Mapping(target = "dataVencimentoTeste", source = "dataVencimentoTeste")
+    @Mapping(target = "modulo", expression = "java(getModulo(cliente))")
+    @Mapping(target = "tipoPessoa", expression = "java(getTipoPessoa(cliente))")
+    @Mapping(target = "contatos", source = "contatos")
+    EstabelecimentoResponse converterClienteEmEstabelecimentoParaListagem(Cliente cliente);
+
     default String getPlano(Cliente cliente) {
+        return  cliente.getPlano() != null ? cliente.getPlano().name() : "";
+    }
+
+    default String getPlanoDescricao(Cliente cliente) {
         return  cliente.getPlano() != null ? cliente.getPlano().getDescricao() : "";
     }
 

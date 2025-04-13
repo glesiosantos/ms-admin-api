@@ -71,7 +71,7 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public List<EstabelecimentoResponse> carregarClientes() {
         List<EstabelecimentoResponse> estabelecimentos = new ArrayList<>();
-        clienteRepository.findAll().forEach(cliente -> estabelecimentos.add(clienteMapper.converterClienteEmEstabelecimento(cliente)));
+        clienteRepository.findAll().forEach(cliente -> estabelecimentos.add(clienteMapper.converterClienteEmEstabelecimentoParaListagem(cliente)));
         return estabelecimentos;
     }
 

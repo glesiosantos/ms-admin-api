@@ -21,7 +21,9 @@ public class PedidoController {
     @PostMapping
     public ResponseEntity<?> registrarVendaModulo(@RequestBody @Valid PedidoRequest request) throws Exception {
         var pedido = pedidoService.registrarPedido(request);
-        return ResponseEntity.ok(null);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}").buildAndExpand(pedido.idPedido()).toUri();
+        return ResponseEntity.created(location).build();
     }
 
     @GetMapping("/{pedidoId}")
