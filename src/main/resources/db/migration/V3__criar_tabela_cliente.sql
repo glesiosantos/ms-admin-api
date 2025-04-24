@@ -19,8 +19,6 @@ CREATE TABLE IF NOT EXISTS clientes (
     complemento TEXT,
     latitude VARCHAR(60),
     longitude VARCHAR(60),
-    periodo_teste BOOLEAN DEFAULT 'false',
-    total_dias_teste INT DEFAULT '0',
     dt_vencimento_teste DATE,
     dt_criado_em DATE NOT NULL DEFAULT 'now()',
     dt_atualizado_em DATE

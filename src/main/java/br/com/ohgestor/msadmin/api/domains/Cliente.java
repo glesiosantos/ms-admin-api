@@ -2,7 +2,6 @@ package br.com.ohgestor.msadmin.api.domains;
 
 import br.com.ohgestor.msadmin.api.abstrato.EntidadeAbstrata;
 import br.com.ohgestor.msadmin.api.conversores.DocumentoConversor;
-import br.com.ohgestor.msadmin.api.enuns.Gratuito;
 import br.com.ohgestor.msadmin.api.enuns.Modulo;
 import br.com.ohgestor.msadmin.api.enuns.Plano;
 import br.com.ohgestor.msadmin.api.enuns.TipoPessoa;
@@ -69,12 +68,6 @@ public class Cliente extends EntidadeAbstrata {
 
     @Enumerated(EnumType.STRING)
     private Plano plano;
-
-    @Column(name = "periodo_teste")
-    private boolean periodoDeTeste;
-
-    @Column(name = "total_dias_teste")
-    private int totalDiasTeste;
 
     @Column(name = "dt_vencimento_teste")
     private LocalDate dataVencimentoTeste;

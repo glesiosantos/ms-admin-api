@@ -62,11 +62,9 @@ public class PedidoServiceImpl implements PedidoService {
 
         Pedido pedido = null;
 
-        if (request.testeGratuito()) {
-            cliente.setPeriodoDeTeste(true);
+        if (Plano.valueOf(request.plano()).equals(Plano.TESTE)) {
             cliente.setAtivo(true);
-            cliente.setTotalDiasTeste(Gratuito.valueOf(request.periodoTeste()).getTotalDias());
-            cliente.setDataVencimentoTeste(LocalDate.now().plusDays(Gratuito.valueOf(request.periodoTeste()).getTotalDias()));
+            cliente.setDataVencimentoTeste(LocalDate.now().plusDays(Plano.TESTE.getTotalDias()));
             pedido = Pedido.builder()
                     .usuarioVenda(usuario)
                     .cliente(cliente)

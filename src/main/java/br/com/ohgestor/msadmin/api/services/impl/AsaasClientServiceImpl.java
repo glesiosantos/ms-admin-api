@@ -81,13 +81,7 @@ public class AsaasClientServiceImpl implements AsaasClientService {
         asaasPagamento.put("customer", customerId);
         asaasPagamento.put("billingType", "PIX");
         asaasPagamento.put("value", cliente.getPlano().getValor());
-
-        if (cliente.isPeriodoDeTeste()) {
-            asaasPagamento.put("dueDate", LocalDate.now().plusDays(cliente.getTotalDiasTeste() + 1).toString());
-        } else {
-            asaasPagamento.put("dueDate", LocalDate.now().plusDays(1).toString());
-        }
-
+        asaasPagamento.put("dueDate", LocalDate.now().plusDays(1).toString());
         asaasPagamento.put("description","Referente a pagamento de licença de uso Auto Revise");
 
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(asaasPagamento, headers);
