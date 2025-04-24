@@ -23,7 +23,6 @@ public record EstabelecimentoResponse(
         String estado,
         String latitude,
         String longitude,
-        boolean periodoDeTeste,
         LocalDate dataVencimentoTeste,
         Set<String> contatos
 ) {}

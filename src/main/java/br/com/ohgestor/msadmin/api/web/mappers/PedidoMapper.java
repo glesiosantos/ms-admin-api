@@ -27,12 +27,34 @@ public interface PedidoMapper {
     @Mapping(target = "dataExpiracaoTeste", source = "cliente.dataVencimentoTeste")
     PedidoResponse converterModeloParaResponse(Pedido pedido);
 
+    @Mapping(target = "idPedido", source = "id")
+    @Mapping(target = "cliente", expression = "java(obterCliente(pedido))")
+    @Mapping(target = "modulo", expression = "java(obterNomeDescritivoDoModulo(pedido))")
+    @Mapping(target = "asaasId", source = "codigoAsaasCobranca")
+    @Mapping(target = "situacao", expression = "java(obterSituacao(pedido))")
+    @Mapping(target = "plano", expression = "java(obterNomeDescritivoDoPlano(pedido))")
+    @Mapping(target = "valor", expression = "java(obterValorPlano(pedido))")
+    @Mapping(target = "encodeImage", source = "qrCode")
+    @Mapping(target = "payload", source = "chaveCompartilhamento")
+    @Mapping(target = "dataCriadoEm", expression = "java(converterData(pedido))")
+    @Mapping(target = "expirationDate", source = "dataExpiracaoPagamento")
+    @Mapping(target = "dataExpiracaoTeste", source = "cliente.dataVencimentoTeste")
+    PedidoResponse converterModeloParaResponseParaListagem(Pedido pedido);
+
     default String obterNomeModulo(Pedido pedido) {
-        return  pedido.getCliente().getModulo() != null ? pedido.getCliente().getModulo().getNome().toUpperCase() : "";
+        return pedido.getCliente().getModulo() == null ? null : pedido.getCliente().getModulo().name();
+    }
+
+    default String obterNomeDescritivoDoModulo(Pedido pedido) {
+        return pedido.getCliente().getModulo().getNome();
     }
 
     default String obterNomePlano(Pedido pedido) {
-        return  pedido.getCliente().getPlano() != null ? pedido.getCliente().getPlano().getDescricao().toUpperCase() : "";
+        return pedido.getCliente().getPlano() == null ? null : pedido.getCliente().getPlano().name();
+    }
+
+    default String obterNomeDescritivoDoPlano(Pedido pedido) {
+        return pedido.getCliente().getPlano().getDescricao();
     }
 
     default Double obterValorPlano(Pedido pedido) {

@@ -65,12 +65,12 @@ public interface ClienteMapper {
     @Mapping(target = "cpfProprietario", source = "cpfProprietario")
     @Mapping(target = "dataVencimentoTeste", source = "dataVencimentoTeste")
     @Mapping(target = "modulo", expression = "java(getModulo(cliente))")
-    @Mapping(target = "tipoPessoa", expression = "java(getTipoPessoa(cliente))")
+    @Mapping(target = "tipoPessoa", expression = "java(getPlano(cliente))")
     @Mapping(target = "contatos", source = "contatos")
     EstabelecimentoResponse converterClienteEmEstabelecimentoParaListagem(Cliente cliente);
 
     default String getPlano(Cliente cliente) {
-        return  cliente.getPlano() != null ? cliente.getPlano().name() : "";
+        return cliente.getPlano().name();
     }
 
     default String getPlanoDescricao(Cliente cliente) {

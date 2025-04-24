@@ -56,11 +56,13 @@ public class PedidoServiceImpl implements PedidoService {
         cliente.setProprietario(request.nomeProprietario());
         cliente.setCpfProprietario(request.cpfProprietario());
         cliente.setModulo(Modulo.valueOf(request.modulo()));
+        cliente.setPlano(Plano.valueOf(request.plano()));
 
         Usuario usuario = usuarioRepository.findByEmail(Usuario.recuperarUsuarioLogado())
                 .orElseThrow(() -> new ObjetoNaoEncontradoException("Responsável de vendas não encontrado"));
 
         Pedido pedido = null;
+
 
         if (Plano.valueOf(request.plano()).equals(Plano.TESTE)) {
             cliente.setAtivo(true);
@@ -71,7 +73,6 @@ public class PedidoServiceImpl implements PedidoService {
                     .situacao(SituacaoPedido.PENDENTE)
                     .build();
         } else {
-            cliente.setPlano(Plano.valueOf(request.plano()));
             cliente.setVencimento(Vencimento.valueOf(request.vencimento()).getDia());
             pedido = asaasClientService.carregarCobrancasPixComQrCode(cliente, usuario, SituacaoPedido.PENDENTE, Plano.valueOf(request.plano()));
         }
@@ -95,7 +96,7 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public List<PedidoResponse> buscarPedidos(PedidoFiltro filtro) {
         return pedidoRepository.findAll(PedidoSpecification.comFiltros(filtro))
-                .stream().map(pedido -> pedidoMapper.converterModeloParaResponse(pedido)).toList();
+                .stream().map(pedido -> pedidoMapper.converterModeloParaResponseParaListagem(pedido)).toList();
     }
 
     @Override
