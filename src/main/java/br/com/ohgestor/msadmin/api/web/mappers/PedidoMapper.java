@@ -24,7 +24,6 @@ public interface PedidoMapper {
     @Mapping(target = "payload", source = "chaveCompartilhamento")
     @Mapping(target = "dataCriadoEm", expression = "java(converterData(pedido))")
     @Mapping(target = "expirationDate", source = "dataExpiracaoPagamento")
-    @Mapping(target = "periodoTeste", source = "cliente.periodoDeTeste")
     @Mapping(target = "dataExpiracaoTeste", source = "cliente.dataVencimentoTeste")
     PedidoResponse converterModeloParaResponse(Pedido pedido);
 
