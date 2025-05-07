@@ -13,5 +13,7 @@ public interface UsuarioService {
 
     void updateDadosUsuario(Usuario usuario);
 
+    boolean existeUsuarioComEsteEmail(String email);
+
     Usuario buscarPeloEmail(String email) throws Exception;
 }
