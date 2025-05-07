@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/msadmindb
-    username: postgres
-    password: 102030
+    url: ${postgresql.url}
+    username: ${postgresql.username}
+    password: ${postgresql.password}
   sql:
     init:
       mode: always
@@ -11,10 +11,10 @@ spring:
       ddl-auto: none
     show-sql: true
   mail:
-    host: sandbox.smtp.mailtrap.io
-    port: 465
-    username: 8d8137f576c7cb
-    password: 4c9795c48db3d6
+    host: ${mail.host}
+    port: ${mail.port}
+    username: ${mail.host.user}
+    password: ${mail.host.pass}
     smtp:
       auth: true
       starttls:
@@ -31,8 +31,8 @@ api:
 
 app:
   consumidor:
-    urls: http://localhost:9001
+    urls: ${app.urls.consumers}
 
 asaas:
-  token: $aact_MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OmEwNDAyZjQ2LWQ2YTAtNGM3ZS05YTYzLTMwNTlmMjk5N2RmMzo6JGFhY2hfZjIwNTllZDItYWQ1MC00YWM0LTk0ZGUtMjgzNWM2NDcwYTUz
-  url: https://api-sandbox.asaas.com/v3
+  token: ${asaas.token}
+  url: ${asaas.api.url}
