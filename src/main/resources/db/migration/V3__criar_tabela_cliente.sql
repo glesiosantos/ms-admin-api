@@ -11,6 +11,8 @@ CREATE TABLE IF NOT EXISTS clientes (
     ativo boolean NOT NULL DEFAULT 'false',
     modulo CHAR(3),
     plano CHAR(5),
+    segmento CHAR(3) NOT NULL,
+    desconto_promocional boolean,
     cep VARCHAR(10) NOT NULL,
     logradouro VARCHAR(150) NOT NULL,
     bairro VARCHAR(100) NOT NULL,
