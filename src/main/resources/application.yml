@@ -4,7 +4,7 @@ server:
     context-path: /api
 spring:
   profiles:
-    active: dev
+    active: ${APP_PROFILE:dev}
   application:
     name: ms-admin-api
   flyway:
