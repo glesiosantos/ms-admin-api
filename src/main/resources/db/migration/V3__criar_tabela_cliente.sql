@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS clientes (
     razao VARCHAR(150) NOT NULL,
     nm_fantasia VARCHAR(150) NOT NULL UNIQUE,
     proprietario VARCHAR(150),
-    cpf_propr VARCHAR(11),
+    cpf_proprietario VARCHAR(11),
     vencimento INTEGER DEFAULT '0',
     integrado boolean NOT NULL DEFAULT 'false',
     ativo boolean NOT NULL DEFAULT 'false',
