@@ -80,7 +80,7 @@ public class AsaasClientServiceImpl implements AsaasClientService {
         Map<String, Object> asaasPagamento = new HashMap<>();
         asaasPagamento.put("customer", customerId);
         asaasPagamento.put("billingType", "PIX");
-        asaasPagamento.put("value", cliente.getPlano().getValor());
+        asaasPagamento.put("value", cliente.isDescontoPromocional() ? cliente.getPlano().getValor() - cliente.getPlano().getDescontoPromocional() : cliente.getPlano().getValor());
         asaasPagamento.put("dueDate", LocalDate.now().plusDays(1).toString());
         asaasPagamento.put("description","Referente a pagamento de licença de uso Auto Revise");
 

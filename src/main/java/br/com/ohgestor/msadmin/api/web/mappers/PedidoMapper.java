@@ -21,6 +21,7 @@ public interface PedidoMapper {
     @Mapping(target = "plano", expression = "java(obterNomePlano(pedido))")
     @Mapping(target = "valor", expression = "java(obterValorPlano(pedido))")
     @Mapping(target = "encodeImage", source = "qrCode")
+    @Mapping(target = "descontoPromocional", source = "cliente.descontoPromocional")
     @Mapping(target = "payload", source = "chaveCompartilhamento")
     @Mapping(target = "dataCriadoEm", expression = "java(converterData(pedido))")
     @Mapping(target = "expirationDate", source = "dataExpiracaoPagamento")
@@ -31,11 +32,13 @@ public interface PedidoMapper {
     @Mapping(target = "cliente", expression = "java(obterCliente(pedido))")
     @Mapping(target = "modulo", expression = "java(obterNomeDescritivoDoModulo(pedido))")
     @Mapping(target = "asaasId", source = "codigoAsaasCobranca")
+    @Mapping(target = "vencimento", source = "cliente.vencimento")
     @Mapping(target = "situacao", expression = "java(obterSituacao(pedido))")
     @Mapping(target = "plano", expression = "java(obterNomeDescritivoDoPlano(pedido))")
     @Mapping(target = "valor", expression = "java(obterValorPlano(pedido))")
     @Mapping(target = "encodeImage", source = "qrCode")
     @Mapping(target = "payload", source = "chaveCompartilhamento")
+    @Mapping(target = "descontoPromocional", source = "cliente.descontoPromocional")
     @Mapping(target = "dataCriadoEm", expression = "java(converterData(pedido))")
     @Mapping(target = "expirationDate", source = "dataExpiracaoPagamento")
     @Mapping(target = "dataExpiracaoTeste", source = "cliente.dataVencimentoTeste")
@@ -58,7 +61,9 @@ public interface PedidoMapper {
     }
 
     default Double obterValorPlano(Pedido pedido) {
-        return pedido.getCliente().getPlano() != null ?  pedido.getCliente().getPlano().getValor() : 0.0;
+        return  pedido.getCliente().isDescontoPromocional() ?
+                    pedido.getCliente().getPlano().getValor() - pedido.getCliente().getPlano().getDescontoPromocional()
+                    : pedido.getCliente().getPlano().getValor();
     }
 
     default String obterSituacao(Pedido pedido) {
@@ -69,8 +74,8 @@ public interface PedidoMapper {
         return  pedido.getCliente() != null ? unificarDadosCliente(pedido.getCliente()) : "";
     }
 
-    default String converterData(Pedido pedido) {
-        return LocalDate.ofInstant(pedido.getDataCriadoEm(), ZoneOffset.UTC).toString();
+    default LocalDate converterData(Pedido pedido) {
+        return pedido.getDataCriadoEm();
     }
 
     default String converterModulo(Pedido pedido) {

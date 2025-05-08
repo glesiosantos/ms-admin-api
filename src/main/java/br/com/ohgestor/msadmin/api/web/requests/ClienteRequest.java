@@ -18,6 +18,7 @@ public record ClienteRequest(
         @NotNull(message = "Campo CIDADE é obrigatório") String cidade,
         @NotNull(message = "Campo ESTADO é obrigatório") String estado,
         @NotEmpty(message = "Campo contatos não pode ser vazio") List<String> contatos,
+        @NotNull(message = "Campo SEGMENTO não pode ser vazio") String segmento,
         String latitude,
         String longitude
 ) {}

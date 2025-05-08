@@ -10,9 +10,11 @@ public record PedidoResponse (
         String modulo,
         String plano,
         Double valor,
+        int vencimento,
         String encodeImage,
         String payload,
-        String dataCriadoEm,
+        boolean descontoPromocional,
+        LocalDate dataCriadoEm,
         String expirationDate,
         boolean periodoTeste,
         LocalDate dataExpiracaoTeste
