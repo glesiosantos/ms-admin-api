@@ -4,6 +4,7 @@ import br.com.ohgestor.msadmin.api.abstrato.EntidadeAbstrata;
 import br.com.ohgestor.msadmin.api.conversores.DocumentoConversor;
 import br.com.ohgestor.msadmin.api.enuns.Modulo;
 import br.com.ohgestor.msadmin.api.enuns.Plano;
+import br.com.ohgestor.msadmin.api.enuns.SegmentoComercial;
 import br.com.ohgestor.msadmin.api.enuns.TipoPessoa;
 import br.com.ohgestor.msadmin.api.utils.ContatoPadraoConverter;
 import br.com.ohgestor.msadmin.api.utils.UpperCaseConverter;
@@ -40,12 +41,18 @@ public class Cliente extends EntidadeAbstrata {
     private String proprietario;
 
     @Convert(converter = DocumentoConversor.class)
-    @Column(name = "cpf_propr")
+    @Column(name = "cpf_proprietario")
     private String cpfProprietario;
+
+    @Column(name = "desconto_promocional")
+    private boolean descontoPromocional;
 
     @Convert(converter = DocumentoConversor.class)
     @Column(name = "cpf_cnpj")
     private String cpfOuCnpj;
+
+    @Enumerated(EnumType.STRING)
+    private SegmentoComercial segmento;
 
     private int vencimento;
 

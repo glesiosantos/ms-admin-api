@@ -60,4 +60,12 @@ public class UtilController {
         }).collect(Collectors.toList());
         return ResponseEntity.ok(perfis);
     }
+
+    @GetMapping("/segmentos")
+    public ResponseEntity<?> carregarSegmentos() {
+        List<SegmentoResponse> segmentos = Arrays.stream(SegmentoComercial.values())
+                .map(SegmentoResponse::from)
+                .toList();
+        return ResponseEntity.ok(segmentos);
+    }
 }

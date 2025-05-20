@@ -1,6 +1,7 @@
 package br.com.ohgestor.msadmin.api.web.mappers;
 
 import br.com.ohgestor.msadmin.api.domains.Cliente;
+import br.com.ohgestor.msadmin.api.enuns.SegmentoComercial;
 import br.com.ohgestor.msadmin.api.web.requests.ClienteRequest;
 import br.com.ohgestor.msadmin.api.web.responses.EstabelecimentoResponse;
 import org.mapstruct.*;
@@ -20,6 +21,7 @@ public interface ClienteMapper {
     @Mapping(target = "endereco.estado", source = "estado")
     @Mapping(target = "endereco.latitude", source = "latitude")
     @Mapping(target = "endereco.longitude", source = "longitude")
+    @Mapping(target = "segmento", expression = "java(getSegmentoValue(request))")
     @Mapping(target = "contatos", source = "contatos")
     Cliente converterRequestParaModel(ClienteRequest request);
 
@@ -43,6 +45,7 @@ public interface ClienteMapper {
     @Mapping(target = "dataVencimentoTeste", source = "dataVencimentoTeste")
     @Mapping(target = "modulo", expression = "java(getModulo(cliente))")
     @Mapping(target = "tipoPessoa", expression = "java(getTipoPessoa(cliente))")
+    @Mapping(target = "segmento", expression = "java(getSegmentoDescricao(cliente))")
     @Mapping(target = "contatos", source = "contatos")
     EstabelecimentoResponse converterClienteEmEstabelecimento(Cliente cliente);
 
@@ -73,12 +76,20 @@ public interface ClienteMapper {
         return cliente.getPlano() != null ? cliente.getPlano().name() : null;
     }
 
+    default SegmentoComercial getSegmentoValue(ClienteRequest request) {
+        return SegmentoComercial.valueOf(request.segmento());
+    }
+
     default String getPlanoDescricao(Cliente cliente) {
         return  cliente.getPlano() != null ? cliente.getPlano().getDescricao() : "";
     }
 
     default String getModulo(Cliente cliente) {
         return  cliente.getModulo() != null ? cliente.getModulo().getNome().toUpperCase() : "";
+    }
+
+    default String getSegmentoDescricao(Cliente cliente) {
+        return  cliente.getSegmento() != null ? cliente.getSegmento().getDescricao() : "";
     }
 
     default String getTipoPessoa(Cliente cliente) {
