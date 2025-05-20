@@ -3,6 +3,8 @@ package br.com.ohgestor.msadmin.api.config;
 import br.com.ohgestor.msadmin.api.domains.Usuario;
 import br.com.ohgestor.msadmin.api.enuns.Perfil;
 import br.com.ohgestor.msadmin.api.repositories.UsuarioRepository;
+import br.com.ohgestor.msadmin.api.services.UsuarioService;
+import br.com.ohgestor.msadmin.api.web.requests.UsuarioRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -16,27 +18,19 @@ import java.time.Instant;
 public class AdminConfig implements CommandLineRunner{
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private void criarUsuarioAdmin() {
-        Usuario usuario = Usuario.builder()
-                .nome("Administrador")
-                .email("glesioss@gmail.com")
-                .avatar("default.png")
-                .senha(passwordEncoder.encode("102030"))
-                .ativo(true)
-                .perfil(Perfil.ADMIN)
-                .dataCriadoEm(Instant.now())
-                .build();
+    private void criarUsuarioAdmin() throws Exception {
 
-        if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
+        UsuarioRequest request = new UsuarioRequest("Administrador", "glesioss@gmail.com", "ADMIN", true);
+
+        if (usuarioService.existeUsuarioComEsteEmail(request.email())) {
             System.out.println("*** *** *** Usuário ja cadastrado no banco!");
         } else {
-            usuarioRepository.save(usuario);
-            log.info("***** ******** ******* *******");
+            usuarioService.cadastraUsuario(request);
             log.info("Usuário cadastrado com sucesso");
         }
     }

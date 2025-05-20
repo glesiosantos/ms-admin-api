@@ -9,5 +9,6 @@ public record PedidoRequest(
         @NotBlank(message = "NOME DO PROPRIETÁRIO é campo obrigatório") String nomeProprietario,
         @NotBlank(message = "MÓDULO é campo obrigatório") String modulo,
         @NotBlank(message = "PLANO é campo obrigatório") String plano,
+        boolean descontoPromocional,
         String vencimento
 ) {}

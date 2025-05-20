@@ -44,6 +44,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         // gerar senha aleatoria
         var senha = GeradorUtils.geradorSenhaAleatorias(6);
+        usuario.setSenha(passwordEncoder.encode(senha));
         envioDeEmail(usuario, senha);
         return usuarioRepository.save(usuario);
     }
@@ -57,6 +58,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public void updateDadosUsuario(Usuario usuario) {
         usuarioRepository.save(usuario);
+    }
+
+    @Override
+    public boolean existeUsuarioComEsteEmail(String email) {
+        return usuarioRepository.findByEmail(email).isPresent();
     }
 
     @Transactional(readOnly = true)

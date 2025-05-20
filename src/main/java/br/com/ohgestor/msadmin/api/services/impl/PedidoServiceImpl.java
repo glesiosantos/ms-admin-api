@@ -63,7 +63,6 @@ public class PedidoServiceImpl implements PedidoService {
 
         Pedido pedido = null;
 
-
         if (Plano.valueOf(request.plano()).equals(Plano.TESTE)) {
             cliente.setAtivo(true);
             cliente.setDataVencimentoTeste(LocalDate.now().plusDays(Plano.TESTE.getTotalDias()));
@@ -74,6 +73,7 @@ public class PedidoServiceImpl implements PedidoService {
                     .build();
         } else {
             cliente.setVencimento(Vencimento.valueOf(request.vencimento()).getDia());
+            cliente.setDescontoPromocional(request.descontoPromocional());
             pedido = asaasClientService.carregarCobrancasPixComQrCode(cliente, usuario, SituacaoPedido.PENDENTE, Plano.valueOf(request.plano()));
         }
 
