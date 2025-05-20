@@ -19,28 +19,15 @@ import lombok.experimental.SuperBuilder;
 @Embeddable
 public class Endereco {
 
-    @Column(nullable = false, length = 10)
     private String cep;
-
-    @Column(nullable = false, length = 200)
     private String logradouro;
-
-    @Column(nullable = false, length = 100)
     private String bairro;
-
-    @Column(nullable = false, length = 60)
     private String cidade;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "uf", nullable = false, length = 2, columnDefinition = "CHAR(2) default 'PI'")
+    @Column(name = "uf")
     private UnidadeFederacao estado;
-
-    @Column(columnDefinition = "TEXT")
     private String complemento;
-
-    @Column(length = 60)
     private String latitude;
-
-    @Column(length = 60)
     private String longitude;
 }

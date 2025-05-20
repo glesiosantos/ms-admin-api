@@ -17,6 +17,11 @@ public class BR {
         return sum > 9 ? 0 : sum;
     }
 
+    private static String limparFormatacao(String documento) {
+        if (documento == null) return null;
+        return documento.replaceAll("[\\.\\-/]", "").trim();
+    }
+
     /**
      * Valida CPF
      *
@@ -24,12 +29,13 @@ public class BR {
      * @return
      */
     public static boolean isValidCPF(final String ssn) {
-        if ((ssn == null) || (ssn.length() != 11) || ssn.matches(ssn.charAt(0) + "{11}"))
+        String cleanedSsn = limparFormatacao(ssn);
+        if ((cleanedSsn == null) || (cleanedSsn.length() != 11) || cleanedSsn.matches(cleanedSsn.charAt(0) + "{11}"))
             return false;
 
-        final Integer digit1 = calculate(ssn.substring(0, 9), weightSsn);
-        final Integer digit2 = calculate(ssn.substring(0, 9) + digit1, weightSsn);
-        return ssn.equals(ssn.substring(0, 9) + digit1.toString() + digit2.toString());
+        final Integer digit1 = calculate(cleanedSsn.substring(0, 9), weightSsn);
+        final Integer digit2 = calculate(cleanedSsn.substring(0, 9) + digit1, weightSsn);
+        return cleanedSsn.equals(cleanedSsn.substring(0, 9) + digit1.toString() + digit2.toString());
     }
 
     /**
@@ -39,11 +45,12 @@ public class BR {
      * @return
      */
     public static boolean isValidCNPJ(final String tin) {
-        if ((tin == null) || (tin.length() != 14) || tin.matches(tin.charAt(0) + "{14}"))
+        String cleanedTin = limparFormatacao(tin);
+        if ((cleanedTin == null) || (cleanedTin.length() != 14) || cleanedTin.matches(cleanedTin.charAt(0) + "{14}"))
             return false;
 
-        final Integer digit1 = calculate(tin.substring(0, 12), weightTin);
-        final Integer digit2 = calculate(tin.substring(0, 12) + digit1, weightTin);
-        return tin.equals(tin.substring(0, 12) + digit1.toString() + digit2.toString());
+        final Integer digit1 = calculate(cleanedTin.substring(0, 12), weightTin);
+        final Integer digit2 = calculate(cleanedTin.substring(0, 12) + digit1, weightTin);
+        return cleanedTin.equals(cleanedTin.substring(0, 12) + digit1.toString() + digit2.toString());
     }
 }

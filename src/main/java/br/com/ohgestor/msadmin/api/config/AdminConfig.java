@@ -13,7 +13,7 @@ import java.time.Instant;
 
 @Configuration
 @Slf4j
-public class AdminConfig implements CommandLineRunner {
+public class AdminConfig implements CommandLineRunner{
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -21,17 +21,16 @@ public class AdminConfig implements CommandLineRunner {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Override
-    public void run(String... args) throws Exception {
+    private void criarUsuarioAdmin() {
         Usuario usuario = Usuario.builder()
-            .nome("Administrador")
-            .email("admin@ohgestor.com.br")
+                .nome("Administrador")
+                .email("glesioss@gmail.com")
                 .avatar("default.png")
-            .senha(passwordEncoder.encode("102030"))
-            .ativo(true)
-            .perfil(Perfil.ADMIN)
-            .dataCriadoEm(Instant.now())
-            .build();
+                .senha(passwordEncoder.encode("102030"))
+                .ativo(true)
+                .perfil(Perfil.ADMIN)
+                .dataCriadoEm(Instant.now())
+                .build();
 
         if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
             System.out.println("*** *** *** Usuário ja cadastrado no banco!");
@@ -40,5 +39,10 @@ public class AdminConfig implements CommandLineRunner {
             log.info("***** ******** ******* *******");
             log.info("Usuário cadastrado com sucesso");
         }
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        criarUsuarioAdmin();
     }
 }

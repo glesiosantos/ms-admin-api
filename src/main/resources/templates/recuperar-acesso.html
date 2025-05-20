@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperação de Acesso</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: auto;
+        }
+        .logo {
+            max-width: 150px;
+            margin-bottom: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            color: #ffffff;
+            background-color: #007bff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <img src="https://raw.githubusercontent.com/glesiosantos/web-manager-app/refs/heads/develop/src/assets/img/oh_gestor.png" alt="Logo" class="logo">
+    <h2>Recuperação de Acesso</h2>
+    <p>Olá <strong th:text="${nomeUsuario}"></strong>,</p>
+    <p>Você solicitou a recuperação do seu acesso. Aqui estão suas novas credenciais:</p>
+    <p><strong>Usuário:</strong> <span th:text="${email}"></span></p>
+    <p><strong>Senha temporária:</strong> <span th:text="${novaSenha}"></span></p>
+    <p>Recomendamos que você altere sua senha assim que fizer login.</p>
+    <a th:href="${linkPlataforma}" class="button">Acessar Plataforma</a>
+    <p class="footer">Se você não solicitou essa recuperação, entre em contato com o suporte imediatamente.</p>
+</div>
+</body>
+</html>

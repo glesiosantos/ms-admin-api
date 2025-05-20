@@ -2,14 +2,22 @@ package br.com.ohgestor.msadmin.api.services;
 
 import br.com.ohgestor.msadmin.api.domains.Cliente;
 import br.com.ohgestor.msadmin.api.web.requests.ClienteRequest;
-import br.com.ohgestor.msadmin.api.web.responses.ClienteResponse;
+import br.com.ohgestor.msadmin.api.web.responses.EstabelecimentoResponse;
 import org.apache.coyote.BadRequestException;
 
 import java.util.List;
 
 public interface ClienteService {
 
-    Cliente addCliente(ClienteRequest request) throws BadRequestException;
+    Cliente addCliente(ClienteRequest request) throws BadRequestException, Exception;
 
-    List<ClienteResponse> carregarClientes();
+    Cliente buscarClientePeloCpfOuCnpj(String documento) throws Exception;
+
+    void notificarRabbitMQ(EstabelecimentoResponse response, String exchange);
+
+    List<EstabelecimentoResponse> carregarClientes();
+
+    void editarCliente(ClienteRequest request);
+
+    void registrarClienteAtivosNasApis();
 }

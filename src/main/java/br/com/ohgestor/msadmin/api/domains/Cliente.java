@@ -1,11 +1,17 @@
 package br.com.ohgestor.msadmin.api.domains;
 
 import br.com.ohgestor.msadmin.api.abstrato.EntidadeAbstrata;
-import br.com.ohgestor.msadmin.api.enuns.EstabelecimentoComercial;
+import br.com.ohgestor.msadmin.api.conversores.DocumentoConversor;
+import br.com.ohgestor.msadmin.api.enuns.Modulo;
+import br.com.ohgestor.msadmin.api.enuns.Plano;
+import br.com.ohgestor.msadmin.api.enuns.TipoPessoa;
+import br.com.ohgestor.msadmin.api.utils.ContatoPadraoConverter;
+import br.com.ohgestor.msadmin.api.utils.UpperCaseConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @ToString
@@ -15,42 +21,54 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_cliente")
+@Table(name = "clientes")
 public class Cliente extends EntidadeAbstrata {
 
+    @Enumerated(EnumType.STRING)
+    private TipoPessoa tipo;
+
+    @Convert(converter = UpperCaseConverter.class)
     @Column(name = "razao", length = 150, nullable = false)
     private String razaoSocial;
 
+    @Convert(converter = UpperCaseConverter.class)
     @Column(name = "nm_fantasia", length = 150, nullable = false)
     private String nomeFantasia;
 
+    @Convert(converter = UpperCaseConverter.class)
     @Column(length = 150)
     private String proprietario;
 
-    @Column(name = "cpf_cnpj", length = 15, nullable = false, unique = true)
-    private String cpfCnpj;
+    @Convert(converter = DocumentoConversor.class)
+    @Column(name = "cpf_propr")
+    private String cpfProprietario;
 
-    @Column(name = "dt_vencimento", nullable = false)
-    private int dataVencimento;
+    @Convert(converter = DocumentoConversor.class)
+    @Column(name = "cpf_cnpj")
+    private String cpfOuCnpj;
 
-    @Column(name = "ativo", columnDefinition = "boolean DEFAULT 'false'")
+    private int vencimento;
+
+    @Column(name = "ativo")
     private boolean ativo;
-
-    @Column(name = "nr_usuario", columnDefinition = "INT DEFAULT '0'")
-    private int numeroUsuario;
 
     @Embedded
     private Endereco endereco;
 
-    @Column(columnDefinition = "BOOLEAN DEFAULT 'false'")
     private boolean integrado;
 
+    @Convert(converter = ContatoPadraoConverter.class)
     @ElementCollection(fetch = FetchType.EAGER)
-    @JoinTable(name = "tb_cliente_contatos",
+    @JoinTable(name = "cliente_contatos",
             joinColumns = @JoinColumn(name = "cliente_id"))
     private Set<String> contatos;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "estabelecimento", length = 3, nullable = false, columnDefinition = "CHAR(3) default 'OME'")
-    private EstabelecimentoComercial estabelecimento;
+    private Modulo modulo;
+
+    @Enumerated(EnumType.STRING)
+    private Plano plano;
+
+    @Column(name = "dt_vencimento_teste")
+    private LocalDate dataVencimentoTeste;
 }

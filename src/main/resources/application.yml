@@ -2,9 +2,21 @@ server:
   port: 5000
   servlet:
     context-path: /api
-
 spring:
   profiles:
-    active: dev
+    active: ${APP_PROFILE:dev}
   application:
     name: ms-admin-api
+  flyway:
+    enabled: true
+    locations:
+      - classpath:/db/migration
+
+# swagger-ui custom path
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+rabbitmq:
+  exchanges:
+    criar-oficinas: criar-oficinas.ex

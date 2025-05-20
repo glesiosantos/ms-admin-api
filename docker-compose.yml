@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+  ms-admin-api:
+    image: ms-admin-api
+    environment:
+      spring.profiles.active: test
+    depends_on:
+      rabbit-mq:
+        condition: service_healthy
+    ports:
+      - "5000:5000"
+  db:
+    restart: always
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 102030
+      POSTGRES_DB: ms_admin_db_product
+  rabbit-mq:
+    image: rabbitmq:3-management
+    restart: always
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      timeout: 5s
+      interval: 5s
+      retries: 3
+    ports:
+      - "15672:15672"
+      - "5672:5672"

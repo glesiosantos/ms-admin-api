@@ -14,6 +14,7 @@ public interface UsuarioMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "senha", ignore = true)
     @Mapping(target = "perfil", source = "perfil")
+    @Mapping(target = "ativo", source = "ativo")
     @Mapping(target = "avatar", constant = "default.png")
     Usuario converterRequestParaModel(UsuarioRequest request);
 }
