@@ -24,7 +24,7 @@ public class EnvioEmailServiceImpl implements EnvioEmailService {
     @Override
     public void enviarEmailSimples(EmailRequest request) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("admin@ohgestor.com.br");
+        message.setFrom("admin@glesi5459.c44.integrator.host");
         message.setTo(request.para());
         message.setSubject(request.titulo());
         message.setText(request.texto());
@@ -38,6 +38,7 @@ public class EnvioEmailServiceImpl implements EnvioEmailService {
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
 
         try {
+            helper.setFrom("admin@glesi5459.c44.integrator.host");
             helper.setTo(request.para());
             helper.setSubject(request.titulo());
             helper.setText(templateEngine.process(templateName, context), true);

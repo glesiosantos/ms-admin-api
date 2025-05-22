@@ -41,7 +41,6 @@ public class UsuarioServiceImpl implements UsuarioService {
         Optional<Usuario> optional = usuarioRepository.findByEmail(request.email());
         if(optional.isPresent()) throw new BadRequestException("Usuário ja cadastrado no sistema");
         var usuario = usuarioMapper.converterRequestParaModel(request);
-
         // gerar senha aleatoria
         var senha = GeradorUtils.geradorSenhaAleatorias(6);
         usuario.setSenha(passwordEncoder.encode(senha));

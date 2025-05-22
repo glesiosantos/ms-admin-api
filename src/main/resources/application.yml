@@ -1,16 +1,51 @@
 server:
-  port: 5000
+  port: 8080
   servlet:
     context-path: /api
 spring:
-  profiles:
-    active: ${APP_PROFILE:dev}
   application:
     name: ms-admin-api
   flyway:
-    enabled: true
-    locations:
-      - classpath:/db/migration
+    locations: classpath:db/migration
+  datasource:
+    url: jdbc:postgresql://localhost:5433/msadmindb
+    username: postgres
+    password: 102030
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  mail:
+    host: mail.glesi5459.c44.integrator.host
+    port: 465
+    username: admin@glesi5459.c44.integrator.host
+    password: IajYzaGJ;x9M
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+        transport:
+          protocol: smtp
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+api:
+  security:
+    secret: b27ab77400471a578434ae49c734bcec66a8d706
+
+app:
+  consumidor:
+    urls: http://localhost:9001
+
+asaas:
+  token: fdsfdsfds
+  url: sfdfds
 
 # swagger-ui custom path
 springdoc:
