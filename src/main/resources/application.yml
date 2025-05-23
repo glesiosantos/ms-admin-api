@@ -16,10 +16,10 @@ spring:
       ddl-auto: none
     show-sql: true
   mail:
-    host: mail.glesi5459.c44.integrator.host
+    host: smtp.zoho.com
     port: 465
-    username: admin@glesi5459.c44.integrator.host
-    password: IajYzaGJ;x9M
+    username: naoresponda@weboot.com.br
+    password: tQbgyv$3
     protocol: smtp
     properties:
       mail:
@@ -29,6 +29,7 @@ spring:
             enable: true
         transport:
           protocol: smtp
+        from: naoresponda@weboot.com.br
   rabbitmq:
     host: localhost
     port: 5672

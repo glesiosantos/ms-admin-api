@@ -5,6 +5,7 @@ import br.com.ohgestor.msadmin.api.web.requests.EmailRequest;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -21,10 +22,13 @@ public class EnvioEmailServiceImpl implements EnvioEmailService {
     @Autowired
     private TemplateEngine templateEngine;
 
+    @Value("${spring.mail.properties.mail.from}")
+    private String remetentePadrao;
+
     @Override
     public void enviarEmailSimples(EmailRequest request) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("admin@glesi5459.c44.integrator.host");
+        message.setFrom(remetentePadrao);
         message.setTo(request.para());
         message.setSubject(request.titulo());
         message.setText(request.texto());
@@ -38,7 +42,7 @@ public class EnvioEmailServiceImpl implements EnvioEmailService {
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
 
         try {
-            helper.setFrom("admin@glesi5459.c44.integrator.host");
+            helper.setFrom(remetentePadrao);
             helper.setTo(request.para());
             helper.setSubject(request.titulo());
             helper.setText(templateEngine.process(templateName, context), true);
