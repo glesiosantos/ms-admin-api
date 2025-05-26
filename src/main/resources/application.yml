@@ -26,7 +26,7 @@ spring:
         smtp:
           auth: true
           ssl:
-            enable: true
+            enable: ${MAIL_ENABLE_SSL}
         transport:
           protocol: smtp
         from: ${MAIL_USER}
