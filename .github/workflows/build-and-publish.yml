@@ -1,16 +1,16 @@
-name: Build and Publish Docker Image
+name: Build Docker Image
 
 on:
   push:
     branches:
-      - develop  # ou 'master', se for o caso
+      - develop
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout código
+      - name: Checkout do código
         uses: actions/checkout@v3
 
       - name: Setup Java 21
@@ -30,16 +30,8 @@ jobs:
       - name: Compilar aplicação
         run: mvn clean package -DskipTests
 
-      - name: Build Docker image
+      - name: Verificar se o JAR foi gerado
+        run: ls -lh target
+
+      - name: Build da imagem Docker
         run: docker build -t ms-admin-api .
-
-      # Se quiser publicar no Docker Hub:
-      - name: Login no Docker Hub
-        if: github.ref == 'refs/heads/main'
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-      - name: Tag & Push Docker image
-        if: github.ref == 'refs/heads/main'
-        run: |
-          docker tag ms-admin-api ${{ secrets.DOCKER_USERNAME }}/ms-admin-api:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/ms-admin-api:latest
