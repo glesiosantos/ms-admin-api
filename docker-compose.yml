@@ -1,24 +1,52 @@
-version: '3.9'
+version: '4.0'
 
 services:
   ms-admin-api:
     image: ms-admin-api
     environment:
-      spring.profiles.active: test
-    depends_on:
-      rabbit-mq:
-        condition: service_healthy
+      POSTGRESQL_HOST: ${POSTGRESQL_HOST}
+      POSTGRESQL_USER: ${POSTGRESQL_USER}
+      POSTGRESQL_PASS: ${POSTGRESQL_PASS}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
+      RABBITMQ_VIRTUAL_HOST: ${RABBITMQ_VIRTUAL_HOST}
+      RABBITMQ_SSL: ${RABBITMQ_SSL}
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_USER: ${MAIL_USER}
+      MAIL_PASS: ${MAIL_PASS}
+      MAIL_PORT: ${MAIL_PORT}
+      API_CORS_ALLOWED_ORIGINS: ${API_CORS_ALLOWED_ORIGINS}
+      API_SECRET: ${API_SECRET}
+      ASAAS_TOKEN: ${ASAAS_TOKEN}
+      ASAAS_URL: ${ASAAS_URL}
     ports:
-      - "5000:5000"
-  db:
-    restart: always
+      - "8080:8080"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - backend
+
+  postgres-server:
     image: postgres
+    container_name: pg-server
+    restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 102030
-      POSTGRES_DB: ms_admin_db_product
-  rabbit-mq:
+      POSTGRES_DB: msadmindb
+      POSTGRES_PASSWORD: 0594762f0fbbb2221c9b65d4004c8e695d8eb1bd
+      PGDATA: /data/postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+
+  rabbitmq:
     image: rabbitmq:3-management
+    container_name: rmq-server
     restart: always
     healthcheck:
       test: rabbitmq-diagnostics -q ping
@@ -26,5 +54,19 @@ services:
       interval: 5s
       retries: 3
     ports:
-      - "15672:15672"
-      - "5672:5672"
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  postgres-data:
+    name: postgres-data
+  rabbitmq-data:
+    name: rabbitmq-data

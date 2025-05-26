@@ -8,45 +8,47 @@ spring:
   flyway:
     locations: classpath:db/migration
   datasource:
-    url: jdbc:postgresql://localhost:5433/msadmindb
-    username: postgres
-    password: 102030
+    url: ${POSTGRESQL_HOST}
+    username: ${POSTGRESQL_USER}
+    password: ${POSTGRESQL_PASS}
   jpa:
     hibernate:
       ddl-auto: none
     show-sql: true
   mail:
-    host: smtp.zoho.com
-    port: 465
-    username: naoresponda@weboot.com.br
-    password: tQbgyv$3
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USER}
+    password: ${MAIL_PASS}
     protocol: smtp
     properties:
       mail:
         smtp:
           auth: true
           ssl:
-            enable: true
+            enable: ${MAIL_ENABLE_SSL}
         transport:
           protocol: smtp
-        from: naoresponda@weboot.com.br
+        from: ${MAIL_USER}
   rabbitmq:
-    host: localhost
+    host: ${RABBITMQ_HOST}
     port: 5672
-    username: guest
-    password: guest
-
+    username: ${RABBITMQ_USER}
+    password: ${RABBITMQ_PASS}
+    virtual-host: ${RABBITMQ_VIRTUAL_HOST}
+    ssl:
+      enabled: ${RABBITMQ_SSL}
 api:
   security:
-    secret: b27ab77400471a578434ae49c734bcec66a8d706
+    secret: ${API_SECRET}
 
 app:
   consumidor:
-    urls: http://localhost:9001
+    urls: ${API_CORS_ALLOWED_ORIGINS}
 
 asaas:
-  token: fdsfdsfds
-  url: sfdfds
+  token: ${ASAAS_TOKEN}
+  url: ${ASAAS_URL}
 
 # swagger-ui custom path
 springdoc:
