@@ -1,4 +1,6 @@
-FROM amazoncorretto:21.0.4-alpine3.18
+FROM openjdk:21
+
+WORKDIR /api
 
 COPY target/ms-admin-api-0.0.1-SNAPSHOT.jar ms-admin-api.jar
 
